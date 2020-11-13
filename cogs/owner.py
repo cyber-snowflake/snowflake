@@ -37,7 +37,7 @@ class Owner(commands.Cog):
         return await ctx.bot.is_owner(ctx.author)
 
     @commands.command()
-    async def stats(self, ctx: commands.Context):
+    async def botstats(self, ctx: commands.Context):
         """Some statistics of the bot"""
         embed = MyEmbed(title="Bot Stats", footer_text="Requested by %s" % ctx.author)
 

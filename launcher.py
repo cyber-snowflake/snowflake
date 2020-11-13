@@ -27,6 +27,7 @@ from os import environ
 from os.path import dirname
 
 import click
+import matplotlib
 
 import config
 from bot import BigMommy
@@ -60,6 +61,7 @@ def setup_logging():
 
 
 def start_bot():
+    matplotlib.use("Agg")
     loop = asyncio.get_event_loop()
 
     try:
