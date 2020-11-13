@@ -26,7 +26,6 @@ from typing import Optional
 
 from src.sql import psql
 from src.storage import InternalStorage
-
 from .decos import aioify
 from .exceptions import BadCacheRequest
 from .types import GuildSettings
