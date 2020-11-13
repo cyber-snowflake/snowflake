@@ -25,7 +25,6 @@ from typing import Union, Optional, List, Generator
 
 import arrow
 from discord import Member, User, Activity, CustomActivity, Spotify, ActivityType, Guild, Role
-from discord.enums import UserFlags
 from discord.ext import commands
 from discord.utils import find
 
@@ -39,19 +38,19 @@ class Meta(commands.Cog):
         self.bot = bot
 
     @staticmethod
-    def flag_humanize(flag: UserFlags) -> Optional[str]:
+    def flag_humanize(flag: str) -> Optional[str]:
         case_dict = {
-            UserFlags.staff: "Discord Staff",
-            UserFlags.partner: "Discord Partner",
-            UserFlags.hypesquad: "HypeSquad Events",
-            UserFlags.bug_hunter: "Discord Bug Hunter",
-            UserFlags.bug_hunter_level_2: "Discord Bug Hunter",
-            UserFlags.hypesquad_balance: "HypeSquad Balance",
-            UserFlags.hypesquad_brilliance: "HypeSquad Brilliance",
-            UserFlags.hypesquad_bravery: "HypeSquad Bravery",
-            UserFlags.early_supporter: "Early Supporter",
-            UserFlags.verified_bot: "Verified Bot",
-            UserFlags.verified_bot_developer: "Verified Bot Developer",
+            "staff": "Discord Staff",
+            "partner": "Discord Partner",
+            "hypesquad": "HypeSquad Events",
+            "bug_hunter": "Discord Bug Hunter",
+            "bug_hunter_level_2": "Discord Bug Hunter",
+            "hypesquad_balance": "HypeSquad Balance",
+            "hypesquad_brilliance": "HypeSquad Brilliance",
+            "hypesquad_bravery": "HypeSquad Bravery",
+            "early_supporter": "Early Supporter",
+            "verified_bot": "Verified Bot",
+            "verified_bot_developer": "Verified Bot Developer",
         }
 
         return case_dict.get(flag)
@@ -76,11 +75,11 @@ class Meta(commands.Cog):
         embed.set_thumbnail(url=avy_url)
         embed.add_field(name="Discord Tag", value=f"{user}")
         embed.add_field(name="ID", value=f"{user.id}")
-        embed.add_field(name="Avatar", value=f"[Open]({avy_url})")
+        embed.add_field(name="Avatar", value=f"[Image]({avy_url})")
 
         flags = ""
         for flag in sorted(user.public_flags.all(), key=lambda x: x.value):
-            flags += f"{self.bot.my_emojis.find_attr(flag.name)} {self.flag_humanize(flag)}\n"
+            flags += f"{self.bot.my_emojis.find_attr(flag.name)} {self.flag_humanize(flag.name)}\n"
 
         if flags:
             embed.add_field(name="Flags", value=flags, inline=False)
