@@ -22,7 +22,7 @@
 
 import io
 import math
-from collections import Counter
+from collections import Counter, OrderedDict
 
 import matplotlib.pyplot as plt
 from discord import File
@@ -42,16 +42,44 @@ class Statistics(commands.Cog):
             await ctx.send("See help for stats command, you need a subcommand here")
 
     @stats.command()
+    async def badges(self, ctx: commands.Context):
+        def badges_iterator():
+            for m in ctx.guild.members:
+                for f in m.public_flags.all():
+                    yield str(f.name).replace("_", " ").title()
+
+        badges = OrderedDict(Counter(badges_iterator()).most_common())
+        labels = badges.keys()
+        data = badges.values()
+
+        @aioify
+        def gen_image():
+            fig, ax = plt.subplots()
+            plt.bar(labels, data, color="#7289da")
+
+            plt.xlabel("")
+            plt.ylabel("Number of owners")
+
+            plt.yticks(range(min(data), math.ceil(max(data)) + 1))
+
+            buf = io.BytesIO()
+            plt.savefig(buf, format="png")
+            buf.seek(0)
+            return buf
+
+        fp = await gen_image()
+        _file = File(fp, "stats.png")
+
+        await ctx.send(file=_file)
+
+    @stats.command()
     async def members(self, ctx: commands.Context):
         """Creates a chart of members by statuses"""
-        statuses_data = dict(Counter(str(x.status) for x in ctx.guild.members))
         labels = ["Online", "Idle", "DND", "Offline"]
         colors = ["#43b581", "#faa61a", "#f04747", "#747f8d"]
 
-        statuses = []
-        for label in labels:
-            statuses.append(int(statuses_data.get(label.lower(), 0)))
-
+        statuses_data = dict(Counter(str(x.status) for x in ctx.guild.members))
+        statuses = [int(statuses_data.get(label.lower(), 0)) for label in labels]
         del statuses_data
 
         @aioify
