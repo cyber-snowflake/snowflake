@@ -22,8 +22,9 @@
 
 import io
 import math
-from collections import Counter, OrderedDict
 import random
+from collections import Counter, OrderedDict
+from typing import Iterable
 
 import matplotlib.pyplot as plt
 from discord import File, CategoryChannel
@@ -41,6 +42,10 @@ class Statistics(commands.Cog):
     async def stats(self, ctx: commands.Context):
         if not ctx.invoked_subcommand:
             await ctx.send("See help for stats command, you need a subcommand here")
+
+    @staticmethod
+    def find_yticks(x: Iterable):
+        return range(min(x), math.ceil(max(x)) + 1)
 
     @stats.command()
     async def channels(self, ctx: commands.Context):
@@ -97,13 +102,15 @@ class Statistics(commands.Cog):
 
         @aioify
         def gen_image():
-            fig, ax = plt.subplots()
+            plt.xkcd()
+            plt.subplots()
             plt.bar(labels, data, color="#7289da")
 
             plt.xlabel("")
             plt.ylabel("Number of owners")
 
-            plt.yticks(range(min(data), math.ceil(max(data)) + 1))
+            plt.yticks(self.find_yticks(data))
+            plt.tight_layout()
 
             buf = io.BytesIO()
             plt.savefig(buf, format="png")
@@ -127,13 +134,15 @@ class Statistics(commands.Cog):
 
         @aioify
         def gen_image():
-            fig, ax = plt.subplots()
+            plt.xkcd()
+            plt.subplots()
             plt.bar(labels, statuses, color=colors)
 
             plt.xlabel("Status")
             plt.ylabel("Number of members")
 
-            plt.yticks(range(min(statuses), math.ceil(max(statuses)) + 1))
+            plt.yticks(self.find_yticks(statuses))
+            plt.tight_layout()
 
             buf = io.BytesIO()
             plt.savefig(buf, format="png")
