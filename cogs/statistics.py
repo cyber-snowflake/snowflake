@@ -23,9 +23,10 @@
 import io
 import math
 from collections import Counter, OrderedDict
+import random
 
 import matplotlib.pyplot as plt
-from discord import File
+from discord import File, CategoryChannel
 from discord.ext import commands
 
 from bot import BigMommy
@@ -40,6 +41,48 @@ class Statistics(commands.Cog):
     async def stats(self, ctx: commands.Context):
         if not ctx.invoked_subcommand:
             await ctx.send("See help for stats command, you need a subcommand here")
+
+    @stats.command()
+    async def channels(self, ctx: commands.Context):
+        """Creates a pie chart of channels"""
+        labels = []
+        counters = []
+        colors = []
+
+        for cat, channels in sorted(ctx.guild.by_category(), key=lambda pair: len(pair[1]), reverse=True):
+            count = len(channels)
+            counters.append(count)
+
+            if cat is None:
+                labels.append(f"No Category ({count})")
+            elif isinstance(cat, CategoryChannel):
+                labels.append(f"{cat.name} ({count})")
+
+            r = lambda: random.randint(0, 255)
+            colors.append("#%02X%02X%02X" % (r(), r(), r()))
+
+        @aioify
+        def gen_image():
+            plt.xkcd()
+            plt.subplots()
+
+            patches, texts = plt.pie(counters, startangle=90)
+            plt.axis("equal")
+
+            plt.title("Channels per category")
+            plt.legend(patches, labels, loc="best")
+
+            plt.tight_layout()
+
+            buf = io.BytesIO()
+            plt.savefig(buf, format="png")
+            buf.seek(0)
+            return buf
+
+        fp = await gen_image()
+        _file = File(fp, "stats.png")
+
+        await ctx.send(file=_file)
 
     @stats.command()
     async def badges(self, ctx: commands.Context):
