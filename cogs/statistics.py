@@ -148,7 +148,7 @@ class Statistics(commands.Cog):
         members = OrderedDict(Counter(x.status.name for x in ctx.guild.members).most_common())
 
         x = list(str(status) for status in members.keys())
-        y = list(members.values())
+        y = list(count for count in members.values())
 
         @aioify
         def gen_image():
@@ -162,7 +162,7 @@ class Statistics(commands.Cog):
             ax.set_xlabel("Statuses")
 
             plt.yticks(self.find_yticks(y))
-            plt.tight_layout()
+            plt.tight_layout(pad=2)
 
             buf = io.BytesIO()
             plt.savefig(buf, format="png")
