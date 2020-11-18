@@ -155,7 +155,7 @@ class Statistics(commands.Cog):
             sns.set(style="darkgrid")
             f, ax = plt.subplots(1, 1)
 
-            palette = sns.color_palette(list(self._discord_colors.get(label, "#FF0000") for label in x))
+            palette = sns.color_palette(list(self._status_colors.get(label, "#FF0000") for label in x))
             sns.barplot(x=x, y=y, ax=ax, palette=palette)
 
             ax.set_ylabel("Member Count")
