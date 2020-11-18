@@ -27,7 +27,6 @@ from collections import Counter, OrderedDict
 from typing import Iterable
 
 import matplotlib.pyplot as plt
-import seaborn as sns
 from discord import File, CategoryChannel
 from discord.ext import commands
 
@@ -39,33 +38,14 @@ class Statistics(commands.Cog):
     def __init__(self, bot: BigMommy) -> None:
         self.bot = bot
 
-        self._discord_colors = {
-            "online": "#43b581",
-            "idle": "#faa61a",
-            "dnd": "#f04747",
-            "offline": "#747f8d",
-            ##
-            "staff": "#7289da",
-            "partner": "#7289da",
-            "hypesquad": "#fbb848",
-            "hypesquad_balance": "#45ddc0",
-            "hypesquad_brilliance": "#f47b67",
-            "hypesquad_bravery": "#9c84ef",
-            "bug_hunter": "#43b581",
-            "bug_hunter_level_2": "#ffd56c",
-            "early_supporter": "#7289da",
-            "verified_bot": "#3e70dd",
-            "verified_bot_developer": "#3e70dd",
-        }
-
-    @staticmethod
-    def find_yticks(x: Iterable):
-        return range(min(x), math.ceil(max(x)) + 1)
-
     @commands.group()
     async def stats(self, ctx: commands.Context):
         if not ctx.invoked_subcommand:
             await ctx.send("See help for stats command, you need a subcommand here")
+
+    @staticmethod
+    def find_yticks(x: Iterable):
+        return range(min(x), math.ceil(max(x)) + 1)
 
     @stats.command()
     async def channels(self, ctx: commands.Context):
@@ -145,29 +125,28 @@ class Statistics(commands.Cog):
     @stats.command()
     async def members(self, ctx: commands.Context):
         """Creates a chart of members by statuses"""
-        members = OrderedDict(Counter(x.status.name for x in ctx.guild.members).most_common())
+        labels = ["Online", "Idle", "DND", "Offline"]
+        colors = ["#43b581", "#faa61a", "#f04747", "#747f8d"]
 
-        x = list(str(status) for status in members.keys())
-        y = list(count for count in members.values())
+        statuses_data = dict(Counter(str(x.status) for x in ctx.guild.members))
+        statuses = [int(statuses_data.get(label.lower(), 0)) for label in labels]
+        del statuses_data
 
         @aioify
         def gen_image():
-            sns.set(style="darkgrid")
-            f, ax = plt.subplots(1, 1)
+            plt.xkcd()
+            plt.subplots()
+            plt.bar(labels, statuses, color=colors)
 
-            palette = sns.color_palette(list(self._status_colors.get(label, "#FF0000") for label in x))
-            sns.barplot(x=x, y=y, ax=ax, palette=palette)
+            plt.xlabel("Status")
+            plt.ylabel("Number of members")
 
-            ax.set_ylabel("Member Count")
-            ax.set_xlabel("Statuses")
-
-            plt.yticks(self.find_yticks(y))
-            plt.tight_layout(pad=2)
+            plt.yticks(self.find_yticks(statuses))
+            plt.tight_layout()
 
             buf = io.BytesIO()
             plt.savefig(buf, format="png")
             buf.seek(0)
-
             return buf
 
         fp = await gen_image()
