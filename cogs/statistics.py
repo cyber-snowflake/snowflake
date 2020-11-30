@@ -38,14 +38,14 @@ class Statistics(commands.Cog):
     def __init__(self, bot: BigMommy) -> None:
         self.bot = bot
 
+    @staticmethod
+    def find_yticks(x: Iterable):
+        return range(min(x), math.ceil(max(x)) + 1)
+
     @commands.group()
     async def stats(self, ctx: commands.Context):
         if not ctx.invoked_subcommand:
             await ctx.send("See help for stats command, you need a subcommand here")
-
-    @staticmethod
-    def find_yticks(x: Iterable):
-        return range(min(x), math.ceil(max(x)) + 1)
 
     @stats.command()
     async def channels(self, ctx: commands.Context):
