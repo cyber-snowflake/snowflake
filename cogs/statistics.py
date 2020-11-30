@@ -27,6 +27,8 @@ from collections import Counter, OrderedDict
 from typing import Iterable
 
 import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
 from discord import File, CategoryChannel
 from discord.ext import commands
 
@@ -125,28 +127,26 @@ class Statistics(commands.Cog):
     @stats.command()
     async def members(self, ctx: commands.Context):
         """Creates a chart of members by statuses"""
-        labels = ["Online", "Idle", "DND", "Offline"]
-        colors = ["#43b581", "#faa61a", "#f04747", "#747f8d"]
-
-        statuses_data = dict(Counter(str(x.status) for x in ctx.guild.members))
-        statuses = [int(statuses_data.get(label.lower(), 0)) for label in labels]
-        del statuses_data
+        data = dict(Counter(str(x.status) for x in ctx.guild.members))
 
         @aioify
         def gen_image():
-            plt.xkcd()
-            plt.subplots()
-            plt.bar(labels, statuses, color=colors)
+            df = pd.DataFrame({"Statuses": data.keys(), "Counters": data.values()})
+            df = df.sort_values("Counters", ascending=False)
 
-            plt.xlabel("Status")
-            plt.ylabel("Number of members")
+            sns.set_theme(style="whitegrid")
 
-            plt.yticks(self.find_yticks(statuses))
+            ax = sns.barplot(x="Statuses", y="Counters", data=df, palette="rocket")
+            ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
+            ax.set(xlabel="Statuses", ylabel="Members (count)")
+
+            plt.yticks(self.find_yticks(data.values()))
             plt.tight_layout()
 
             buf = io.BytesIO()
             plt.savefig(buf, format="png")
             buf.seek(0)
+
             return buf
 
         fp = await gen_image()
