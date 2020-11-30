@@ -41,6 +41,30 @@ class Statistics(commands.Cog):
         self.bot = bot
 
     @staticmethod
+    def make_dataframe_from_dict(
+        data: dict,
+        keys: str = "labels",
+        values: str = "values",
+        sort_values: bool = False,
+        asc: bool = False,
+    ):
+        """
+
+        Args:
+            data: base dictionary of data
+            keys: name of keys column
+            values: name of values column
+            sort_values: should the data get sorted
+            asc: an alias to DataFrame.sort_value(ascending=x)
+
+        """
+        df = pd.DataFrame({keys: data.keys(), values: data.values()})
+        if sort_values:
+            df = df.sort_values(values, ascending=asc)
+
+        return df
+
+    @staticmethod
     def find_yticks(x: Iterable):
         return range(min(x), math.ceil(max(x)) + 1)
 
@@ -98,20 +122,19 @@ class Statistics(commands.Cog):
                 for f in m.public_flags.all():
                     yield str(f.name).replace("_", " ").title()
 
-        badges = OrderedDict(Counter(badges_iterator()).most_common())
-        labels = badges.keys()
-        data = badges.values()
+        badges = dict(Counter(badges_iterator()).most_common())
 
         @aioify
         def gen_image():
-            plt.xkcd()
-            plt.subplots()
-            plt.bar(labels, data, color="#7289da")
+            sns.set_theme(style="whitegrid")
 
-            plt.xlabel("")
-            plt.ylabel("Number of owners")
+            df = self.make_dataframe_from_dict(badges, "flags", "count", sort_values=True)
 
-            plt.yticks(self.find_yticks(data))
+            ax = sns.barplot(x="flags", y="count", data=df, palette="Blues_d")
+            ax.set(xlabel="Flag", ylabel="Members (count)")
+
+            ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
+            plt.yticks(self.find_yticks(badges.values()))
             plt.tight_layout()
 
             buf = io.BytesIO()
