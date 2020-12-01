@@ -94,7 +94,6 @@ class Statistics(commands.Cog):
 
         @aioify
         def gen_image():
-            plt.xkcd()
             plt.subplots()
 
             patches, texts = plt.pie(counters, startangle=90)
