@@ -1,7 +1,7 @@
 import sys
 import traceback
 
-from discord import Forbidden, TextChannel
+from discord import Forbidden, TextChannel, Embed
 from discord.ext import commands
 
 from bot import BigMommy
@@ -88,8 +88,17 @@ class ErrorHandler(commands.Cog):
         print("---------\nIgnoring exception in command {}:".format(ctx.command), file=sys.stderr)
         traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
 
+        e = Embed(color=0xFF0000, title="Unexpected Exception")
+        e.add_field(name="Command", value=f"{ctx.message.content[0:1000]}")
+        e.add_field(name="Author", value=f"{ctx.author} (`{ctx.author.id}`)")
+        e.add_field(name="Guild", value="{}".format(f"{g.name} (`{g.id}`)" if (g := ctx.guild) else "None"))
+
+        if u := self.bot.get_user(self.bot.owner_id):
+            tb: str = "".join(traceback.format_exception(type(error), error, error.__traceback__))
+            await u.send(embed=e, content=f"```\n{tb[0:2000]}\n```")
+
         if isinstance(ctx.channel, TextChannel):
-            await ctx.channel.send(":x: Unexpected error!`")
+            await ctx.channel.send(":x: Unexpected error! Traceback is sent to the bot developer.")
 
 
 def setup(bot):
