@@ -6,9 +6,11 @@ from os.path import dirname
 
 import click
 import matplotlib
+from loguru import logger
 
 import config
 from bot import BigMommy
+from src.loguru_intercept import InterceptHandler
 from src.sql import psql
 
 try:
@@ -35,7 +37,12 @@ ROOT = dirname(__file__)
 
 
 def setup_logging():
-    logging.basicConfig(level=logging.INFO)
+    l = logging.getLogger()
+    l.setLevel(environ.get("LOGGING_LEVEL", "INFO"))
+    l.handlers = [InterceptHandler()]
+
+    logger.remove()
+    logger.add(sys.stderr, enqueue=True)
 
 
 def start_bot():
