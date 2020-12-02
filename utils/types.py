@@ -1,4 +1,5 @@
 from dataclasses import dataclass, fields
+from datetime import datetime
 from typing import Optional
 
 from discord import AllowedMentions
@@ -12,13 +13,15 @@ class Mention:
 
 
 class Reminder:
+    __slots__ = ("id", "user_id", "created_at", "trigger_at", "initiator_message_url", "content")
+
     def __init__(self, *, data):
-        self.id = data["id"]
-        self.user_id = data["user_id"]
-        self.created_at = data["created_at"]
-        self.trigger_at = data["trigger_at"]
-        self.initiator_message_url = data["initiator_message_url"]
-        self.content = data["content"]
+        self.id: int = data["id"]
+        self.user_id: int = data["user_id"]
+        self.created_at: datetime = data["created_at"]
+        self.trigger_at: datetime = data["trigger_at"]
+        self.initiator_message_url: str = data["initiator_message_url"]
+        self.content: str = data["content"]
 
     def __eq__(self, other):
         try:
