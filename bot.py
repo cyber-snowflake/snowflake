@@ -83,7 +83,7 @@ class BigMommy(commands.AutoShardedBot):
 
                 if not filename.endswith("disabled"):
                     self.load_extension(f"cogs.{filename}")
-                    print(f"* {filename}")
+                    logger.info(f"{filename} extension loaded")
 
         logger.info(f"{self.user} is ready and working")
         logger.info(f"Guilds: {len(self.guilds)}")
