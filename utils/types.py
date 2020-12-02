@@ -27,7 +27,7 @@ class Reminder:
             return False
 
     def __repr__(self):
-        return "<Action id={0.id} user_id={0.user_id} trigger_at={0.trigger_at}>".format(self)
+        return "<Reminder id={0.id} user_id={0.user_id} trigger_at={0.trigger_at}>".format(self)
 
 
 @dataclass(init=False)
