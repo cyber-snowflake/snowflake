@@ -11,6 +11,11 @@ class Admin(commands.Cog):
     def __init__(self, bot: BigMommy):
         self.bot = bot
 
+    @commands.command(aliases=("zerodiv", "except0"))
+    @commands.is_owner()
+    async def zero_division(self, ctx):
+        x = 1 / 0
+
     @commands.group(aliases=("cfg",))
     @commands.guild_only()
     @is_manager_or_bot_owner()
