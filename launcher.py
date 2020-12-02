@@ -28,12 +28,14 @@ ROOT = dirname(__file__)
 
 
 def setup_logging():
+    logging_level = environ.get("LOGGING_LEVEL", "INFO")
+
     l = logging.getLogger()
-    l.setLevel(environ.get("LOGGING_LEVEL", "INFO"))
+    l.setLevel(logging_level)
     l.handlers = [InterceptHandler()]
 
     logger.remove()
-    logger.add(sys.stderr, enqueue=True)
+    logger.add(sys.stderr, enqueue=True, level=logging_level)
 
 
 def start_bot():
