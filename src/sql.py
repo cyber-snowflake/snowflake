@@ -1,6 +1,7 @@
 from typing import Optional
 
 import asyncpg
+from loguru import logger
 
 from utils.singleton import MetaSingleton
 
@@ -20,7 +21,7 @@ class psql(metaclass=MetaSingleton):  # noqa
 
     async def connect(self, dsn: str):
         self._pool = await asyncpg.create_pool(dsn)
-        print("Postgres connection created")
+        logger.info("Postgres connection established")
 
     async def add_guild(self, guild_id: int):
         await self.pool.execute("INSERT INTO guilds(guild_id) VALUES($1) ON CONFLICT DO NOTHING;", guild_id)
