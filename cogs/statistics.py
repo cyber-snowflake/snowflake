@@ -94,6 +94,7 @@ class Statistics(commands.Cog):
 
     @stats.command()
     async def badges(self, ctx: commands.Context):
+        """Generates a chart of counted flags (badges)"""
         def badges_iterator():
             for m in ctx.guild.members:
                 for f in m.public_flags.all():
