@@ -19,19 +19,10 @@ except ImportError:
     if sys.platform == "win32":
         _loop = asyncio.ProactorEventLoop()
         asyncio.set_event_loop(_loop)
-    logger.warning(
-        " ================================\n",
-        "=   UVLOOP PACKAGE NOT FOUND   =\n",
-        "= DEFAULT EVENT POLICY APPLIED =\n",
-        "================================\n",
-    )
+    logger.warning(f"uvloop package not found, used {asyncio.get_event_loop_policy()} policy")
 else:
     asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
-    logger.info(
-        " ===============================\n",
-        "= UVLOOP EVENT POLICY APPLIED =\n",
-        "===============================\n",
-    )
+    logger.info("uvloop policy was applied")
 
 ROOT = dirname(__file__)
 
