@@ -6,9 +6,9 @@ from discord import AllowedMentions
 
 @dataclass
 class Mention:
-    nobody: AllowedMentions = AllowedMentions(everyone=False, users=False, roles=False)
-    user: AllowedMentions = AllowedMentions(everyone=False, users=True, roles=False)
-    role: AllowedMentions = AllowedMentions(everyone=False, users=False, roles=True)
+    nobody = AllowedMentions(everyone=False, users=False, roles=False)
+    user = AllowedMentions(everyone=False, users=True, roles=False)
+    role = AllowedMentions(everyone=False, users=False, roles=True)
 
 
 class Reminder:
