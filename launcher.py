@@ -19,7 +19,7 @@ except ImportError:
     if sys.platform == "win32":
         _loop = asyncio.ProactorEventLoop()
         asyncio.set_event_loop(_loop)
-    print(
+    logger.warning(
         " ================================\n",
         "=   UVLOOP PACKAGE NOT FOUND   =\n",
         "= DEFAULT EVENT POLICY APPLIED =\n",
@@ -27,7 +27,7 @@ except ImportError:
     )
 else:
     asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
-    print(
+    logger.info(
         " ===============================\n",
         "= UVLOOP EVENT POLICY APPLIED =\n",
         "===============================\n",
@@ -56,7 +56,7 @@ def start_bot():
         return
 
     bot = BigMommy()
-    print("Bot instance created.")
+    logger.debug("Bot instance created.")
 
     environ["JISHAKU_HIDE"] = "True"
     bot.load_extension("jishaku")
