@@ -1,8 +1,8 @@
-import sys
 import traceback
 
 from discord import Forbidden, TextChannel, Embed
 from discord.ext import commands
+from loguru import logger
 
 from bot import BigMommy
 from utils.exceptions import BlacklistedSnowflake, NotInVoiceChat
@@ -85,8 +85,9 @@ class ErrorHandler(commands.Cog):
         elif isinstance(error, Forbidden):
             return await ctx.send(":x: I don't have enough permissions.")
 
-        print("---------\nIgnoring exception in command {}:".format(ctx.command), file=sys.stderr)
-        traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
+        tb: str = "".join(traceback.format_exception(type(error), error, error.__traceback__))
+        logger.error(f"Ignoring exception in command {ctx.command}.")
+        logger.exception(tb)
 
         e = Embed(color=0xFF0000, title="Unexpected Exception")
         e.add_field(name="Command", value=f"{ctx.message.content[0:1000]}")
@@ -94,7 +95,6 @@ class ErrorHandler(commands.Cog):
         e.add_field(name="Guild", value="{}".format(f"{g.name} (`{g.id}`)" if (g := ctx.guild) else "None"))
 
         if u := self.bot.get_user(self.bot.owner_id):
-            tb: str = "".join(traceback.format_exception(type(error), error, error.__traceback__))
             await u.send(embed=e, content=f"```\n{tb[0:2000]}\n```")
 
         if isinstance(ctx.channel, TextChannel):

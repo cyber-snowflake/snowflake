@@ -5,6 +5,7 @@ from typing import Optional
 import aiohttp
 from discord import Guild, Message
 from discord.ext import commands
+from loguru import logger
 
 import config
 from src.sql import psql
@@ -82,6 +83,8 @@ class BigMommy(commands.AutoShardedBot):
 
                 if not filename.endswith("disabled"):
                     self.load_extension(f"cogs.{filename}")
-                    print(f"* {filename}")
+                    logger.info(f"{filename} extension loaded")
 
-        print(f"{self.user} is soooooooo ready sooo coooooooooooooooool!!111!!1!!")
+        logger.info(f"{self.user} is ready and working")
+        logger.info(f"Guilds: {len(self.guilds)}")
+        logger.info(f"Cached Users: {len(set(self.users))}")

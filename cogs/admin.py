@@ -11,6 +11,7 @@ class Admin(commands.Cog):
     def __init__(self, bot: BigMommy):
         self.bot = bot
 
+
     @commands.group(aliases=("cfg",))
     @commands.guild_only()
     @is_manager_or_bot_owner()

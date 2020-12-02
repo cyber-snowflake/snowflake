@@ -6,9 +6,11 @@ from os.path import dirname
 
 import click
 import matplotlib
+from loguru import logger
 
 import config
 from bot import BigMommy
+from src.loguru_intercept import InterceptHandler
 from src.sql import psql
 
 try:
@@ -17,25 +19,23 @@ except ImportError:
     if sys.platform == "win32":
         _loop = asyncio.ProactorEventLoop()
         asyncio.set_event_loop(_loop)
-    print(
-        " ================================\n",
-        "=   UVLOOP PACKAGE NOT FOUND   =\n",
-        "= DEFAULT EVENT POLICY APPLIED =\n",
-        "================================\n",
-    )
+    logger.warning(f"uvloop package not found, used {asyncio.get_event_loop_policy()} policy")
 else:
     asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
-    print(
-        " ===============================\n",
-        "= UVLOOP EVENT POLICY APPLIED =\n",
-        "===============================\n",
-    )
+    logger.info("uvloop policy was applied")
 
 ROOT = dirname(__file__)
 
 
 def setup_logging():
-    logging.basicConfig(level=logging.INFO)
+    logging_level = environ.get("LOGGING_LEVEL", "INFO")
+
+    l = logging.getLogger()
+    l.setLevel(logging_level)
+    l.handlers = [InterceptHandler()]
+
+    logger.remove()
+    logger.add(sys.stderr, enqueue=True, level=logging_level)
 
 
 def start_bot():
@@ -49,7 +49,7 @@ def start_bot():
         return
 
     bot = BigMommy()
-    print("Bot instance created.")
+    logger.debug("Bot instance created.")
 
     environ["JISHAKU_HIDE"] = "True"
     bot.load_extension("jishaku")
