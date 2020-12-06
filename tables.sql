@@ -45,4 +45,27 @@ alter table reminders
     add constraint reminders_pk
         primary key (id);
 
+/** Guilds Stats **/
+
+create table guilds_stats
+(
+	guild_id bigint not null
+		constraint guilds_stats_pk
+			primary key,
+	_date date default current_date not null,
+	messages_sent int default 0 not null,
+	members_joined int default 0 not null
+);
+
+/** Users Stats **/
+
+create table users_stats
+(
+	user_id bigint not null
+		constraint users_stats_pk
+			primary key,
+	_date date default current_date not null,
+	messages_sent int default 0 not null
+);
+
 
