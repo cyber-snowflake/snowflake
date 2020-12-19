@@ -5,6 +5,7 @@ from typing import Optional
 import aiohttp
 from discord import Guild, Message
 from discord.ext import commands
+from discord import User
 from loguru import logger
 
 import config
@@ -48,6 +49,7 @@ class BigMommy(commands.AutoShardedBot):
         self.pg = psql()
         self.cache = cachemanager
 
+        self.owner: Optional[User] = None
         self.support_guild: Optional[Guild] = None
         self.my_emojis = Emojis()
 
@@ -73,6 +75,8 @@ class BigMommy(commands.AutoShardedBot):
 
         if not self.was_ready_once:
             self.was_ready_once = not self.was_ready_once
+
+            self.owner = await self.fetch_user(config.Bot.owner_id)
 
             # Hide token
             self.config.Bot.token = None
