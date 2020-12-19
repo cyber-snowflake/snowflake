@@ -62,7 +62,7 @@ class Statistics(commands.Cog):
 
         @aioify
         def gen_image():
-            sns.set_theme(style="whitegrid")
+            sns.set_theme(style="darkgrid")
 
             df = self.make_dataframe_from_dict(badges, "flags", "count", sort_values=True)
 
@@ -93,7 +93,7 @@ class Statistics(commands.Cog):
             df = pd.DataFrame({"Statuses": data.keys(), "Counters": data.values()})
             df = df.sort_values("Counters", ascending=False)
 
-            sns.set_theme(style="whitegrid")
+            sns.set_theme(style="darkgrid")
 
             ax = sns.barplot(x="Statuses", y="Counters", data=df, palette="rocket")
             ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
