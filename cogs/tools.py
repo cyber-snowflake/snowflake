@@ -14,6 +14,7 @@ class Tools(commands.Cog):
         self.bot = bot
 
     @commands.command()
+    @commands.cooldown(1, 4, commands.BucketType.user)
     async def imgur(self, ctx: commands.Context):
         """Upload an image from discord to imgur"""
         attachment: Attachment = a[0] if len(a := ctx.message.attachments) > 0 else None

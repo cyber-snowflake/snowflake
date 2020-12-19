@@ -46,6 +46,8 @@ class Statistics(commands.Cog):
         return range(min(x), math.ceil(max(x)) + 1)
 
     @commands.group()
+    @commands.guild_only()
+    @commands.cooldown(1, 10, commands.BucketType.channel)
     async def stats(self, ctx: commands.Context):
         if not ctx.invoked_subcommand:
             await ctx.send("See help for stats command, you need a subcommand here")
