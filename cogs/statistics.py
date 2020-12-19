@@ -53,6 +53,7 @@ class Statistics(commands.Cog):
     @stats.command()
     async def badges(self, ctx: commands.Context):
         """Generates a chart of counted flags (badges)"""
+
         def badges_iterator():
             for m in ctx.guild.members:
                 for f in m.public_flags.all():
@@ -76,6 +77,9 @@ class Statistics(commands.Cog):
             buf = io.BytesIO()
             plt.savefig(buf, format="png")
             buf.seek(0)
+
+            plt.close()
+
             return buf
 
         fp = await gen_image()
@@ -105,6 +109,8 @@ class Statistics(commands.Cog):
             buf = io.BytesIO()
             plt.savefig(buf, format="png")
             buf.seek(0)
+
+            plt.close()
 
             return buf
 
