@@ -71,6 +71,7 @@ class RoomsManager(commands.Cog):
 
     @is_in_voice()
     @commands.group()
+    @commands.bot_has_guild_permissions(manage_channels=True)
     async def room(self, ctx: commands.Context):
         if ctx.invoked_subcommand is None:
             room = self.bot.get_channel(await self.bot.cache.get_room_id(ctx.author.id, ctx.guild.id))
@@ -80,6 +81,7 @@ class RoomsManager(commands.Cog):
             await ctx.send(f":information_source: Your current private room is **{room.name}** (`{room.id}`)")
 
     @room.command()
+    @commands.bot_has_guild_permissions(manage_channels=True)
     async def lock(self, ctx: commands.Context):
         """Makes your room locked/unlocked for everyone."""
         await ctx.trigger_typing()
@@ -102,6 +104,7 @@ class RoomsManager(commands.Cog):
             await ctx.send(":heart: Now no one will be able to connect to your private room.")
 
     @room.command()
+    @commands.bot_has_guild_permissions(move_members=True)
     async def kick(self, ctx: commands.Context, target: Member):
         """Kicks a person from your room."""
         await ctx.trigger_typing()
