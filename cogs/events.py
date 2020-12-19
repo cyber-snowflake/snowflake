@@ -1,4 +1,4 @@
-from discord import Guild, Message, Member
+from discord import Guild
 from discord.ext import commands
 
 from bot import BigMommy
