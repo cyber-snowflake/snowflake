@@ -47,7 +47,7 @@ class Tools(commands.Cog):
         if round((sys.getsizeof(fp) / 1048576), 2) > 5:
             return await ctx.send(":x: Resulting file bigger than 5 MB.")
 
-        await ctx.send(f":sparkles: {ctx.author.mention}, here's your tts!", file=file)
+        await ctx.reply(":sparkles: Here's your tts!", file=file)
 
     @commands.command()
     @commands.cooldown(1, 4, commands.BucketType.user)
@@ -61,6 +61,8 @@ class Tools(commands.Cog):
         if not re.findall(IMGUR_EXTENSIONS, attachment.filename):
             raise commands.BadArgument("Attachemnt type must be an image") from None
 
+        await ctx.trigger_typing()
+
         fp = await attachment.read()
 
         headers = {"Authorization": f"Client-ID {self.bot.config.Bot.imgur_id}"}
@@ -71,7 +73,7 @@ class Tools(commands.Cog):
         request = await self.bot.aiosession.post("https://api.imgur.com/3/image", headers=headers, data=data)
         _json = await request.json()
 
-        await ctx.send(f":frame_photo: Uploaded to Imgur: <{_json['data']['link']}>")
+        await ctx.reply(f":frame_photo: Uploaded to Imgur: <{_json['data']['link']}>")
 
 
 def setup(bot):
