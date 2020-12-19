@@ -7,7 +7,7 @@ from discord import AllowedMentions
 
 @dataclass
 class Mention:
-    nobody = AllowedMentions(everyone=False, users=False, roles=False)
+    nobody = AllowedMentions(everyone=False, users=False, roles=False, replied_user=False)
     user = AllowedMentions(everyone=False, users=True, roles=False)
     role = AllowedMentions(everyone=False, users=False, roles=True)
 
