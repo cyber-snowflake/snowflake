@@ -1,10 +1,15 @@
 import re
+import sys
+from io import BytesIO
 
 from aiohttp import FormData
-from discord import Attachment
+from discord import Attachment, File
 from discord.ext import commands
+from gtts import gTTS
+from polyglot.detect import Detector
 
 from bot import BigMommy
+from utils.decos import aioify
 
 IMGUR_EXTENSIONS = re.compile(r"\.(gif|jpe?g|tiff?|a?png|webp|bmp)$", re.IGNORECASE)
 
@@ -12,6 +17,37 @@ IMGUR_EXTENSIONS = re.compile(r"\.(gif|jpe?g|tiff?|a?png|webp|bmp)$", re.IGNOREC
 class Tools(commands.Cog):
     def __init__(self, bot: BigMommy) -> None:
         self.bot = bot
+
+    @staticmethod
+    @aioify
+    def make_tts(text: str, *, language_code: str = None):
+        """Generates TTS audio in bytes"""
+        fp = BytesIO()
+
+        detected_language = language_code or Detector(text, quiet=True).language.code
+        tts = gTTS(text, lang=detected_language)
+
+        tts.write_to_fp(fp)
+        fp.seek(0)
+
+        return fp
+
+    @commands.command()
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def tts(self, ctx: commands.Context, *, text: str):
+        """Converts text into a speech"""
+        await ctx.trigger_typing()
+
+        if len(text) <= 4:
+            return await ctx.send(":x: Your text is too short.")
+
+        fp = await self.make_tts(text)
+        file = File(fp, filename=f"{ctx.author} Text-To-Speech.mp3")
+
+        if round((sys.getsizeof(fp) / 1048576), 2) > 5:
+            return await ctx.send(":x: Resulting file bigger than 5 MB.")
+
+        await ctx.send(f":sparkles: {ctx.author.mention}, here's your tts!", file=file)
 
     @commands.command()
     @commands.cooldown(1, 4, commands.BucketType.user)
