@@ -20,3 +20,4 @@ class Bot:
     shard_count = 1
     shard_ids = [0]
     support_guild_id = 123123123123
+    imgur_id = "client-id"

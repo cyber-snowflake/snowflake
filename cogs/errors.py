@@ -75,6 +75,9 @@ class ErrorHandler(commands.Cog):
             elif label == "reminder add":
                 return await ctx.send(":x: You have provided an invalid length of time.")
 
+            elif label == "imgur":
+                return await ctx.send(":x: You have to send a command with an image or gif!")
+
         elif isinstance(error, commands.BotMissingPermissions):
             return await ctx.send(
                 ":x: I don't have enough permissions. "
