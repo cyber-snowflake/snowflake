@@ -17,7 +17,7 @@ class MyEmbed(discord.Embed):
         super().__init__(**kwargs)
 
         # This will use Discord's brand colour by default if no other colour was passed
-        self.colour = kwargs.get("colour") or kwargs.get("color") or 0x7289DA
+        self.colour = kwargs.get("colour") or kwargs.get("color") or 0xDD3B64
 
         # Checks what time type was passed and decides what to use
         if isinstance(timestamp, bool):
