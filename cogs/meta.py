@@ -1,9 +1,10 @@
 from collections import Counter, OrderedDict
-from typing import Union, Optional, List, Generator
+from typing import Generator, List, Optional, Union
 
 import arrow
-from discord import Member, User, Activity, CustomActivity, Spotify, ActivityType, Guild, Role
+from discord import Activity, ActivityType, CustomActivity, Guild, Member, Role, Spotify, User, utils
 from discord.ext import commands
+from discord.permissions import Permissions
 from discord.utils import find
 
 from bot import BigMommy
@@ -215,6 +216,32 @@ class Meta(commands.Cog):
         )
 
         await ctx.send(embed=embed)
+
+    @commands.command()
+    async def botinfo(self, ctx: commands.Context):
+        perms = Permissions()
+        perms.add_reactions = True
+        perms.attach_files = True
+        perms.change_nickname = True
+        perms.connect = True
+        perms.embed_links = True
+        perms.external_emojis = True
+        perms.manage_channels = True
+        perms.move_members = True
+        perms.read_messages = True
+        perms.read_message_history = True
+        perms.send_messages = True
+        perms.speak = True
+        perms.manage_permissions = True
+
+        inv_url = utils.oauth_url(self.bot.user.id, perms)
+
+        e = MyEmbed()
+        e.set_author(name=f"{self.bot.user.name}", icon_url=self.bot.user.avatar_url)
+        e.add_field(name="Bot Dev", value=f"{self.bot.owner}")
+        e.add_field(name="Invite", value=f"[Click to invite]({inv_url})")
+
+        await ctx.send(embed=e)
 
 
 def setup(bot):
