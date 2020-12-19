@@ -67,7 +67,7 @@ class Statistics(commands.Cog):
             df = self.make_dataframe_from_dict(badges, "flags", "count", sort_values=True)
 
             ax = sns.barplot(x="flags", y="count", data=df, palette="Blues_d")
-            ax.set(xlabel="Flag", ylabel="Members (count)")
+            ax.set(xlabel="", ylabel="Members (count)")
 
             ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
             plt.yticks(self.find_yticks(badges.values()))
