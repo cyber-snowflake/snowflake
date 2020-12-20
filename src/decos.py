@@ -12,6 +12,7 @@ def executor(func):
     def wrapper(*args, **kwargs) -> Coroutine[Any, Any, T]:
         loop = asyncio.get_running_loop()
         logger.debug(f"Running {func.__name__}")
-        return loop.run_in_executor(None, lambda: func(*args, **kwargs))
+        future = loop.run_in_executor(None, lambda: func(*args, **kwargs))
+        return future
 
     return wrapper
