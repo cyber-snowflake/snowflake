@@ -7,7 +7,7 @@ from loguru import logger
 T = TypeVar("T")
 
 
-def aioify(func):
+def executor(func):
     @wraps(func)
     def wrapper(*args, **kwargs) -> Coroutine[Any, Any, T]:
         loop = asyncio.get_running_loop()
