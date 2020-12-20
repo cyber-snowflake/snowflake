@@ -1,7 +1,8 @@
+import random
 import re
 from typing import Optional
 
-from discord import File, Attachment, Asset
+from discord import Asset, Attachment, File
 from discord.ext import commands
 from discord.ext.commands.errors import BadArgument
 from wand.image import Image
@@ -33,6 +34,33 @@ class Images(commands.Cog):
             fp = await resp.read()
 
         return fp
+
+    @commands.command()
+    @commands.cooldown(1, 3, commands.BucketType.user)
+    async def magik(self, ctx: commands.Context, url: Optional[str] = None):
+        """Woosh! It's a magik..."""
+        await ctx.trigger_typing()
+
+        fp = await self.get_image(ctx.message.attachments, ctx.author.avatar_url, url)
+
+        @executor
+        def run():
+            with Image(blob=fp) as img:
+                with img.convert("png") as img:
+                    for amount in (random.uniform(0.1, 0.8), random.uniform(1.2, 1.9)):
+                        img.liquid_rescale(
+                            width=int(img.width * amount),
+                            height=int(img.height * amount),
+                            delta_x=1,
+                            rigidity=0,
+                        )
+                    img.adaptive_sharpen(radius=8, sigma=4)
+                    _buffer = utils.img_to_buffer(img)
+            return _buffer
+
+        image = await run()
+        _file = File(image, "magik.png")
+        await ctx.send(file=_file)
 
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
