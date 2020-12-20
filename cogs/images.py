@@ -34,6 +34,28 @@ class Images(commands.Cog):
 
         return fp
 
+    @commands.command()
+    @commands.cooldown(1, 3, commands.BucketType.user)
+    async def implode(self, ctx: commands.Context, amount: float = 0.35, url: Optional[str] = None):
+        """Apply implode effect to an image
+
+        If no url is provided, your avatar will be used.
+        Please, note that URLs must be secure and end with .png/.jpg"""
+        await ctx.trigger_typing()
+
+        fp = await self.get_image(ctx.message.attachments, ctx.author.avatar_url, url)
+
+        @executor
+        def run():
+            with Image(blob=fp) as img:
+                with img.convert("png") as converted:
+                    converted.implode(amount=amount)
+                    _buffer = utils.img_to_buffer(converted)
+            return _buffer
+
+        image = await run()
+        _file = File(image, "result.png")
+        await ctx.send(file=_file)
 
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
