@@ -9,7 +9,7 @@ from gtts import gTTS
 from polyglot.detect import Detector
 
 from bot import BigMommy
-from src.decos import aioify
+from src.decos import executor
 from src.regulars import IMGUR_EXTENSIONS
 
 
@@ -18,7 +18,7 @@ class Tools(commands.Cog):
         self.bot = bot
 
     @staticmethod
-    @aioify
+    @executor
     def make_tts(text: str, *, language_code: str = None):
         """Generates TTS audio in bytes"""
         fp = BytesIO()

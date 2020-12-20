@@ -8,7 +8,7 @@ from wand.image import Image
 
 import utils
 from bot import BigMommy
-from src.decos import aioify
+from src.decos import executor
 from src.regulars import IMAGE_EXTENSIONS
 
 
@@ -38,7 +38,7 @@ class Images(commands.Cog):
             resp = await self.bot.aiosession.get(url)
             fp = await resp.read()
 
-        @aioify
+        @executor
         def run():
             with Image(blob=fp) as img:
                 with img.convert("png") as converted:

@@ -10,7 +10,7 @@ from discord import File
 from discord.ext import commands
 
 from bot import BigMommy
-from src.decos import aioify
+from src.decos import executor
 
 
 class Statistics(commands.Cog):
@@ -63,7 +63,7 @@ class Statistics(commands.Cog):
 
         badges = dict(Counter(badges_iterator()).most_common())
 
-        @aioify
+        @executor
         def gen_image():
             sns.set_theme(style="darkgrid")
 
@@ -94,7 +94,7 @@ class Statistics(commands.Cog):
         """Creates a chart of members by statuses"""
         data = dict(Counter(str(x.status) for x in ctx.guild.members))
 
-        @aioify
+        @executor
         def gen_image():
             df = pd.DataFrame({"Statuses": data.keys(), "Counters": data.values()})
             df = df.sort_values("Counters", ascending=False)

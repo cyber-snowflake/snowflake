@@ -4,7 +4,7 @@ from typing import Optional
 
 from utils.sql import psql
 from src.storage import InternalStorage
-from src.decos import aioify
+from src.decos import executor
 from src.exceptions import BadCacheRequest
 from src.types import GuildSettings
 
@@ -17,7 +17,7 @@ class cachemanager:  # noqa
 
     @classmethod
     async def settings(cls, guild_id: int) -> GuildSettings:
-        @aioify
+        @executor
         def get_data():
             return cls.storage[guild_id]
 
