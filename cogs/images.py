@@ -19,6 +19,10 @@ class Images(commands.Cog):
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def swirl(self, ctx: commands.Context, degrees: int = -90, url: Optional[str] = None):
+        """Apply swirl effect to an image
+
+        If no url is provided, your avatar will be used.
+        Please, note that URLs must be secure and end with .png/.jpg"""
         if not url:
             if not (a := ctx.message.attachments):
                 fp = await ctx.author.avatar_url.read()
