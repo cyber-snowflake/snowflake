@@ -1,7 +1,7 @@
 import re
 from typing import Optional
 
-from discord import File
+from discord import File, Attachment, Asset
 from discord.ext import commands
 from discord.ext.commands.errors import BadArgument
 from wand.image import Image
@@ -16,18 +16,12 @@ class Images(commands.Cog):
     def __init__(self, bot: BigMommy) -> None:
         self.bot = bot
 
-    @commands.command()
-    @commands.cooldown(1, 3, commands.BucketType.user)
-    async def swirl(self, ctx: commands.Context, degrees: int = -90, url: Optional[str] = None):
-        """Apply swirl effect to an image
-
-        If no url is provided, your avatar will be used.
-        Please, note that URLs must be secure and end with .png/.jpg"""
+    async def get_image(self, attachments: list[Attachment], avatar_url: Asset, url: Optional[str]):
         if not url:
-            if not (a := ctx.message.attachments):
-                fp = await ctx.author.avatar_url.read()
+            if not attachments:
+                fp = await avatar_url.read()
             else:
-                fp = await a[0].read()
+                fp = await attachments[0].read()
         else:
             if not re.search(IMAGE_EXTENSIONS, url):
                 raise BadArgument("You must provide a png/jpg/webp image URL!") from None
@@ -38,6 +32,20 @@ class Images(commands.Cog):
             resp = await self.bot.aiosession.get(url)
             fp = await resp.read()
 
+        return fp
+
+
+    @commands.command()
+    @commands.cooldown(1, 3, commands.BucketType.user)
+    async def swirl(self, ctx: commands.Context, degrees: int = -90, url: Optional[str] = None):
+        """Apply swirl effect to an image
+
+        If no url is provided, your avatar will be used.
+        Please, note that URLs must be secure and end with .png/.jpg"""
+        await ctx.trigger_typing()
+
+        fp = await self.get_image(ctx.message.attachments, ctx.author.avatar_url, url)
+
         @executor
         def run():
             with Image(blob=fp) as img:
@@ -47,11 +55,8 @@ class Images(commands.Cog):
                     _buffer = utils.img_to_buffer(converted)
             return _buffer
 
-        await ctx.trigger_typing()
-
         buffer = await run()
         _file = File(buffer, "result.png")
-
         await ctx.send(file=_file)
 
 
