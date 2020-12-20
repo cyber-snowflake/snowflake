@@ -3,7 +3,7 @@ from discord.ext import commands
 
 from bot import BigMommy
 from utils.checks import is_in_voice
-from utils.exceptions import RoomNotFound
+from src.exceptions import RoomNotFound
 
 
 class RoomsManager(commands.Cog):

@@ -3,8 +3,8 @@ from discord.ext.menus import MenuPages
 from tabulate import tabulate
 
 from bot import BigMommy
-from utils.myembed import MyEmbed
-from utils.mymenus import GuildsPagesSource
+from src.myembed import MyEmbed
+from src.mymenus import GuildsPagesSource
 
 
 class Owner(commands.Cog):

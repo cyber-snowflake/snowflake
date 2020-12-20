@@ -9,7 +9,7 @@ from discord.utils import find
 
 from bot import BigMommy
 from utils.converters import DUser
-from utils.myembed import MyEmbed
+from src.myembed import MyEmbed
 
 
 class Meta(commands.Cog):

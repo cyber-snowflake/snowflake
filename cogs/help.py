@@ -4,7 +4,7 @@ import discord
 from discord.ext import commands
 
 from bot import BigMommy
-from utils.myembed import MyEmbed
+from src.myembed import MyEmbed
 
 
 class Help(commands.Cog):

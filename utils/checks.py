@@ -1,7 +1,7 @@
 from discord import Member
 from discord.ext import commands
 
-from .exceptions import NotInVoiceChat
+from src.exceptions import NotInVoiceChat
 
 
 def is_manager_or_bot_owner():

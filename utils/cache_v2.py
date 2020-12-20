@@ -2,11 +2,11 @@ import asyncio
 from functools import partial
 from typing import Optional
 
-from src.sql import psql
+from utils.sql import psql
 from src.storage import InternalStorage
-from .decos import aioify
-from .exceptions import BadCacheRequest
-from .types import GuildSettings
+from src.decos import aioify
+from src.exceptions import BadCacheRequest
+from src.types import GuildSettings
 
 SETTINGS_PREFIX = "S-"  # S-{GUILD}
 TEMP_ROOM_PREFIX = "R-"  # R-{GUILD}-{OWNER}

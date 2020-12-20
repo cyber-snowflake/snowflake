@@ -10,7 +10,7 @@ from discord import File
 from discord.ext import commands
 
 from bot import BigMommy
-from utils.decos import aioify
+from src.decos import aioify
 
 
 class Statistics(commands.Cog):

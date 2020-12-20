@@ -2,12 +2,12 @@ import re
 from typing import Optional
 
 from discord.ext.commands.errors import BadArgument
-from utils.regulars import IMAGE_EXTENSIONS
+from src.regulars import IMAGE_EXTENSIONS
 from discord.ext import commands
 from discord import File
 
 from bot import BigMommy
-from utils.decos import aioify
+from src.decos import aioify
 from wand.image import Image
 import io
 

@@ -9,8 +9,8 @@ from gtts import gTTS
 from polyglot.detect import Detector
 
 from bot import BigMommy
-from utils.decos import aioify
-from utils.regulars import IMGUR_EXTENSIONS
+from src.decos import aioify
+from src.regulars import IMGUR_EXTENSIONS
 
 
 class Tools(commands.Cog):

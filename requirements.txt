@@ -10,3 +10,8 @@ polyglot==16.7.4
 seaborn~=0.11.0
 jishaku==1.20.0.220
 tabulate==0.8.7
+pytz~=2020.4
+Wand~=0.6.5
+pandas~=1.1.5
+click~=7.1.2
+numpy==1.19.3

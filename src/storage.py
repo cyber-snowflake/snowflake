@@ -1,7 +1,7 @@
 import sys
 from typing import MutableMapping, Optional, Dict, Union
 
-from utils.types import GuildSettings
+from src.types import GuildSettings
 
 
 class InternalStorage(MutableMapping):

@@ -5,7 +5,7 @@ from discord.ext import commands
 from loguru import logger
 
 from bot import BigMommy
-from utils.exceptions import BlacklistedSnowflake, NotInVoiceChat
+from src.exceptions import BlacklistedSnowflake, NotInVoiceChat
 
 
 class ErrorHandler(commands.Cog):

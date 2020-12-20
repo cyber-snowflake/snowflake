@@ -11,7 +11,7 @@ from loguru import logger
 import config
 from bot import BigMommy
 from src.loguru_intercept import InterceptHandler
-from src.sql import psql
+from utils.sql import psql
 
 try:
     import uvloop

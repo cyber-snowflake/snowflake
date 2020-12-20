@@ -9,11 +9,11 @@ from discord import User
 from loguru import logger
 
 import config
-from src.sql import psql
+from utils.sql import psql
 from utils.cache_v2 import cachemanager
 from utils.emojis import Emojis
 from utils.intents import MyIntents
-from utils.types import Mention
+from src.types import Mention
 
 
 async def get_prefix(client, message: Message):

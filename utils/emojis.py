@@ -4,7 +4,7 @@ from typing import Iterable, Union
 
 from discord import Emoji
 
-from .singleton import MetaSingleton
+from src.singleton import MetaSingleton
 
 
 class Emojis(metaclass=MetaSingleton):

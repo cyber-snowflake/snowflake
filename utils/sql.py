@@ -3,7 +3,7 @@ from typing import Optional
 import asyncpg
 from loguru import logger
 
-from utils.singleton import MetaSingleton
+from src.singleton import MetaSingleton
 
 
 class psql(metaclass=MetaSingleton):  # noqa
