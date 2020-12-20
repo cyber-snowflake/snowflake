@@ -2,7 +2,7 @@ from discord import VoiceChannel, Member, CategoryChannel, PermissionOverwrite, 
 from discord.ext import commands
 
 from bot import BigMommy
-from utils.checks import is_in_voice
+from utils import is_in_voice
 from src.exceptions import RoomNotFound
 
 

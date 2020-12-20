@@ -3,14 +3,13 @@ from discord import VoiceChannel
 from discord.ext import commands
 
 from bot import BigMommy
-from utils.checks import is_manager_or_bot_owner
+from utils import is_manager_or_bot_owner
 from src.myembed import MyEmbed
 
 
 class Admin(commands.Cog):
     def __init__(self, bot: BigMommy):
         self.bot = bot
-
 
     @commands.group(aliases=("cfg",))
     @commands.guild_only()

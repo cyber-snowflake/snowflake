@@ -20,7 +20,7 @@ from discord.ext import commands
 from discord.ext.menus import MenuPages
 
 from bot import BigMommy
-from utils.converters import TimeInput
+from utils import TimeInput
 from src.myembed import MyEmbed
 from src.mymenus import MyPagesSource
 from src.types import Reminder

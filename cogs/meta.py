@@ -2,10 +2,8 @@ from collections import Counter, OrderedDict
 from typing import Generator, List, Optional, Union
 
 import arrow
-from discord import Activity, ActivityType, CustomActivity, Guild, Member, Role, Spotify, User, utils
+from discord import Activity, ActivityType, CustomActivity, Guild, Member, Role, Spotify, User, utils, Permissions
 from discord.ext import commands
-from discord.permissions import Permissions
-from discord.utils import find
 
 from bot import BigMommy
 from utils.converters import DUser
@@ -114,7 +112,7 @@ class Meta(commands.Cog):
         """Shows information about current Spotify track in one's status."""
         member = member or ctx.author
 
-        spot = find(lambda activity: isinstance(activity, Spotify), member.activities)
+        spot = utils.find(lambda activity: isinstance(activity, Spotify), member.activities)
 
         if spot:
             track_url = f"https://open.spotify.com/track/{spot.track_id}"

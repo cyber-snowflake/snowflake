@@ -4,20 +4,17 @@ from typing import Optional
 
 import aiohttp
 from discord import Guild, Message
-from discord.ext import commands
 from discord import User
+from discord.ext import commands
 from loguru import logger
 
 import config
-from utils.sql import psql
-from utils.cache_v2 import cachemanager
-from utils.emojis import Emojis
-from utils.intents import MyIntents
 from src.types import Mention
+from utils import Emojis, MyIntents, cachemanager, psql
 
 
 async def get_prefix(client, message: Message):
-    # Checks if the message was sent in DMs
+    # Checks if the message in DMs
     if not message.guild:
         return commands.when_mentioned_or(config.Bot.default_prefix)(client, message)
 
