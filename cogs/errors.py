@@ -78,6 +78,9 @@ class ErrorHandler(commands.Cog):
             elif label == "imgur":
                 return await ctx.send(":x: You have to send a command with an image or gif!")
 
+            elif label == "swirl":
+                return await ctx.send(f":x: {error.args[0]}")
+
         elif isinstance(error, commands.BotMissingPermissions):
             return await ctx.send(
                 ":x: I don't have enough permissions. "
