@@ -10,8 +10,7 @@ from polyglot.detect import Detector
 
 from bot import BigMommy
 from utils.decos import aioify
-
-IMGUR_EXTENSIONS = re.compile(r"\.(gif|jpe?g|tiff?|a?png|webp|bmp)$", re.IGNORECASE)
+from utils.regulars import IMGUR_EXTENSIONS
 
 
 class Tools(commands.Cog):
