@@ -15,3 +15,9 @@ class NotInVoiceChat(CommandError):
 
 class RoomNotFound(CommandError):
     pass
+
+
+class InformUser(CommandError):
+    """A way to communicate with a user in case of errors"""
+
+    pass
