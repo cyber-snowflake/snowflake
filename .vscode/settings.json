@@ -4,6 +4,6 @@
   "python.linting.pylintEnabled": false,
   "python.linting.flake8Enabled": true,
   "[python]": {
-    "editor.semanticHighlighting.enabled": false
+    "editor.semanticHighlighting.enabled": true
   }
 }
