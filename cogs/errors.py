@@ -5,7 +5,7 @@ from discord.ext import commands
 from loguru import logger
 
 from bot import BigMommy
-from src.exceptions import BlacklistedSnowflake, NotInVoiceChat
+from src.exceptions import BlacklistedSnowflake, InformUser, NotInVoiceChat
 
 
 class ErrorHandler(commands.Cog):
@@ -78,9 +78,6 @@ class ErrorHandler(commands.Cog):
             elif label == "imgur":
                 return await ctx.send(":x: You have to send a command with an image or gif!")
 
-            elif label in ("swirl", "implode", "magik"):
-                return await ctx.send(f":x: {error.args[0]}")
-
         elif isinstance(error, commands.BotMissingPermissions):
             return await ctx.send(
                 ":x: I don't have enough permissions. "
@@ -90,6 +87,9 @@ class ErrorHandler(commands.Cog):
 
         elif isinstance(error, Forbidden):
             return await ctx.send(":x: I don't have enough permissions.")
+
+        elif isinstance(error, InformUser):
+            return await ctx.reply(" ".join(error.args))
 
         tb: str = "".join(traceback.format_exception(type(error), error, error.__traceback__))
         logger.error(f"Ignoring exception in command {ctx.command}.")
