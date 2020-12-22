@@ -109,6 +109,51 @@ class Images(commands.Cog):
         _file = File(buffer, "result.png")
         await ctx.send(file=_file)
 
+    @commands.group()
+    async def blur(self, ctx: commands.Context):
+        if not ctx.invoked_subcommand:
+            raise InformUser("You have to specify a subcommand, see help.")
+
+    @blur.command()
+    async def normal(self, ctx: commands.Context, radius: int = 0, sigma: int = 3, url: Optional[str] = None):
+        """Basic blur operation. The radius argument defines the size of the area to sample, and the sigma defines the standard deviation. For all blur based methods, the best results are given when the radius is larger than sigma."""  # noqa
+        await ctx.trigger_typing()
+
+        fp = await self.get_image(ctx.message.attachments, ctx.author.avatar_url, url)
+
+        @executor
+        def run():
+            with Image(blob=fp) as orig:
+                with orig.convert("png") as img:
+                    img.blur(radius=radius, sigma=sigma)
+                    _buffer = utils.img_to_buffer(img)
+            return _buffer
+
+        image = await run()
+        _file = File(image, "blur.png")
+
+        await ctx.send(file=_file)
+
+    @blur.command()
+    async def adaptive(self, ctx: commands.Context, radius: int = 8, sigma: int = 4, url: Optional[str] = None):
+        """Blurs less intensely around areas of an image with detectable edges, and blurs more intensely for areas without edges. The radius should always be larger than the sigma (standard deviation)."""  # noqa
+        await ctx.trigger_typing()
+
+        fp = await self.get_image(ctx.message.attachments, ctx.author.avatar_url, url)
+
+        @executor
+        def run():
+            with Image(blob=fp) as orig:
+                with orig.convert("png") as img:
+                    img.adaptive_blur(radius=radius, sigma=sigma)
+                    _buffer = utils.img_to_buffer(img)
+            return _buffer
+
+        image = await run()
+        _file = File(image, "adaptive_blur.png")
+
+        await ctx.send(file=_file)
+
 
 def setup(bot):
     bot.add_cog(Images(bot))
