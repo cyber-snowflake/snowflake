@@ -4,8 +4,8 @@ from typing import Optional
 
 from discord import Asset, Attachment, File
 from discord.ext import commands
-from discord.ext.commands.errors import BadArgument
 from wand.image import Image
+from src.exceptions import InformUser
 
 import utils
 from bot import BigMommy
@@ -25,10 +25,10 @@ class Images(commands.Cog):
                 fp = await attachments[0].read()
         else:
             if not re.search(IMAGE_EXTENSIONS, url):
-                raise BadArgument("You must provide a png/jpg/webp image URL!") from None
+                raise InformUser("You must provide a png/jpg/webp image URL!") from None
 
             if not url.startswith("https://"):
-                raise BadArgument("Image URL must use secure transfer protocol (https)!") from None
+                raise InformUser("Image URL must use secure transfer protocol (https)!") from None
 
             resp = await self.bot.aiosession.get(url)
             fp = await resp.read()
