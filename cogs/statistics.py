@@ -41,10 +41,6 @@ class Statistics(commands.Cog):
 
         return df
 
-    @staticmethod
-    def find_yticks(x: Iterable):
-        return range(min(x), math.ceil(max(x)) + 1)
-
     @commands.group()
     @commands.guild_only()
     @commands.cooldown(1, 10, commands.BucketType.channel)
