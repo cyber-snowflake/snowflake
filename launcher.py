@@ -28,9 +28,9 @@ ROOT = dirname(__file__)
 def setup_logging():
     logging_level = environ.get("LOGGING_LEVEL", "INFO")
 
-    l = logging.getLogger()
-    l.setLevel(logging_level)
-    l.handlers = [InterceptHandler()]
+    std_logger = logging.getLogger()
+    std_logger.setLevel(logging_level)
+    std_logger.handlers = [InterceptHandler()]
 
     logger.remove()
     logger.add(sys.stderr, enqueue=True, level=logging_level)
