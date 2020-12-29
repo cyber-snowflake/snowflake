@@ -1,7 +1,5 @@
 import io
-import math
 from collections import Counter
-from typing import Iterable
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -67,9 +65,8 @@ class Statistics(commands.Cog):
 
             ax = sns.barplot(x="flags", y="count", data=df, palette="Blues_d")
             ax.set(xlabel="", ylabel="Members (count)")
+            plt.xticks(rotation=45)
 
-            ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
-            plt.yticks(self.find_yticks(badges.values()))
             plt.tight_layout()
 
             buf = io.BytesIO()
@@ -98,10 +95,9 @@ class Statistics(commands.Cog):
             sns.set_theme(style="darkgrid")
 
             ax = sns.barplot(x="Statuses", y="Counters", data=df, palette="rocket")
-            ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
             ax.set(xlabel="Statuses", ylabel="Members (count)")
+            plt.xticks(rotation=45)
 
-            plt.yticks(self.find_yticks(data.values()))
             plt.tight_layout()
 
             buf = io.BytesIO()
