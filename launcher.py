@@ -1,4 +1,5 @@
 import asyncio
+import importlib
 import logging
 import sys
 from os import environ
@@ -14,11 +15,8 @@ from src.loguru_intercept import InterceptHandler
 from utils.sql import psql
 
 try:
-    import uvloop
+    uvloop = importlib.import_module("uvloop")
 except ImportError:
-    if sys.platform == "win32":
-        _loop = asyncio.ProactorEventLoop()
-        asyncio.set_event_loop(_loop)
     logger.warning(f"uvloop package not found, used {asyncio.get_event_loop_policy()} policy")
 else:
     asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
