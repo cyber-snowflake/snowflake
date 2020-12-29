@@ -3,10 +3,18 @@ import io
 from wand.image import Image
 
 
-def img_to_buffer(img: Image):
-    """Saves image object as BytesIO"""
-    _buffer = io.BytesIO()
-    img.save(file=_buffer)
-    _buffer.seek(0)
+class WandImage(Image):
+    def clone(self):
+        return WandImage(image=self)
 
-    return _buffer
+    def convert(self, format):
+        cloned = self.clone()
+        cloned.format = format
+        return cloned
+
+    def to_bin_stream(self):
+        """Saves image object as BytesIO object"""
+        fp = io.BytesIO()
+        self.save(file=fp)
+        fp.seek(0)
+        return fp
