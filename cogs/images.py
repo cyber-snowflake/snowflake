@@ -58,6 +58,7 @@ class Images(commands.Cog):
                             delta_x=1,
                             rigidity=0,
                         )
+                    img.resize(*orig.size)
 
                     stream = img.to_bin_stream()
             return stream
