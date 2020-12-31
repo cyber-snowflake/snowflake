@@ -1,10 +1,15 @@
+import random
 import re
 import sys
 from io import BytesIO
+from utils.checks import is_manager_or_bot_owner
 
 from aiohttp import FormData
 from discord import Attachment, File
+from discord.errors import Forbidden, NotFound
 from discord.ext import commands
+from discord.mentions import AllowedMentions
+from discord.message import Message
 from gtts import gTTS
 from polyglot.detect import Detector
 
@@ -30,6 +35,29 @@ class Tools(commands.Cog):
         fp.seek(0)
 
         return fp
+
+    @commands.command(aliases=("winner", "winners", "choose_winners"))
+    @commands.cooldown(1, 5, commands.BucketType.guild)
+    @is_manager_or_bot_owner()
+    async def choose_winner(self, ctx: commands.Context, message_id: int, winners: int = 1):
+        """Randomly selects someone who reacted with 🎉 on message of your choice"""
+        try:
+            m: Message = await ctx.fetch_message(message_id)
+        except (NotFound, Forbidden):
+            return await ctx.reply(f":x: Couldn't retrive message ID `{message_id}`")
+
+        reactions = tuple(r for r in m.reactions if r.emoji == "🎉")
+        if not reactions:
+            return await ctx.reply(":x: There's no one who reacted with :tada: on this message!")
+
+        participants = await reactions[0].users().flatten()
+        winner = random.choice(participants)
+
+        await ctx.send(
+            f":sparkles: {winner.mention} wins! Congratulations!",
+            allowed_mentions=AllowedMentions(users=True),
+            reference=m,
+        )
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
