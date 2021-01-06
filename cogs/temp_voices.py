@@ -6,7 +6,7 @@ from utils import is_in_voice
 from src.exceptions import RoomNotFound
 
 
-class RoomsManager(commands.Cog):
+class TempVoices(commands.Cog, name="Temporary Voice Channels"):
     def __init__(self, bot: BigMommy):
         self.bot = bot
 
@@ -127,4 +127,4 @@ class RoomsManager(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(RoomsManager(bot))
+    bot.add_cog(TempVoices(bot))
