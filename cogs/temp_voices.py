@@ -57,7 +57,7 @@ class TempVoices(commands.Cog, name="Temporary Voice Channels"):
         """Creates the temporary voice channel"""
         name = f"🚪 {member.display_name}"
         overwrites = {
-            member.guild.default_role: PermissionOverwrite(connect=False),
+            member.guild.default_role: PermissionOverwrite(connect=True),
             member: PermissionOverwrite(connect=True, manage_channels=True),
             member.guild.me: PermissionOverwrite(
                 connect=True, move_members=True, manage_channels=True, manage_permissions=True
