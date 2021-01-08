@@ -1,5 +1,4 @@
 import pytz
-from discord import VoiceChannel
 from discord.ext import commands
 
 from bot import BigMommy
@@ -81,31 +80,6 @@ class Admin(commands.Cog):
                     await ctx.send(f":ok_hand: Timezone has been updated to `{new_tz}`")
                 else:
                     await ctx.send(":x: Nothing changed. Contact bot owner if it happens again.")
-
-    @config.command(aliases=("rcc",))
-    async def rooms_creator(self, ctx: commands.Context, channel_id: int):
-        """Sets the main voice channel rooms creator.
-
-        When any server member joins the channel, a new one will be created just for them.
-        """
-        await ctx.trigger_typing()
-
-        chann = ctx.guild.get_channel(channel_id)
-
-        if not chann:
-            await ctx.send(":x: You have provided a non-existing or bad Channel ID.")
-
-        elif not isinstance(chann, VoiceChannel):
-            await ctx.send(":x: Rooms creation channel must be a **Voice Channel**!")
-
-        elif isinstance(chann, VoiceChannel):
-            async with self.bot.pg.pool.acquire() as conn:
-                query = "UPDATE guilds SET main_vc_id = $1 WHERE guild_id = $2;"
-                await conn.execute(query, chann.id, ctx.guild.id)
-
-                await self.bot.cache.refresh(ctx.guild.id)
-
-            await ctx.send(f":ok_hand: Rooms creation channel was set to **{chann.name}** (`{chann.id}`).")
 
 
 def setup(bot):

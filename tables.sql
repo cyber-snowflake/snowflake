@@ -5,8 +5,7 @@ create table guilds
     guild_id   bigint                    not null,
     prefix     varchar(16) default null,
     lang       varchar(16) default 'en_US',
-    tz         varchar(32) default 'UTC' not null,
-    main_vc_id bigint      default null
+    tz         varchar(32) default 'UTC' not null
 );
 
 create unique index guilds_guild_id_uindex
