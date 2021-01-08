@@ -2,6 +2,7 @@ import random
 import re
 import sys
 from io import BytesIO
+from src.exceptions import InformUser
 from utils.checks import is_manager_or_bot_owner
 
 from aiohttp import FormData
@@ -29,7 +30,10 @@ class Tools(commands.Cog):
         fp = BytesIO()
 
         detected_language = language_code or Detector(text, quiet=True).language.code
-        tts = gTTS(text, lang=detected_language)
+        try:
+            tts = gTTS(text, lang=detected_language)
+        except:
+            raise InformUser(":x: Well, language detection failed ¯\\_(ツ)_/¯")
 
         tts.write_to_fp(fp)
         fp.seek(0)
