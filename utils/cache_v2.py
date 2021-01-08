@@ -1,7 +1,7 @@
 from utils.sql import psql
 from src.storage import InternalStorage
 from src.decos import executor
-from src.exceptions import BadCacheRequest
+from src.exceptions import CacheMiss
 from src.types import GuildSettings
 
 SETTINGS_PREFIX = "S-"  # S-{GUILD}
@@ -20,7 +20,7 @@ class cachemanager:  # noqa
         if not data:
             is_fresh = await cls.refresh(guild_id)
             if not is_fresh:
-                raise BadCacheRequest(f"There is no data for {guild_id}.")
+                raise CacheMiss(f"There is no data for {guild_id}.")
             data = await get_data()
 
         return data
@@ -31,7 +31,7 @@ class cachemanager:  # noqa
         row = await psql().pool.fetchrow(*query)
 
         if not row:
-            raise BadCacheRequest(f"Couldn't find any data for {guild_id}.") from None
+            raise CacheMiss(f"Couldn't find any data for {guild_id}.") from None
 
         data = dict(row)
         settings = GuildSettings(**data)

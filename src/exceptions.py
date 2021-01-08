@@ -1,7 +1,7 @@
 from discord.ext.commands.errors import CommandError
 
 
-class BadCacheRequest(Exception):
+class CacheMiss(Exception):
     pass
 
 
