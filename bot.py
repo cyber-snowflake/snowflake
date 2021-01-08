@@ -18,7 +18,7 @@ async def get_prefix(client, message: Message):
     if not message.guild:
         return commands.when_mentioned_or(config.Bot.default_prefix)(client, message)
 
-    settings = await client.cache.settings(message.guild.id)
+    settings = await client.cache.get(message.guild.id)
 
     prefix = None
     if settings is not None:

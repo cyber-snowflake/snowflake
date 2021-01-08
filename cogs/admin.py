@@ -17,7 +17,7 @@ class Admin(commands.Cog):
     async def config(self, ctx: commands.Context):
         """Changes settings of the bot in this server."""
         if not ctx.invoked_subcommand:
-            settings = await self.bot.cache.settings(ctx.guild.id)
+            settings = await self.bot.cache.get(ctx.guild.id)
             main_vc = self.bot.get_channel(settings.main_vc_id) if settings.main_vc_id else None
 
             embed = MyEmbed(title=f"Current settings of {ctx.guild.name}")
@@ -36,7 +36,7 @@ class Admin(commands.Cog):
         await ctx.trigger_typing()
 
         if not new_prefix:
-            settings = await self.bot.cache.settings(ctx.guild.id)
+            settings = await self.bot.cache.get(ctx.guild.id)
             prefix = settings.prefix or self.bot.config.Bot.default_prefix
 
             await ctx.send(f":information_source: Current bot's prefix in this server is `{prefix}`")
@@ -61,7 +61,7 @@ class Admin(commands.Cog):
         """
         await ctx.trigger_typing()
 
-        settings = await self.bot.cache.settings(ctx.guild.id)
+        settings = await self.bot.cache.get(ctx.guild.id)
 
         if tz is None:
             await ctx.send(f":information_source: Current timezone is **{settings.tz}**")

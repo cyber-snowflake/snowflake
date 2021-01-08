@@ -11,7 +11,7 @@ class cachemanager:  # noqa
     storage = InternalStorage()
 
     @classmethod
-    async def settings(cls, guild_id: int) -> GuildSettings:
+    async def get(cls, guild_id: int) -> GuildSettings:
         @executor
         def get_data():
             return cls.storage[guild_id]

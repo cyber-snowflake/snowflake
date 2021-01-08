@@ -43,7 +43,7 @@ class Meta(commands.Cog):
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def userinfo(self, ctx: commands.Context, user: DUser = None):
         """Shows information about discord users."""
-        settings = await self.bot.cache.settings(ctx.guild.id)
+        settings = await self.bot.cache.get(ctx.guild.id)
 
         user: Union[Member, User] = user or ctx.author
         avy_url = f'{user.avatar_url_as(static_format="png")}'
@@ -136,7 +136,7 @@ class Meta(commands.Cog):
         """Shows information summary about the server"""
         await ctx.trigger_typing()
 
-        settings = await self.bot.cache.settings(ctx.guild.id)
+        settings = await self.bot.cache.get(ctx.guild.id)
 
         server_id = server_id or ctx.guild.id
         guild: Guild = ctx.guild if server_id == ctx.guild.id else self.bot.get_guild(server_id)
