@@ -15,7 +15,6 @@ class Postgres:
 # noinspection DuplicatedCode
 @dataclass(frozen=True)
 class Bot:
-    owner_id = 123123
     default_prefix = "!"
     token = "Nzas2Ksakjjksdllkdgsjlsdkgkdlfgljkdfjkglk23r"
     shard_count = 1
