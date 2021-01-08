@@ -20,4 +20,7 @@ class RoomNotFound(CommandError):
 class InformUser(CommandError):
     """A way to communicate with a user in case of errors"""
 
-    pass
+    def __init__(self, message, *args, **kwargs):
+        self.reply = kwargs.get("reply", False)
+        self.message = message
+        super().__init__(message=message, *args)

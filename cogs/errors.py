@@ -95,7 +95,10 @@ class ErrorHandler(commands.Cog):
             return await ctx.send(":x: I don't have enough permissions.")
 
         elif isinstance(error, InformUser):
-            return await ctx.reply(" ".join(error.args))
+            if error.reply:
+                return await ctx.reply(error.message)
+            else:
+                return await ctx.send(error.message)
 
         tb: str = "".join(traceback.format_exception(type(error), error, error.__traceback__))
         logger.error(f"Ignoring exception in command {ctx.command}.")
