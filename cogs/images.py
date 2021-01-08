@@ -29,10 +29,10 @@ class Images(commands.Cog):
 
             elif isinstance(_obj, str):
                 if not re.search(IMAGE_EXTENSIONS, _obj):
-                    raise InformUser("You must provide a png/jpg/webp image URL!") from None
+                    raise InformUser("You must provide a png/jpg/webp image URL!", reply=True) from None
 
                 if not _obj.startswith("https://"):
-                    raise InformUser("Image URL must use secure transfer protocol (https)!") from None
+                    raise InformUser("Image URL must use secure transfer protocol (https)!", reply=True) from None
 
                 resp = await self.bot.aiosession.get(_obj)
                 fp = await resp.read()

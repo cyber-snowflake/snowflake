@@ -33,7 +33,7 @@ class Tools(commands.Cog):
         try:
             tts = gTTS(text, lang=detected_language)
         except:
-            raise InformUser(":x: Well, language detection failed ¯\\_(ツ)_/¯")
+            raise InformUser(":x: Well, language detection failed ¯\\_(ツ)_/¯", reply=True)
 
         tts.write_to_fp(fp)
         fp.seek(0)
