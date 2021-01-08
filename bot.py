@@ -1,10 +1,10 @@
+import asyncio
 from glob import glob
 from os.path import basename, dirname, join
 from typing import Optional
 
 import aiohttp
-from discord import Guild, Message
-from discord import User
+from discord import Guild, HTTPException, Message, User
 from discord.ext import commands
 from loguru import logger
 
@@ -62,6 +62,15 @@ class BigMommy(commands.AutoShardedBot):
         await self.aiosession.close()
         await super().close()
 
+    async def fetch_bot_owner(self):
+        try:
+            info = await self.application_info()
+            self.owner = info.owner
+
+            logger.info("Owner data has been refreshed.")
+        except HTTPException as e:
+            logger.error(e)
+
     async def on_ready(self):
         for guild in self.guilds:
             if guild.id == self.config.Bot.support_guild_id:
@@ -72,11 +81,9 @@ class BigMommy(commands.AutoShardedBot):
 
         if not self.was_ready_once:
             self.was_ready_once = not self.was_ready_once
-
-            self.owner = await self.fetch_user(config.Bot.owner_id)
-
-            # Hide token
             self.config.Bot.token = None
+
+            asyncio.create_task(self.fetch_bot_owner())
 
             cogs = glob(join(dirname(__file__), "cogs/*.py"))
             for ext_path in cogs:
