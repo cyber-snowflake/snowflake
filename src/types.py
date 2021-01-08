@@ -36,7 +36,6 @@ class Reminder:
 @dataclass(init=False)
 class GuildSettings:
     prefix: Optional[str]
-    main_vc_id: Optional[int]
     tz: str = "UTC"
 
     def __init__(self, **kwargs):

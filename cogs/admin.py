@@ -17,15 +17,10 @@ class Admin(commands.Cog):
         """Changes settings of the bot in this server."""
         if not ctx.invoked_subcommand:
             settings = await self.bot.cache.get(ctx.guild.id)
-            main_vc = self.bot.get_channel(settings.main_vc_id) if settings.main_vc_id else None
 
             embed = MyEmbed(title=f"Current settings of {ctx.guild.name}")
             embed.add_field(name="Prefix", value=f"{settings.prefix or self.bot.config.Bot.default_prefix}")
             embed.add_field(name="Timezone", value=f"{settings.tz}")
-            if main_vc:
-                embed.add_field(name="Rooms Creator Channel", value=f"{main_vc.name} (`{main_vc.id}`)", inline=False)
-            else:
-                embed.add_field(name="Rooms Creator Channel", value="Not set.", inline=False)
 
             await ctx.send(embed=embed)
 
