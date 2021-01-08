@@ -10,6 +10,7 @@ from bot import BigMommy
 from src.decos import executor
 from src.exceptions import InformUser
 from src.regulars import IMAGE_EXTENSIONS
+from src.myembed import MyEmbed
 
 
 class Images(commands.Cog):
@@ -38,6 +39,12 @@ class Images(commands.Cog):
 
                 return fp
 
+    async def to_embed(self, filename: str):
+        e = MyEmbed()
+        e.set_image(url=f"attachment://{filename}")
+
+        return e
+
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def magik(self, ctx: commands.Context, user_or_url: Optional[Union[User, Member, str]] = None):
@@ -65,7 +72,9 @@ class Images(commands.Cog):
 
         image = await run()
         _file = File(image, "magik.png")
-        await ctx.send(file=_file)
+        e = await self.to_embed("magik.png")
+
+        await ctx.send(file=_file, embed=e)
 
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
@@ -91,7 +100,9 @@ class Images(commands.Cog):
 
         image = await run()
         _file = File(image, "result.png")
-        await ctx.send(file=_file)
+        e = await self.to_embed("result.png")
+
+        await ctx.send(file=_file, embed=e)
 
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
@@ -117,7 +128,9 @@ class Images(commands.Cog):
 
         image = await run()
         _file = File(image, "result.png")
-        await ctx.send(file=_file)
+        e = await self.to_embed("result.png")
+
+        await ctx.send(file=_file, embed=e)
 
     @commands.group()
     async def blur(self, ctx: commands.Context):
@@ -148,8 +161,9 @@ class Images(commands.Cog):
 
         image = await run()
         _file = File(image, "blur.png")
+        e = await self.to_embed("blur.png")
 
-        await ctx.send(file=_file)
+        await ctx.send(file=_file, embed=e)
 
     @blur.command()
     async def adaptive(
@@ -175,8 +189,9 @@ class Images(commands.Cog):
 
         image = await run()
         _file = File(image, "adaptive_blur.png")
+        e = await self.to_embed("adaptive_blur.png")
 
-        await ctx.send(file=_file)
+        await ctx.send(file=_file, embed=e)
 
 
 def setup(bot):
