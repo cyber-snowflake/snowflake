@@ -6,6 +6,7 @@ from discord import Activity, ActivityType, CustomActivity, Guild, Member, Role,
 from discord.ext import commands
 
 from bot import BigMommy
+from src.decos import typing_indicator
 from utils.converters import DUser
 from src.myembed import MyEmbed
 
@@ -41,6 +42,7 @@ class Meta(commands.Cog):
     @commands.command(aliases=("ui",))
     @commands.guild_only()
     @commands.cooldown(1, 10, commands.BucketType.user)
+    @typing_indicator
     async def userinfo(self, ctx: commands.Context, user: DUser = None):
         """Shows information about discord users."""
         settings = await self.bot.cache.get(ctx.guild.id)
@@ -132,10 +134,9 @@ class Meta(commands.Cog):
     @commands.command(aliases=("server", "si"))
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
+    @typing_indicator
     async def serverinfo(self, ctx: commands.Context, server_id: int = None):
         """Shows information summary about the server"""
-        await ctx.trigger_typing()
-
         settings = await self.bot.cache.get(ctx.guild.id)
 
         server_id = server_id or ctx.guild.id

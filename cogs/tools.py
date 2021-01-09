@@ -15,7 +15,7 @@ from gtts import gTTS
 from polyglot.detect import Detector
 
 from bot import BigMommy
-from src.decos import executor
+from src.decos import executor, typing_indicator
 from src.regulars import IMGUR_EXTENSIONS
 
 
@@ -65,10 +65,9 @@ class Tools(commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
+    @typing_indicator
     async def tts(self, ctx: commands.Context, *, text: str):
         """Converts text into a speech"""
-        await ctx.trigger_typing()
-
         if len(text) <= 4:
             return await ctx.send(":x: Your text is too short.")
 
@@ -82,6 +81,7 @@ class Tools(commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 4, commands.BucketType.user)
+    @typing_indicator
     async def imgur(self, ctx: commands.Context):
         """Upload an image from discord to imgur"""
         attachment: Attachment = a[0] if len(a := ctx.message.attachments) > 0 else None
@@ -91,8 +91,6 @@ class Tools(commands.Cog):
 
         if not re.findall(IMGUR_EXTENSIONS, attachment.filename):
             raise commands.BadArgument("Attachemnt type must be an image") from None
-
-        await ctx.trigger_typing()
 
         fp = await attachment.read()
 
