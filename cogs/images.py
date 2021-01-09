@@ -7,7 +7,7 @@ from discord.ext import commands
 
 import utils
 from bot import BigMommy
-from src.decos import executor
+from src.decos import executor, typing_indicator
 from src.exceptions import InformUser
 from src.regulars import IMAGE_EXTENSIONS
 from src.myembed import MyEmbed
@@ -47,10 +47,9 @@ class Images(commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
+    @typing_indicator
     async def magik(self, ctx: commands.Context, user_or_url: Optional[Union[User, Member, str]] = None):
         """Woosh! It's a magik..."""
-        await ctx.trigger_typing()
-
         fp = await self.get_img_bytes(ctx.message.attachments, user_or_url or ctx.author)
 
         @executor
@@ -78,6 +77,7 @@ class Images(commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
+    @typing_indicator
     async def implode(
         self, ctx: commands.Context, amount: float = 0.35, user_or_url: Optional[Union[User, Member, str]] = None
     ):
@@ -85,8 +85,6 @@ class Images(commands.Cog):
 
         If no url is provided, your avatar will be used.
         Please, note that URLs must be secure and end with .png/.jpg"""
-        await ctx.trigger_typing()
-
         fp = await self.get_img_bytes(ctx.message.attachments, user_or_url or ctx.author)
 
         @executor
@@ -106,6 +104,7 @@ class Images(commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
+    @typing_indicator
     async def swirl(
         self, ctx: commands.Context, degrees: int = -90, user_or_url: Optional[Union[User, Member, str]] = None
     ):
@@ -113,8 +112,6 @@ class Images(commands.Cog):
 
         If no url is provided, your avatar will be used.
         Please, note that URLs must be secure and end with .png/.jpg"""
-        await ctx.trigger_typing()
-
         fp = await self.get_img_bytes(ctx.message.attachments, user_or_url or ctx.author)
 
         @executor
@@ -138,6 +135,7 @@ class Images(commands.Cog):
             raise InformUser("You have to specify a subcommand, see help.")
 
     @blur.command()
+    @typing_indicator
     async def normal(
         self,
         ctx: commands.Context,
@@ -146,8 +144,6 @@ class Images(commands.Cog):
         user_or_url: Optional[Union[User, Member, str]] = None,
     ):
         """Basic blur operation. The radius argument defines the size of the area to sample, and the sigma defines the standard deviation. For all blur based methods, the best results are given when the radius is larger than sigma."""  # noqa
-        await ctx.trigger_typing()
-
         fp = await self.get_img_bytes(ctx.message.attachments, user_or_url or ctx.author)
 
         @executor
@@ -166,6 +162,7 @@ class Images(commands.Cog):
         await ctx.send(file=_file, embed=e)
 
     @blur.command()
+    @typing_indicator
     async def adaptive(
         self,
         ctx: commands.Context,
@@ -174,8 +171,6 @@ class Images(commands.Cog):
         user_or_url: Optional[Union[User, Member, str]] = None,
     ):
         """Blurs less intensely around areas of an image with detectable edges, and blurs more intensely for areas without edges. The radius should always be larger than the sigma (standard deviation)."""  # noqa
-        await ctx.trigger_typing()
-
         fp = await self.get_img_bytes(ctx.message.attachments, user_or_url or ctx.author)
 
         @executor
