@@ -2,8 +2,9 @@ import pytz
 from discord.ext import commands
 
 from bot import BigMommy
-from utils import is_manager_or_bot_owner
+from src.decos import typing_indicator
 from src.myembed import MyEmbed
+from utils import is_manager_or_bot_owner
 
 
 class Admin(commands.Cog):
@@ -25,10 +26,9 @@ class Admin(commands.Cog):
             await ctx.send(embed=embed)
 
     @config.command()
+    @typing_indicator
     async def prefix(self, ctx: commands.Context, new_prefix: str = None):
         """Manage server's prefix."""
-        await ctx.trigger_typing()
-
         if not new_prefix:
             settings = await self.bot.cache.get(ctx.guild.id)
             prefix = settings.prefix or self.bot.config.Bot.default_prefix
@@ -48,13 +48,12 @@ class Admin(commands.Cog):
                 await ctx.send(":x: Bot's prefix didn't change. Contact bot owner if it happens again.")
 
     @config.command(aliases=("tz",))
+    @typing_indicator
     async def timezone(self, ctx: commands.Context, tz: str = None):
         """Changes server's timezone.
 
         This affects some output that has something to do with time.
         """
-        await ctx.trigger_typing()
-
         settings = await self.bot.cache.get(ctx.guild.id)
 
         if tz is None:
