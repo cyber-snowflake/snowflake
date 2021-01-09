@@ -2,36 +2,36 @@ from collections import Counter, OrderedDict
 from typing import Generator, List, Optional, Union
 
 import arrow
-from discord import Activity, ActivityType, CustomActivity, Guild, Member, Role, Spotify, User, utils, Permissions
+from discord import Activity, ActivityType, CustomActivity, Guild, Member, Permissions, Role, Spotify, User, utils
 from discord.ext import commands
 
 from bot import BigMommy
 from src.decos import typing_indicator
-from utils.converters import DUser
 from src.myembed import MyEmbed
+from utils.converters import DUser
 
 
 class Meta(commands.Cog):
     def __init__(self, bot: BigMommy):
         self.bot = bot
 
-    @staticmethod
-    def flag_humanize(flag: str) -> Optional[str]:
-        case_dict = {
-            "staff": "Discord Staff",
-            "partner": "Discord Partner",
-            "hypesquad": "HypeSquad Events",
-            "bug_hunter": "Discord Bug Hunter",
-            "bug_hunter_level_2": "Discord Bug Hunter",
-            "hypesquad_balance": "HypeSquad Balance",
-            "hypesquad_brilliance": "HypeSquad Brilliance",
-            "hypesquad_bravery": "HypeSquad Bravery",
-            "early_supporter": "Early Supporter",
-            "verified_bot": "Verified Bot",
-            "verified_bot_developer": "Verified Bot Developer",
-        }
+    flags_repr = {
+        "staff": "Discord Staff",
+        "partner": "Discord Partner",
+        "hypesquad": "HypeSquad Events",
+        "bug_hunter": "Discord Bug Hunter",
+        "bug_hunter_level_2": "Discord Bug Hunter",
+        "hypesquad_balance": "HypeSquad Balance",
+        "hypesquad_brilliance": "HypeSquad Brilliance",
+        "hypesquad_bravery": "HypeSquad Bravery",
+        "early_supporter": "Early Supporter",
+        "verified_bot": "Verified Bot",
+        "verified_bot_developer": "Verified Bot Developer",
+    }
 
-        return case_dict.get(flag)
+    @classmethod
+    def flag_humanize(cls, flag: str) -> Optional[str]:
+        return cls.flags_repr.get(flag)
 
     @staticmethod
     def roles(guild: Guild, roles: List[Role]):
