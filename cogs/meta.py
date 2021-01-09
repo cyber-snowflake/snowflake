@@ -174,6 +174,7 @@ class Meta(commands.Cog):
                 "PUBLIC_DISABLED": "Can't be Public",
                 "WELCOME_SCREEN_ENABLED": "Welcome Screen",
                 "COMMUNITY": "Community Server",
+                "MEMBER_VERIFICATION_GATE_ENABLED": "Membership Screening",
             }
 
             features = ""
