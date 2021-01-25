@@ -121,8 +121,7 @@ class MyHelpCommand(commands.MinimalHelpCommand):
         bot = ctx.bot
 
         title = "Available commands"
-        description = "```asciidoc\n= <arg> - required argument =\n= [arg] - optional argument =\n```"
-        self.format_pages(title=title, description="%s" % description)
+        self.format_pages(title=title)
 
         if bot.description:
             self.paginator.add_line(bot.description, empty=True)
