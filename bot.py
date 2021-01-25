@@ -8,7 +8,7 @@ from discord import Guild, HTTPException, Message, User
 from discord.ext import commands
 from loguru import logger
 
-import config
+import configurator as config
 from src.types import Mention
 from utils import Emojis, MyIntents, cachemanager, psql
 
@@ -16,7 +16,7 @@ from utils import Emojis, MyIntents, cachemanager, psql
 async def get_prefix(client, message: Message):
     # Checks if the message in DMs
     if not message.guild:
-        return commands.when_mentioned_or(config.Bot.default_prefix)(client, message)
+        return commands.when_mentioned_or(config.bot_config.default_prefix)(client, message)
 
     settings = await client.cache.get(message.guild.id)
 
@@ -25,7 +25,7 @@ async def get_prefix(client, message: Message):
         prefix = settings.prefix
 
     # prefix can be None and in that case it will use bot's default prefix
-    return commands.when_mentioned_or(prefix or config.Bot.default_prefix)(client, message)
+    return commands.when_mentioned_or(prefix or config.bot_config.default_prefix)(client, message)
 
 
 class BigMommy(commands.AutoShardedBot):
@@ -34,14 +34,14 @@ class BigMommy(commands.AutoShardedBot):
             command_prefix=get_prefix,
             allowed_mentions=Mention.nobody,
             case_insensitive=True,
-            shard_count=config.Bot.shard_count,
-            shard_ids=config.Bot.shard_ids,
+            shard_count=config.bot_config.shard_count,
+            shard_ids=config.bot_config.shard_ids,
             intents=MyIntents(),
             **options,
         )
 
         self.was_ready_once = False
-        self.config = config
+        self.config = config.bot_config
 
         self.pg = psql()
         self.cache = cachemanager
@@ -56,7 +56,7 @@ class BigMommy(commands.AutoShardedBot):
         # Implement blacklist check
         # self.add_check(check_blacklist)
         # Run the bot
-        super().run(config.Bot.token, reconnect=True)
+        super().run(config.bot_config.token, reconnect=True)
 
     async def close(self):
         await self.aiosession.close()
@@ -73,7 +73,7 @@ class BigMommy(commands.AutoShardedBot):
 
     async def on_ready(self):
         for guild in self.guilds:
-            if guild.id == self.config.Bot.support_guild_id:
+            if guild.id == self.config.support_guild_id:
                 self.support_guild = guild
                 self.my_emojis.setup(self.support_guild.emojis)
 
@@ -81,7 +81,6 @@ class BigMommy(commands.AutoShardedBot):
 
         if not self.was_ready_once:
             self.was_ready_once = not self.was_ready_once
-            self.config.Bot.token = None
 
             asyncio.create_task(self.fetch_bot_owner())
 

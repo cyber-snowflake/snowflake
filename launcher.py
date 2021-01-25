@@ -41,7 +41,7 @@ def start_bot():
     loop = asyncio.get_event_loop()
 
     try:
-        loop.run_until_complete(psql().connect(config.Postgres.dsn))
+        loop.run_until_complete(psql().connect(config.postgres_config.dsn))
     except Exception as e:
         click.echo(f"Failed to connect to the PostgreSQL\n----------\n{e}", file=sys.stderr)
         return
