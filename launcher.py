@@ -9,7 +9,7 @@ import click
 import matplotlib
 from loguru import logger
 
-import config
+import configurator as config
 from bot import BigMommy
 from src.loguru_intercept import InterceptHandler
 from utils.sql import psql
