@@ -1,0 +1,17 @@
+{
+  "BOT": {
+    "default_prefix": "?",
+    "token": "pepepopo",
+    "shard_count": 1,
+    "shard_ids": [0],
+    "support_guild_id": -1,
+    "imgur_id": "backtomonkey"
+  },
+  "POSTGRES": {
+    "user": "postgres",
+    "password": "any",
+    "database": "dbname",
+    "host": "localhost",
+    "port": 5432
+  }
+}
