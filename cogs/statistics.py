@@ -15,30 +15,6 @@ class Statistics(commands.Cog):
     def __init__(self, bot: BigMommy) -> None:
         self.bot = bot
 
-    @staticmethod
-    def make_dataframe_from_dict(
-        data: dict,
-        keys: str = "labels",
-        values: str = "values",
-        sort_values: bool = False,
-        asc: bool = False,
-    ):
-        """
-
-        Args:
-            data: base dictionary of data
-            keys: name of keys column
-            values: name of values column
-            sort_values: should the data get sorted
-            asc: an alias to DataFrame.sort_value(ascending=x)
-
-        """
-        df = pd.DataFrame({keys: data.keys(), values: data.values()})
-        if sort_values:
-            df = df.sort_values(values, ascending=asc)
-
-        return df
-
     @commands.group()
     @commands.guild_only()
     @commands.cooldown(1, 10, commands.BucketType.channel)
@@ -50,21 +26,25 @@ class Statistics(commands.Cog):
     async def badges(self, ctx: commands.Context):
         """Generates a chart of counted flags (badges)"""
 
-        def badges_iterator():
-            for m in ctx.guild.members:
-                for f in m.public_flags.all():
-                    yield str(f.name).replace("_", " ").title()
-
-        badges = dict(Counter(badges_iterator()).most_common())
-
         @executor
         def gen_image():
+            data = Counter([flag.name for flags in [m.public_flags.all() for m in ctx.guild.members] for flag in flags])
+            data = [{"flag": k, "counter": v} for k, v in data.most_common()]
+
+            df = pd.DataFrame(data)
+
             sns.set_theme(style="darkgrid")
+            _, ax = plt.subplots(figsize=(14, 7))
 
-            df = self.make_dataframe_from_dict(badges, "flags", "count", sort_values=True)
-
-            ax = sns.barplot(x="flags", y="count", data=df, palette="Blues_d")
-            ax.set(xlabel="", ylabel="Members (count)")
+            g = sns.barplot(
+                x="flag",
+                y="counter",
+                data=df,
+                palette="husl",
+                ci="cd",
+                ax=ax,
+            )
+            g.set(xlabel="", ylabel="")
             plt.xticks(rotation=45)
 
             plt.tight_layout()
@@ -74,7 +54,6 @@ class Statistics(commands.Cog):
             buf.seek(0)
 
             plt.close()
-
             return buf
 
         fp = await gen_image()
@@ -85,17 +64,27 @@ class Statistics(commands.Cog):
     @stats.command()
     async def members(self, ctx: commands.Context):
         """Creates a chart of members by statuses"""
-        data = dict(Counter(str(x.status) for x in ctx.guild.members))
 
         @executor
         def gen_image():
-            df = pd.DataFrame({"Statuses": data.keys(), "Counters": data.values()})
-            df = df.sort_values("Counters", ascending=False)
+            data = Counter(str(x.status) for x in ctx.guild.members)
+            data = [{"status": k, "counter": v} for k, v in data.most_common()]
+
+            df = pd.DataFrame(data)
+            df = df.sort_values("counter", ascending=False)
 
             sns.set_theme(style="darkgrid")
 
-            ax = sns.barplot(x="Statuses", y="Counters", data=df, palette="rocket")
-            ax.set(xlabel="Statuses", ylabel="Members (count)")
+            _, ax = plt.subplots(figsize=(12, 7))
+            g = sns.barplot(
+                x="status",
+                y="counter",
+                data=df,
+                palette="husl",
+                ci="cd",
+                ax=ax,
+            )
+            g.set(xlabel="Statuses", ylabel="Members (count)")
             plt.xticks(rotation=45)
 
             plt.tight_layout()
@@ -105,7 +94,6 @@ class Statistics(commands.Cog):
             buf.seek(0)
 
             plt.close()
-
             return buf
 
         fp = await gen_image()
