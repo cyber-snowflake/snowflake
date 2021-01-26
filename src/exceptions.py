@@ -5,6 +5,10 @@ class CacheMiss(Exception):
     pass
 
 
+class CacheException(Exception):
+    pass
+
+
 class BlacklistedSnowflake(CommandError):
     pass
 
