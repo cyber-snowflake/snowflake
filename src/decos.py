@@ -1,6 +1,6 @@
 import asyncio
 from functools import wraps
-from typing import Any, Coroutine, TypeVar
+from typing import TypeVar
 
 from discord.ext import commands
 from loguru import logger
@@ -10,7 +10,7 @@ T = TypeVar("T")
 
 def executor(func):
     @wraps(func)
-    def wrapper(*args, **kwargs) -> Coroutine[Any, Any, T]:
+    def wrapper(*args, **kwargs):
         loop = asyncio.get_running_loop()
         logger.debug(f"Running {func.__name__}")
         future = loop.run_in_executor(None, lambda: func(*args, **kwargs))
