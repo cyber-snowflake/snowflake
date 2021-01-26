@@ -61,10 +61,18 @@ class BotConfig:
         return self._token
 
 
+class RedisConfig:
+    __slots__ = ("uri",)
+
+    def __init__(self, **kwargs) -> None:
+        self.uri = kwargs.pop("uri")
+
+
 with open(join(dirname(__file__), "./config.json"), "r", encoding="utf-8") as fp:
     _data = ujson.load(fp)
 
 bot_config = BotConfig(**_data["BOT"])
 postgres_config = PostgresConfig(**_data["POSTGRES"])
+redis_config = RedisConfig(**_data["REDIS"])
 
 del _data
