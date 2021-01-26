@@ -14,7 +14,7 @@ from utils.sql import psql
 SETTINGS_PREFIX = "S-"  # S-{GUILD}
 
 
-class cachemanager(metaclass=MetaSingleton):
+class cachemanager(metaclass=MetaSingleton):  # noqa
     def __init__(self) -> None:
         self.storage = InternalStorage()
         self._redis: Optional[aioredis.Redis] = None
