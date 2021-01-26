@@ -7,7 +7,6 @@ from loguru import logger
 from src.decos import executor
 from src.exceptions import CacheException, CacheMiss
 from src.singleton import MetaSingleton
-from src.storage import InternalStorage
 from src.types import GuildSettings
 from utils.sql import psql
 
@@ -16,7 +15,7 @@ SETTINGS_PREFIX = "S-"  # S-{GUILD}
 
 class cachemanager(metaclass=MetaSingleton):  # noqa
     def __init__(self) -> None:
-        self.storage = InternalStorage()
+        self._blacklist = set()
         self._redis: Optional[aioredis.Redis] = None
 
     async def connect_redis(self, uri: str):
@@ -28,6 +27,10 @@ class cachemanager(metaclass=MetaSingleton):  # noqa
             raise CacheException(
                 "You have to destroy previously create Redis connection first before creating a new one!"
             ) from None
+
+    @property
+    def blacklist(self):
+        return self._blacklist
 
     @property
     def redis(self):
@@ -63,3 +66,12 @@ class cachemanager(metaclass=MetaSingleton):  # noqa
 
         # 172800 is 2 days
         await self.redis.setex(f"{SETTINGS_PREFIX}{guild_id}", 172800, jsonified)
+
+    async def blacklist_refresh(self):
+        query = "SELECT * FROM blacklisted;"
+        rows = await psql().pool.fetch(query)
+
+        for row in rows:
+            self._blacklist.add(row["user_id"])
+
+        logger.info("Blacklist cache is now fresh")
