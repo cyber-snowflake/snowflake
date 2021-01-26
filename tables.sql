@@ -15,16 +15,6 @@ alter table guilds
     add constraint guilds_pk
         primary key (guild_id);
 
-/** User Settings **/
-
-create table if not exists user_settings
-(
-    guild_id bigint                 not null,
-    user_id  bigint                 not null,
-    opened   bool     default false not null,
-    limits   smallint default 2     not null
-);
-
 /** Reminders **/
 
 create table reminders
