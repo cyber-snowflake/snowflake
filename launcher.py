@@ -12,7 +12,7 @@ from loguru import logger
 import configurator as config
 from bot import BigMommy
 from src.loguru_intercept import InterceptHandler
-from utils.sql import psql
+from utils import cachemanager, psql
 
 try:
     uvloop = importlib.import_module("uvloop")
@@ -44,6 +44,12 @@ def start_bot():
         loop.run_until_complete(psql().connect(config.postgres_config.dsn))
     except Exception as e:
         click.echo(f"Failed to connect to the PostgreSQL\n----------\n{e}", file=sys.stderr)
+        return
+
+    try:
+        loop.run_until_complete(cachemanager().connect_redis(config.redis_config.uri))
+    except Exception as e:
+        click.echo(f"Failed to connect to the Redis\n----------\n{e}", file=sys.stderr)
         return
 
     bot = BigMommy()
