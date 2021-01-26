@@ -4,9 +4,9 @@ import aioredis
 import orjson
 from loguru import logger
 
+from src.decos import executor
 from src.exceptions import CacheException, CacheMiss
 from src.singleton import MetaSingleton
-from src.decos import executor
 from src.storage import InternalStorage
 from src.types import GuildSettings
 from utils.sql import psql
