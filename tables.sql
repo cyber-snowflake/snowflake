@@ -33,3 +33,17 @@ create unique index reminders_id_uindex
 alter table reminders
     add constraint reminders_pk
         primary key (id);
+
+/** Blacklist **/
+create table blacklisted
+(
+	user_id bigint not null,
+	reason text default 'because'
+);
+
+create unique index blacklisted_user_id_uindex
+	on blacklisted (user_id);
+
+alter table blacklisted
+	add constraint blacklisted_pk
+		primary key (user_id);
