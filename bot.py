@@ -44,7 +44,7 @@ class BigMommy(commands.AutoShardedBot):
         self.config = config.bot_config
 
         self.pg = psql()
-        self.cache = cachemanager
+        self.cache = cachemanager()
 
         self.owner: Optional[User] = None
         self.support_guild: Optional[Guild] = None

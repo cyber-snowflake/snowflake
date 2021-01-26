@@ -13,5 +13,8 @@
     "database": "dbname",
     "host": "localhost",
     "port": 5432
+  },
+  "REDIS": {
+    "uri": "redis://localhost:6379/0"
   }
 }
