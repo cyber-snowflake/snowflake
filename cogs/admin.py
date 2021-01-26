@@ -20,7 +20,7 @@ class Admin(commands.Cog):
             settings = await self.bot.cache.get(ctx.guild.id)
 
             embed = MyEmbed(title=f"Current settings of {ctx.guild.name}")
-            embed.add_field(name="Prefix", value=f"{settings.prefix or self.bot.config.Bot.default_prefix}")
+            embed.add_field(name="Prefix", value=f"{settings.prefix or self.bot.config.default_prefix}")
             embed.add_field(name="Timezone", value=f"{settings.tz}")
 
             await ctx.send(embed=embed)
@@ -31,7 +31,7 @@ class Admin(commands.Cog):
         """Manage server's prefix."""
         if not new_prefix:
             settings = await self.bot.cache.get(ctx.guild.id)
-            prefix = settings.prefix or self.bot.config.Bot.default_prefix
+            prefix = settings.prefix or self.bot.config.default_prefix
 
             await ctx.send(f":information_source: Current bot's prefix in this server is `{prefix}`")
         elif len(new_prefix) > 16:
