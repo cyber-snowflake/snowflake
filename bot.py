@@ -83,6 +83,7 @@ class BigMommy(commands.AutoShardedBot):
             self.was_ready_once = not self.was_ready_once
 
             asyncio.create_task(self.fetch_bot_owner())
+            asyncio.create_task(self.cache.blacklist_refresh())
 
             cogs = glob(join(dirname(__file__), "cogs/*.py"))
             for ext_path in cogs:
