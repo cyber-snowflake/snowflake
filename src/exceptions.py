@@ -9,7 +9,7 @@ class CacheException(Exception):
     pass
 
 
-class BlacklistedSnowflake(CommandError):
+class BlacklistedUser(CommandError):
     pass
 
 

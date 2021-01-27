@@ -5,13 +5,13 @@ from discord.ext import commands
 from loguru import logger
 
 from bot import BigMommy
-from src.exceptions import BlacklistedSnowflake, InformUser, NotInVoiceChat
+from src.exceptions import BlacklistedUser, InformUser, NotInVoiceChat
 
 
 class ErrorHandler(commands.Cog):
     def __init__(self, bot: BigMommy):
         self.bot = bot
-        self.ignored = (BlacklistedSnowflake, commands.CommandNotFound)
+        self.ignored = (BlacklistedUser, commands.CommandNotFound)
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx: commands.Context, error):
