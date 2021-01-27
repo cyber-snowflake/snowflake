@@ -2,21 +2,18 @@ import random
 import re
 import sys
 from io import BytesIO
-from src.exceptions import InformUser
-from utils.checks import is_manager_or_bot_owner
 
 from aiohttp import FormData
-from discord import Attachment, File
-from discord.errors import Forbidden, NotFound
+from discord import Attachment, File, Forbidden, NotFound, AllowedMentions, Message
 from discord.ext import commands
-from discord.mentions import AllowedMentions
-from discord.message import Message
 from gtts import gTTS
 from polyglot.detect import Detector
 
 from bot import BigMommy
 from src.decos import executor, typing_indicator
+from src.exceptions import InformUser
 from src.regulars import IMGUR_EXTENSIONS
+from utils.checks import is_manager_or_bot_owner
 
 
 class Tools(commands.Cog):
