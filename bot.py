@@ -53,7 +53,7 @@ class BigMommy(commands.AutoShardedBot):
 
     def run(self):
         # Implement blacklist check
-        # self.add_check(check_blacklist)
+        self.add_check(is_blacklisted)
         # Run the bot
         super().run(config.bot_config.token, reconnect=True)
 
@@ -83,8 +83,6 @@ class BigMommy(commands.AutoShardedBot):
 
             asyncio.create_task(self.fetch_bot_owner())
             asyncio.create_task(self.cache.blacklist_refresh())
-
-            self.add_check(is_blacklisted)
 
             cogs = glob(join(dirname(__file__), "cogs/*.py"))
             for ext_path in cogs:
