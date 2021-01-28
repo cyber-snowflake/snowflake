@@ -127,8 +127,8 @@ class MyHelpCommand(commands.MinimalHelpCommand):
         ctx = self.context
         bot = ctx.bot
 
-        title = "Available commands"
-        self.format_pages(title=title)
+        note = self.get_opening_note()
+        self.paginator.add_line(f"{note}\n")
 
         if bot.description:
             self.paginator.add_line(bot.description, empty=True)
