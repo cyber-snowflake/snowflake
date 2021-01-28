@@ -129,7 +129,47 @@ class Statistics(commands.Cog):
             )
             rows = await conn.fetch(*query)
 
-            await ctx.send(f"{rows}")
+        @executor
+        def gen_image():
+            data = []
+            for row in rows:
+                data.append({"day": row["_date"], "criteria": "messages sent", "counter": row["messages_sent"]})
+                data.append({"day": row["_date"], "criteria": "messages edited", "counter": row["messages_edited"]})
+                data.append({"day": row["_date"], "criteria": "messages deleted", "counter": row["messages_deleted"]})
+            df = pd.DataFrame(data)
+
+            sns.set_theme(style="whitegrid")
+            fig, ax = plt.subplots(figsize=(10, 7))
+            fig.suptitle("Messages activity for the last 7 days")
+
+            g = sns.lineplot(
+                ax=ax,
+                alpha=0.8,
+                x="day",
+                y="counter",
+                hue="criteria",
+                data=df,
+                palette="husl",
+                ci="cd",
+                style="criteria",
+                markers=True,
+                dashes=False,
+                linewidth=2,
+            )
+            g.set(xlabel="", ylabel="")
+            plt.xticks(rotation=45)
+            plt.tight_layout()
+
+            buf = io.BytesIO()
+            plt.savefig(buf, format="png")
+            buf.seek(0)
+
+            plt.close()
+            return buf
+
+        fp = await gen_image()
+        _file = File(fp, "stats.png")
+        await ctx.send(file=_file)
 
     @stats.command()
     async def badges(self, ctx: commands.Context):
