@@ -57,6 +57,9 @@ class Meta(commands.Cog):
         embed.add_field(name="Avatar", value=f"[Image]({avy_url})")
 
         flags = ""
+        if user.id == self.bot.owner.id:
+            flags += f"{self.bot.my_emojis.owner} **Bot Owner**\n"
+
         for flag in sorted(user.public_flags.all(), key=lambda x: x.value):
             flags += f"{self.bot.my_emojis.find_attr(flag.name)} {self.flag_humanize(flag.name)}\n"
 
