@@ -9,7 +9,7 @@ from discord.ext import commands
 from loguru import logger
 
 import configurator as config
-from utils import Emojis, MyIntents, cachemanager, psql
+from utils import Emojis, MyIntents, cachemanager, psql, is_blacklisted
 
 
 async def get_prefix(client, message: Message):
@@ -83,6 +83,8 @@ class BigMommy(commands.AutoShardedBot):
 
             asyncio.create_task(self.fetch_bot_owner())
             asyncio.create_task(self.cache.blacklist_refresh())
+
+            self.add_check(is_blacklisted)
 
             cogs = glob(join(dirname(__file__), "cogs/*.py"))
             for ext_path in cogs:
