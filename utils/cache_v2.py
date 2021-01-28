@@ -1,3 +1,4 @@
+from dataclasses import dataclass, fields
 from typing import Optional
 
 import aioredis
@@ -7,10 +8,24 @@ from loguru import logger
 from src.decos import executor
 from src.exceptions import CacheException, CacheMiss
 from src.singleton import MetaSingleton
-from src.types import GuildSettings
 from utils.sql import psql
 
 SETTINGS_PREFIX = "S-"  # S-{GUILD}
+
+
+@dataclass(init=False)
+class GuildSettings:
+    prefix: Optional[str]
+    tz: str = "UTC"
+
+    def __init__(self, **kwargs):
+        names = set([f.name for f in fields(self)])
+        for k, v in kwargs.items():
+            if k in names:
+                setattr(self, k, v)
+
+    def __repr__(self):
+        return "<GuildSettings {0}>".format(" ".join("{}={!r}".format(k, v) for k, v in self.__dict__.items()))
 
 
 class cachemanager(metaclass=MetaSingleton):  # noqa
