@@ -133,7 +133,7 @@ class MyHelpCommand(commands.MinimalHelpCommand):
         if bot.description:
             self.paginator.add_line(bot.description, empty=True)
 
-        no_category = "\u200b{0.no_category}".format(self)
+        no_category = f"\u200b{self.no_category}"
 
         def get_category(command, *, no_category=no_category):
             cog = command.cog
