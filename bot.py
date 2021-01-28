@@ -4,12 +4,11 @@ from os.path import basename, dirname, join
 from typing import Optional
 
 import aiohttp
-from discord import Guild, HTTPException, Message, User
+from discord import Guild, HTTPException, Message, User, AllowedMentions
 from discord.ext import commands
 from loguru import logger
 
 import configurator as config
-from src.types import Mention
 from utils import Emojis, MyIntents, cachemanager, psql
 
 
@@ -32,7 +31,7 @@ class BigMommy(commands.AutoShardedBot):
     def __init__(self, **options):
         super().__init__(
             command_prefix=get_prefix,
-            allowed_mentions=Mention.nobody,
+            allowed_mentions=AllowedMentions(everyone=False, users=False, roles=False, replied_user=False),
             case_insensitive=True,
             shard_count=config.bot_config.shard_count,
             shard_ids=config.bot_config.shard_ids,
