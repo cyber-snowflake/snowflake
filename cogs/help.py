@@ -77,10 +77,14 @@ class MyHelpCommand(commands.MinimalHelpCommand):
                 await destination.send(embed=self.embed)
 
     def get_opening_note(self):
-        return None
+        prefix = self.context.prefix
+        return (
+            f"Use `{prefix}help [command]` for more info on a command.\n"
+            f"You can also use `{prefix}help [category]` for more info on a category."
+        )
 
     def get_ending_note(self):
-        return f"Use {self.context.prefix}help [command] or {self.context.prefix}help [module] to learn more."
+        return None
 
     def add_bot_commands_formatting(self, commands, heading):
         if commands:
