@@ -50,10 +50,8 @@ class MyHelpCommand(commands.MinimalHelpCommand):
 
     async def prepare_help_command(self, ctx, command):
         await ctx.trigger_typing()
-        # i18n
-        self.aliases_heading = "Aliases"  # Translator.translate("ALIASES", self.context)
-        self.commands_heading = "Commands"  # Translator.translate("COMMANDS", self.context)
-        # Original class methods
+        self.aliases_heading = "Aliases"
+        self.commands_heading = "Commands"
         self.paginator.clear()
         self.prepare_embed()
         await super().prepare_help_command(ctx, command)
