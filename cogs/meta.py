@@ -50,13 +50,16 @@ class Meta(commands.Cog):
         user: Union[Member, User] = user or ctx.author
         avy_url = f'{user.avatar_url_as(static_format="png")}'
 
-        embed = MyEmbed(title="User Information Summary")
+        embed = MyEmbed()
         embed.set_thumbnail(url=avy_url)
         embed.add_field(name="Discord Tag", value=f"{user}")
         embed.add_field(name="ID", value=f"{user.id}")
         embed.add_field(name="Avatar", value=f"[Image]({avy_url})")
 
         flags = ""
+        if user.id == self.bot.owner.id:
+            flags += f"{self.bot.my_emojis.owner} **Bot Owner**\n"
+
         for flag in sorted(user.public_flags.all(), key=lambda x: x.value):
             flags += f"{self.bot.my_emojis.find_attr(flag.name)} {self.flag_humanize(flag.name)}\n"
 
@@ -98,6 +101,10 @@ class Meta(commands.Cog):
             inline=False,
             value=f"{self.bot.my_emojis.slowmode} {arrow_created_at.humanize()} (`{arrow_created_at}`)",
         )
+
+        if user.id in self.bot.cache.blacklist:
+            embed.colour = 0xFF0000
+            embed.title = "This user is blacklisted from the bot."
 
         await ctx.send(embed=embed)
 

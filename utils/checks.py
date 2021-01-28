@@ -1,7 +1,7 @@
 from discord import Member
 from discord.ext import commands
 
-from src.exceptions import NotInVoiceChat
+from src.exceptions import NotInVoiceChat, BlacklistedUser
 
 
 def is_manager_or_bot_owner():
@@ -26,3 +26,10 @@ def is_in_voice():
                 raise NotInVoiceChat(f"{ctx.author.id} is not in voice chat.", ctx.author) from None
 
     return commands.check(predicate)
+
+
+def is_blacklisted(ctx: commands.Context):
+    if ctx.author.id in ctx.bot.cache.blacklist:
+        raise BlacklistedUser(f"{ctx.author} ({ctx.author.id}) is blacklisted") from None
+    else:
+        return True
