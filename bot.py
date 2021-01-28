@@ -70,6 +70,12 @@ class BigMommy(commands.AutoShardedBot):
         except HTTPException as e:
             logger.error(e)
 
+    async def on_message_edit(self, before: Message, after: Message):
+        # process the message as a command if it was edited quickly
+        delta = after.created_at - before.created_at
+        if delta.seconds <= 60:
+            await self.process_commands(after)
+
     async def on_ready(self):
         for guild in self.guilds:
             if guild.id == self.config.support_guild_id:
