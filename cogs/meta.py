@@ -50,7 +50,7 @@ class Meta(commands.Cog):
         user: Union[Member, User] = user or ctx.author
         avy_url = f'{user.avatar_url_as(static_format="png")}'
 
-        embed = MyEmbed(title="User Information Summary")
+        embed = MyEmbed()
         embed.set_thumbnail(url=avy_url)
         embed.add_field(name="Discord Tag", value=f"{user}")
         embed.add_field(name="ID", value=f"{user.id}")
