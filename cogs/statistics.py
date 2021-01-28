@@ -4,7 +4,7 @@ from collections import Counter
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-from discord import File
+from discord import File, Message, Member, RawMessageDeleteEvent, RawMessageUpdateEvent, Guild, User
 from discord.ext import commands
 
 from bot import BigMommy
@@ -14,6 +14,97 @@ from src.decos import executor
 class Statistics(commands.Cog):
     def __init__(self, bot: BigMommy) -> None:
         self.bot = bot
+
+    # this code is probably super bad since
+    # my knowledge of asyncio is quite bad
+    # TODO: check if those listeners need some enhancements
+    async def run_query(self, query: tuple = None, *args):
+        query = query or tuple(args)
+
+        async with self.bot.pg.pool.acquire() as conn:
+            await conn.execute(*query)
+
+    @commands.Cog.listener()
+    async def on_message(self, message: Message):
+        query = (
+            """
+            INSERT INTO stats (guild_id, messages_sent) VALUES ($1, 1)
+            ON CONFLICT (guild_id, _date)
+            DO UPDATE SET messages_sent = stats.messages_sent + 1;
+            """,
+            message.guild.id,
+        )
+
+        await self.run_query(query)
+
+    @commands.Cog.listener()
+    async def on_raw_message_edit(self, payload: RawMessageUpdateEvent):
+        if gid := payload.data.get("guild_id"):
+            gid = int(gid)
+
+            query = (
+                """
+                INSERT INTO stats (guild_id, messages_edited) VALUES ($1, 1)
+                ON CONFLICT (guild_id, _date)
+                DO UPDATE SET messages_edited = stats.messages_edited + 1;
+                """,
+                gid,
+            )
+
+            await self.run_query(query)
+
+    @commands.Cog.listener()
+    async def on_raw_message_delete(self, payload: RawMessageDeleteEvent):
+        if gid := payload.guild_id:
+            query = (
+                """
+                INSERT INTO stats (guild_id, messages_deleted) VALUES ($1, 1)
+                ON CONFLICT (guild_id, _date)
+                DO UPDATE SET messages_deleted = stats.messages_deleted + 1;
+                """,
+                gid,
+            )
+
+            await self.run_query(query)
+
+    @commands.Cog.listener()
+    async def on_member_join(self, member: Member):
+        query = (
+            """
+            INSERT INTO stats (guild_id, members_joined) VALUES ($1, 1)
+            ON CONFLICT (guild_id, _date)
+            DO UPDATE SET members_joined = stats.members_joined + 1;
+            """,
+            member.guild.id,
+        )
+
+        await self.run_query(query)
+
+    @commands.Cog.listener()
+    async def on_member_remove(self, member: Member):
+        query = (
+            """
+            INSERT INTO stats (guild_id, members_left) VALUES ($1, 1)
+            ON CONFLICT (guild_id, _date)
+            DO UPDATE SET members_left = stats.members_left + 1;
+            """,
+            member.guild.id,
+        )
+
+        await self.run_query(query)
+
+    @commands.Cog.listener()
+    async def on_member_ban(self, guild: Guild, _user: User):
+        query = (
+            """
+            INSERT INTO stats (guild_id, members_banned) VALUES ($1, 1)
+            ON CONFLICT (guild_id, _date)
+            DO UPDATE SET members_banned = stats.members_banned + 1;
+            """,
+            guild.id,
+        )
+
+        await self.run_query(query)
 
     @commands.group()
     @commands.guild_only()
