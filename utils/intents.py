@@ -7,6 +7,7 @@ class MyIntents(Intents):
 
         self.guilds = True
         self.members = True
+        self.bans = True
         self.emojis = True
         self.invites = True
         self.voice_states = True
