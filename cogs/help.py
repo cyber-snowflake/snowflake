@@ -103,7 +103,7 @@ class MyHelpCommand(commands.MinimalHelpCommand):
         if command.description:
             self.paginator.add_line(command.description, empty=True)
 
-        if cooldown := command._buckets._cooldown:
+        if cooldown := command._buckets._cooldown:  # noqa
             self.embed.add_field(name="Cooldowns", value=f"{self.bot.my_emojis.slowmode} {int(cooldown.per)} seconds")
 
         signature = self.get_command_signature(command)
