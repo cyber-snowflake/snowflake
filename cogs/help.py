@@ -146,9 +146,7 @@ class MyHelpCommand(commands.MinimalHelpCommand):
             _commands = sorted(_commands, key=lambda c: c.name) if self.sort_commands else list(_commands)
             self.add_bot_commands_formatting(_commands, category, description=True)
 
-        note = self.get_ending_note()
-        if note:
-            self.embed.set_footer(text=note)
+        self.embed.set_thumbnail(url=f"{self.bot.user.avatar_url}")
 
         await self.send_pages()
 
