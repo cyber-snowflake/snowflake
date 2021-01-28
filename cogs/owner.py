@@ -1,10 +1,15 @@
+from typing import Optional
+
+from asyncpg.exceptions import UniqueViolationError
 from discord.ext import commands
 from discord.ext.menus import MenuPages
 from tabulate import tabulate
 
 from bot import BigMommy
+from src.exceptions import InformUser
 from src.myembed import MyEmbed
 from src.mymenus import GuildsPagesSource
+from utils import DUser
 
 
 class Owner(commands.Cog):
@@ -13,6 +18,36 @@ class Owner(commands.Cog):
 
     async def cog_check(self, ctx: commands.Context):
         return await ctx.bot.is_owner(ctx.author)
+
+    @commands.group()
+    async def blacklist(self, ctx: commands.Context):
+        if not ctx.invoked_subcommand:
+            raise InformUser("You haven't specified any subcommand.") from None
+
+    @blacklist.command(name="add")
+    async def blacklist_add(self, ctx: commands.Context, target: DUser, *, reason: Optional[str]):
+        query = "INSERT INTO blacklisted (user_id) VALUES ($1);", target.id
+        if reason:
+            query = "INSERT INTO blacklisted (user_id, reason) VALUES ($1, $2);", target.id, reason
+
+        try:
+            async with self.bot.pg.pool.acquire() as conn:
+                await conn.execute(*query)
+        except UniqueViolationError:
+            return await ctx.send(f":x: **{target}** (`{target.id}`) is already blacklisted from the bot.")
+
+        await self.bot.cache.blacklist_refresh()
+        await ctx.send(f":ok_hand: **{target}** (`{target.id}`) was blacklisted: `{reason}`")
+
+    @blacklist.command(name="remove", aliases=("rmv", "del", "delete"))
+    async def blacklist_remove(self, ctx: commands.Context, target: DUser):
+        query = "DELETE FROM blacklisted WHERE user_id = $1 RETURNING user_id;", target.id
+
+        async with self.bot.pg.pool.acquire() as conn:
+            user_id = await conn.fetchval(*query)
+
+        await self.bot.cache.blacklist_refresh()
+        await ctx.send(f":ok_hand: **{target}** (`{target.id}`) is not blacklisted anymore")
 
     @commands.command()
     async def botstats(self, ctx: commands.Context):
