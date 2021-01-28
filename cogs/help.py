@@ -86,10 +86,13 @@ class MyHelpCommand(commands.MinimalHelpCommand):
     def get_ending_note(self):
         return None
 
-    def add_bot_commands_formatting(self, commands, heading):
+    def add_bot_commands_formatting(self, commands, heading, *, description=False):
         if commands:
-            joined = ", ".join(f"`{c.name}`" for c in commands)
-            self.embed.add_field(name=f"**{heading}**", value=joined, inline=False)
+            joined = "".join(f"{c.name} " for c in commands)
+            if not description:
+                self.embed.add_field(name=f"**{heading}**", value=joined, inline=False)
+            else:
+                self.paginator.add_line(f"**__{heading}__**\n{joined}", empty=True)
 
     def add_subcommand_formatting(self, command):
         fmt = "`{0}{1}`: {2}" if command.short_doc else "`{0}{1}`"
@@ -141,7 +144,7 @@ class MyHelpCommand(commands.MinimalHelpCommand):
 
         for category, _commands in to_iterate:
             _commands = sorted(_commands, key=lambda c: c.name) if self.sort_commands else list(_commands)
-            self.add_bot_commands_formatting(_commands, category)
+            self.add_bot_commands_formatting(_commands, category, description=True)
 
         note = self.get_ending_note()
         if note:
