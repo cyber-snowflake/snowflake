@@ -69,7 +69,7 @@ class MyHelpCommand(commands.MinimalHelpCommand):
     async def send_pages(self):
         destination = self.get_destination()
 
-        if len(self.embed.fields) > 0 and len(self.paginator.pages) <= 0:
+        if len(self.embed.fields) > 0 >= len(self.paginator.pages):
             await destination.send(embed=self.embed)
         else:
             for page in self.paginator.pages:
