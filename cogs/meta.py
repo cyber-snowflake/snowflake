@@ -102,6 +102,10 @@ class Meta(commands.Cog):
             value=f"{self.bot.my_emojis.slowmode} {arrow_created_at.humanize()} (`{arrow_created_at}`)",
         )
 
+        if user.id in self.bot.cache.blacklist:
+            embed.colour = 0xFF0000
+            embed.title = "This user is blacklisted from the bot."
+
         await ctx.send(embed=embed)
 
     @commands.command()
