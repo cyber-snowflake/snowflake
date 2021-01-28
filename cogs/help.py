@@ -56,14 +56,6 @@ class MyHelpCommand(commands.MinimalHelpCommand):
         self.prepare_embed()
         await super().prepare_help_command(ctx, command)
 
-    # Formatter for the embed
-    def format_pages(self, **kwargs):
-        if (title := kwargs.get("title", None)) is not None:
-            self.embed.title = f"{title}"
-
-        if (description := kwargs.get("description", None)) is not None:
-            self.embed.description = description
-
     async def send_pages(self):
         destination = self.get_destination()
 
@@ -108,10 +100,10 @@ class MyHelpCommand(commands.MinimalHelpCommand):
 
         signature = self.get_command_signature(command)
         if command.aliases:
-            self.format_pages(title=signature)
+            self.embed.title = signature
             self.add_aliases_formatting(command.aliases)
         else:
-            self.format_pages(title=signature)
+            self.embed.title = signature
 
         if command.help:
             try:
@@ -158,7 +150,7 @@ class MyHelpCommand(commands.MinimalHelpCommand):
 
         filtered = await self.filter_commands(cog.get_commands(), sort=self.sort_commands)
         if filtered:
-            self.format_pages(title="**%s %s**" % (cog.qualified_name, self.commands_heading))
+            self.embed.title = "**%s %s**" % (cog.qualified_name, self.commands_heading)
             for command in filtered:
                 self.add_subcommand_formatting(command)
 
