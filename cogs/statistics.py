@@ -26,16 +26,17 @@ class Statistics(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message: Message):
-        query = (
-            """
-            INSERT INTO stats (guild_id, messages_sent) VALUES ($1, 1)
-            ON CONFLICT (guild_id, _date)
-            DO UPDATE SET messages_sent = stats.messages_sent + 1;
-            """,
-            message.guild.id,
-        )
+        if guild := message.guild:
+            query = (
+                """
+                INSERT INTO stats (guild_id, messages_sent) VALUES ($1, 1)
+                ON CONFLICT (guild_id, _date)
+                DO UPDATE SET messages_sent = stats.messages_sent + 1;
+                """,
+                guild.id,
+            )
 
-        await self.run_query(query)
+            await self.run_query(query)
 
     @commands.Cog.listener()
     async def on_raw_message_edit(self, payload: RawMessageUpdateEvent):
@@ -114,6 +115,23 @@ class Statistics(commands.Cog):
             await ctx.send("See help for stats command, you need a subcommand here")
 
     @stats.command()
+    async def messages(self, ctx: commands.Context):
+        """Generates a chart with messages activity for the last week"""
+        async with self.bot.pg.pool.acquire() as conn:
+            query = (
+                """
+                SELECT _date, messages_sent, messages_edited, messages_deleted FROM stats 
+                WHERE stats._date >= timezone('utc'::text, now()) - INTERVAL '7 days'
+                AND guild_id = $1 
+                ORDER BY _date DESC;
+                """,
+                ctx.guild.id,
+            )
+            rows = await conn.fetch(*query)
+
+            await ctx.send(f"{rows}")
+
+    @stats.command()
     async def badges(self, ctx: commands.Context):
         """Generates a chart of counted flags (badges)"""
 
@@ -153,7 +171,7 @@ class Statistics(commands.Cog):
         await ctx.send(file=_file)
 
     @stats.command()
-    async def members(self, ctx: commands.Context):
+    async def statuses(self, ctx: commands.Context):
         """Creates a chart of members by statuses"""
 
         @executor
