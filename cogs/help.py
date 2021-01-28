@@ -164,10 +164,6 @@ class MyHelpCommand(commands.MinimalHelpCommand):
             for command in filtered:
                 self.add_subcommand_formatting(command)
 
-            note = self.get_ending_note()
-            if note:
-                self.embed.set_footer(text=note)
-
         await self.send_pages()
 
     async def send_group_help(self, group):
@@ -178,10 +174,6 @@ class MyHelpCommand(commands.MinimalHelpCommand):
             self.paginator.add_line("**%s**" % self.commands_heading)
             for command in filtered:
                 self.add_subcommand_formatting(command)
-
-            note = self.get_ending_note()
-            if note:
-                self.embed.set_footer(text=note)
 
         await self.send_pages()
 
