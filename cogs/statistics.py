@@ -1,7 +1,9 @@
 import io
 from collections import Counter
 
+import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mticker
 import pandas as pd
 import seaborn as sns
 from discord import File, Message, Member, RawMessageDeleteEvent, RawMessageUpdateEvent, Guild, User
@@ -157,7 +159,14 @@ class Statistics(commands.Cog):
                 linewidth=2,
             )
             g.set(xlabel="", ylabel="")
-            plt.xticks(rotation=45)
+
+            # format the ticks
+            ax.xaxis.set_major_locator(mdates.DayLocator())
+            ax.xaxis.set_minor_locator(mticker.NullLocator())
+
+            fig.autofmt_xdate()
+            ax.fmt_xdata = mdates.DateFormatter("%Y-%m-%d")
+
             plt.tight_layout()
 
             buf = io.BytesIO()
