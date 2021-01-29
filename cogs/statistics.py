@@ -140,7 +140,7 @@ class Statistics(commands.Cog):
             df = pd.DataFrame(dict(row) for row in rows)
 
             sns.set_theme(style="whitegrid")
-            fig, ax = plt.subplots(figsize=(10, 7))
+            fig, ax = plt.subplots(figsize=(12, 7))
             fig.suptitle("Messages activity for the last 7 days")
 
             g = sns.lineplot(
