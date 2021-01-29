@@ -190,9 +190,7 @@ class Statistics(commands.Cog):
             data = Counter([flag.name for flags in [m.public_flags.all() for m in ctx.guild.members] for flag in flags])
             data = [{"flag": k, "counter": v} for k, v in data.most_common()]
 
-            df = pd.DataFrame(data)
-
-            sns.set_theme(style="darkgrid")
+            sns.set_theme(style="whitegrid")
             _, ax = plt.subplots(figsize=(14, 7))
 
             g = sns.barplot(
@@ -232,7 +230,7 @@ class Statistics(commands.Cog):
             df = pd.DataFrame(data)
             df = df.sort_values("counter", ascending=False)
 
-            sns.set_theme(style="darkgrid")
+            sns.set_theme(style="whitegrid")
 
             _, ax = plt.subplots(figsize=(12, 7))
             g = sns.barplot(
