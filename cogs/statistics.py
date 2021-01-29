@@ -202,7 +202,9 @@ class Statistics(commands.Cog):
                 ax=ax,
             )
             g.set(xlabel="", ylabel="")
+
             plt.xticks(rotation=45)
+            ax.yaxis.get_major_locator().set_params(integer=True)
 
             plt.tight_layout()
 
@@ -240,7 +242,9 @@ class Statistics(commands.Cog):
                 ax=ax,
             )
             g.set(xlabel="Statuses", ylabel="Members (count)")
+
             plt.xticks(rotation=45)
+            ax.yaxis.get_major_locator().set_params(integer=True)
 
             plt.tight_layout()
 
