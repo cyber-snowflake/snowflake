@@ -122,10 +122,14 @@ class Statistics(commands.Cog):
         async with self.bot.pg.pool.acquire() as conn:
             query = (
                 """
-                SELECT _date, messages_sent, messages_edited, messages_deleted FROM stats 
+                SELECT
+                    unnest(array[_date, _date, _date]) as day,
+                    unnest(array['Messages Sent', 'Messages Edited', 'Messages Deleted']) as criteria,
+                    unnest(array[messages_sent, messages_edited, messages_deleted]) as counter
+                FROM stats
                 WHERE stats._date >= timezone('utc'::text, now()) - INTERVAL '7 days'
-                AND guild_id = $1 
-                ORDER BY _date DESC;
+                AND guild_id = $1
+                ORDER BY _date DESC, criteria DESC;
                 """,
                 ctx.guild.id,
             )
@@ -133,12 +137,7 @@ class Statistics(commands.Cog):
 
         @executor
         def gen_image():
-            data = []
-            for row in rows:
-                data.append({"day": row["_date"], "criteria": "messages sent", "counter": row["messages_sent"]})
-                data.append({"day": row["_date"], "criteria": "messages edited", "counter": row["messages_edited"]})
-                data.append({"day": row["_date"], "criteria": "messages deleted", "counter": row["messages_deleted"]})
-            df = pd.DataFrame(data)
+            df = pd.DataFrame(dict(row) for row in rows)
 
             sns.set_theme(style="whitegrid")
             fig, ax = plt.subplots(figsize=(10, 7))
