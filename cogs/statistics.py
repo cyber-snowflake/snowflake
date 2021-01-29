@@ -188,7 +188,7 @@ class Statistics(commands.Cog):
         @executor
         def gen_image():
             data = Counter([flag.name for flags in [m.public_flags.all() for m in ctx.guild.members] for flag in flags])
-            data = [{"flag": k, "counter": v} for k, v in data.most_common()]
+            df = pd.DataFrame({"flag": k, "counter": v} for k, v in data.most_common())
 
             sns.set_theme(style="whitegrid")
             _, ax = plt.subplots(figsize=(14, 7))
@@ -225,9 +225,7 @@ class Statistics(commands.Cog):
         @executor
         def gen_image():
             data = Counter(str(x.status) for x in ctx.guild.members)
-            data = [{"status": k, "counter": v} for k, v in data.most_common()]
-
-            df = pd.DataFrame(data)
+            df = pd.DataFrame({"status": k, "counter": v} for k, v in data.most_common())
             df = df.sort_values("counter", ascending=False)
 
             sns.set_theme(style="whitegrid")
