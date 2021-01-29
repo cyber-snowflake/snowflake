@@ -163,6 +163,8 @@ class Statistics(commands.Cog):
             ax.xaxis.set_major_locator(mdates.DayLocator())
             ax.xaxis.set_minor_locator(mticker.NullLocator())
 
+            ax.yaxis.get_major_locator().set_params(integer=True)
+
             fig.autofmt_xdate()
             ax.fmt_xdata = mdates.DateFormatter("%Y-%m-%d")
 
