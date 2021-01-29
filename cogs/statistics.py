@@ -17,6 +17,14 @@ class Statistics(commands.Cog):
     def __init__(self, bot: BigMommy) -> None:
         self.bot = bot
 
+    @staticmethod
+    def save_plot():
+        buf = io.BytesIO()
+        plt.savefig(buf, format="png")
+        buf.seek(0)
+        plt.close()
+        return buf
+
     # this code is probably super bad since
     # my knowledge of asyncio is quite bad
     # TODO: check if those listeners need some enhancements
@@ -170,12 +178,7 @@ class Statistics(commands.Cog):
 
             plt.tight_layout()
 
-            buf = io.BytesIO()
-            plt.savefig(buf, format="png")
-            buf.seek(0)
-
-            plt.close()
-            return buf
+            return self.save_plot()
 
         fp = await gen_image()
         _file = File(fp, "stats.png")
@@ -208,12 +211,7 @@ class Statistics(commands.Cog):
 
             plt.tight_layout()
 
-            buf = io.BytesIO()
-            plt.savefig(buf, format="png")
-            buf.seek(0)
-
-            plt.close()
-            return buf
+            return self.save_plot()
 
         fp = await gen_image()
         _file = File(fp, "stats.png")
@@ -248,12 +246,7 @@ class Statistics(commands.Cog):
 
             plt.tight_layout()
 
-            buf = io.BytesIO()
-            plt.savefig(buf, format="png")
-            buf.seek(0)
-
-            plt.close()
-            return buf
+            return self.save_plot()
 
         fp = await gen_image()
         _file = File(fp, "stats.png")
