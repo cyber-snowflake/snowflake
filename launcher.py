@@ -2,8 +2,9 @@ import asyncio
 import importlib
 import logging
 import sys
+from glob import glob
 from os import environ
-from os.path import dirname
+from os.path import basename, dirname, join
 
 import click
 import matplotlib
@@ -54,6 +55,14 @@ def start_bot():
 
     tomodachi = Tomodachi()
     logger.debug("Tomodachi bot instance created")
+
+    cogs = glob(join(dirname(__file__), "tomodachi/cogs/*.py"))
+    for ext_path in cogs:
+        filename = basename(ext_path)[:-3]
+
+        if not filename.endswith("disabled"):
+            tomodachi.load_extension(f"tomodachi.cogs.{filename}")
+            logger.info(f"{filename} extension loaded")
 
     environ["JISHAKU_HIDE"] = "True"
     tomodachi.load_extension("jishaku")

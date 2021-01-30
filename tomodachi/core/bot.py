@@ -1,6 +1,4 @@
 import asyncio
-from glob import glob
-from os.path import basename, dirname, join
 from typing import Optional
 
 import aiohttp
@@ -89,14 +87,6 @@ class Tomodachi(commands.AutoShardedBot):
 
             asyncio.create_task(self.fetch_bot_owner())
             asyncio.create_task(self.cache.blacklist_refresh())
-
-            cogs = glob(join(dirname(__file__), "tomodachi/cogs/*.py"))
-            for ext_path in cogs:
-                filename = basename(ext_path)[:-3]
-
-                if not filename.endswith("disabled"):
-                    self.load_extension(f"tomodachi.cogs.{filename}")
-                    logger.info(f"{filename} extension loaded")
 
         logger.info(f"{self.user} is ready and working")
         logger.info(f"Guilds: {len(self.guilds)}")
