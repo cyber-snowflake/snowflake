@@ -27,7 +27,7 @@ async def get_prefix(client, message: Message):
     return commands.when_mentioned_or(prefix or config.bot_config.default_prefix)(client, message)
 
 
-class BigMommy(commands.AutoShardedBot):
+class Tomodachi(commands.AutoShardedBot):
     def __init__(self, **options):
         super().__init__(
             command_prefix=get_prefix,

@@ -10,7 +10,7 @@ import matplotlib
 from loguru import logger
 
 import configurator as config
-from bot import BigMommy
+from bot import Tomodachi
 from src.loguru_intercept import InterceptHandler
 from utils import cachemanager, psql
 
@@ -52,12 +52,12 @@ def start_bot():
         click.echo(f"Failed to connect to the Redis\n----------\n{e}", file=sys.stderr)
         return
 
-    bot = BigMommy()
-    logger.debug("Bot instance created.")
+    tomodachi = Tomodachi()
+    logger.debug("Tomodachi bot instance created")
 
     environ["JISHAKU_HIDE"] = "True"
-    bot.load_extension("jishaku")
-    bot.run()
+    tomodachi.load_extension("jishaku")
+    tomodachi.run()
 
 
 @click.command()

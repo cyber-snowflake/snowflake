@@ -3,12 +3,12 @@ import itertools
 import discord
 from discord.ext import commands
 
-from bot import BigMommy
+from bot import Tomodachi
 from src.myembed import MyEmbed
 
 
 class Help(commands.Cog):
-    def __init__(self, bot: BigMommy):
+    def __init__(self, bot: Tomodachi):
         self._bot = bot
         self._original_help_command = bot.help_command
         bot.help_command = MyHelpCommand()
@@ -25,7 +25,7 @@ class MyHelpCommand(commands.MinimalHelpCommand):
 
     # Created this as property because pickle complains when it's an attribute idk why ¯\_(ツ)_/¯
     @property
-    def bot(self) -> BigMommy:
+    def bot(self) -> Tomodachi:
         return self.context.bot
 
     def command_not_found(self, string):

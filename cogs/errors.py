@@ -4,12 +4,12 @@ from discord import Forbidden, TextChannel, Embed
 from discord.ext import commands
 from loguru import logger
 
-from bot import BigMommy
+from bot import Tomodachi
 from src.exceptions import BlacklistedUser, InformUser, NotInVoiceChat
 
 
 class ErrorHandler(commands.Cog):
-    def __init__(self, bot: BigMommy):
+    def __init__(self, bot: Tomodachi):
         self.bot = bot
         self.ignored = (BlacklistedUser, commands.CommandNotFound)
 
