@@ -5,16 +5,16 @@ from typing import Optional, Union
 from discord import Attachment, File, Member, User
 from discord.ext import commands
 
-import utils
-from bot import BigMommy
-from src.decos import executor, typing_indicator
-from src.exceptions import InformUser
-from src.regulars import IMAGE_EXTENSIONS
-from src.myembed import MyEmbed
+from tomodachi import utils
+from tomodachi.core.__init__ import Tomodachi
+from tomodachi.src.exceptions import InformUser
+from tomodachi.src.myembed import MyEmbed
+from tomodachi.src.regulars import IMAGE_EXTENSIONS
+from tomodachi.utils.decos import executor, typing_indicator
 
 
 class Images(commands.Cog):
-    def __init__(self, bot: BigMommy) -> None:
+    def __init__(self, bot: Tomodachi) -> None:
         self.bot = bot
 
     async def get_img_bytes(self, attachments: list[Attachment], _obj: Optional[Union[User, Member, str]]) -> bytes:

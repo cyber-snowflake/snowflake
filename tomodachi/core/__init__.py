@@ -1,6 +1,5 @@
 import asyncio
-from glob import glob
-from os.path import basename, dirname, join
+from contextlib import suppress
 from typing import Optional
 
 import aiohttp
@@ -9,7 +8,9 @@ from discord.ext import commands
 from loguru import logger
 
 import configurator as config
-from utils import Emojis, MyIntents, cachemanager, psql, is_blacklisted
+from tomodachi.utils import Emojis, MyIntents, cachemanager, psql, is_blacklisted
+
+__all__ = ["Tomodachi"]
 
 
 async def get_prefix(client, message: Message):
@@ -27,7 +28,7 @@ async def get_prefix(client, message: Message):
     return commands.when_mentioned_or(prefix or config.bot_config.default_prefix)(client, message)
 
 
-class BigMommy(commands.AutoShardedBot):
+class Tomodachi(commands.AutoShardedBot):
     def __init__(self, **options):
         super().__init__(
             command_prefix=get_prefix,
@@ -58,8 +59,11 @@ class BigMommy(commands.AutoShardedBot):
         super().run(config.bot_config.token, reconnect=True)
 
     async def close(self):
-        await self.aiosession.close()
         await super().close()
+
+        with suppress(Exception):
+            await self.aiosession.close()
+            await self.pg.pool.close()
 
     async def fetch_bot_owner(self):
         try:
@@ -89,14 +93,6 @@ class BigMommy(commands.AutoShardedBot):
 
             asyncio.create_task(self.fetch_bot_owner())
             asyncio.create_task(self.cache.blacklist_refresh())
-
-            cogs = glob(join(dirname(__file__), "cogs/*.py"))
-            for ext_path in cogs:
-                filename = basename(ext_path)[:-3]
-
-                if not filename.endswith("disabled"):
-                    self.load_extension(f"cogs.{filename}")
-                    logger.info(f"{filename} extension loaded")
 
         logger.info(f"{self.user} is ready and working")
         logger.info(f"Guilds: {len(self.guilds)}")

@@ -2,6 +2,8 @@ import io
 
 from wand.image import Image
 
+__all__ = ["WandImage"]
+
 
 class WandImage(Image):
     def clone(self):

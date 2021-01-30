@@ -20,10 +20,10 @@ from discord import ConnectionClosed, Forbidden
 from discord.ext import commands
 from discord.ext.menus import MenuPages
 
-from bot import BigMommy
-from src.myembed import MyEmbed
-from src.mymenus import MyPagesSource
-from utils import TimeInput
+from tomodachi.core.__init__ import Tomodachi
+from tomodachi.src.myembed import MyEmbed
+from tomodachi.src.mymenus import MyPagesSource
+from tomodachi.utils import TimeInput
 
 
 class Reminder:
@@ -48,7 +48,7 @@ class Reminder:
 
 
 class Reminders(commands.Cog):
-    def __init__(self, bot: BigMommy):
+    def __init__(self, bot: Tomodachi):
         self.bot = bot
         self.action_event = asyncio.Event()
         self.current_action: Optional[Reminder] = None

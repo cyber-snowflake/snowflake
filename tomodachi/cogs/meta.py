@@ -5,14 +5,14 @@ import arrow
 from discord import Activity, ActivityType, CustomActivity, Guild, Member, Permissions, Role, Spotify, User, utils
 from discord.ext import commands
 
-from bot import BigMommy
-from src.decos import typing_indicator
-from src.myembed import MyEmbed
-from utils.converters import DUser
+from tomodachi.core.__init__ import Tomodachi
+from tomodachi.src.myembed import MyEmbed
+from tomodachi.utils import DUser
+from tomodachi.utils.decos import typing_indicator
 
 
 class Meta(commands.Cog):
-    def __init__(self, bot: BigMommy):
+    def __init__(self, bot: Tomodachi):
         self.bot = bot
 
     flags_repr = {

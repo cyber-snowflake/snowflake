@@ -5,15 +5,15 @@ from discord.ext import commands
 from discord.ext.menus import MenuPages
 from tabulate import tabulate
 
-from bot import BigMommy
-from src.exceptions import InformUser
-from src.myembed import MyEmbed
-from src.mymenus import GuildsPagesSource
-from utils import DUser
+from tomodachi.core.__init__ import Tomodachi
+from tomodachi.src.exceptions import InformUser
+from tomodachi.src.myembed import MyEmbed
+from tomodachi.src.mymenus import GuildsPagesSource
+from tomodachi.utils import DUser
 
 
 class Owner(commands.Cog):
-    def __init__(self, bot: BigMommy):
+    def __init__(self, bot: Tomodachi):
         self.bot = bot
 
     async def cog_check(self, ctx: commands.Context):

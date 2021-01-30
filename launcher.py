@@ -2,20 +2,22 @@ import asyncio
 import importlib
 import logging
 import sys
+from glob import glob
 from os import environ
-from os.path import dirname
+from os.path import basename, dirname, join
+from typing import Any
 
 import click
 import matplotlib
 from loguru import logger
 
 import configurator as config
-from bot import BigMommy
-from src.loguru_intercept import InterceptHandler
-from utils import cachemanager, psql
+from tomodachi.core.__init__ import Tomodachi
+from tomodachi.src.loguru_intercept import InterceptHandler
+from tomodachi.utils import cachemanager, psql
 
 try:
-    uvloop = importlib.import_module("uvloop")
+    uvloop: Any = importlib.import_module("uvloop")
 except ImportError:
     logger.warning(f"uvloop package not found, used {asyncio.get_event_loop_policy()} policy")
 else:
@@ -52,12 +54,20 @@ def start_bot():
         click.echo(f"Failed to connect to the Redis\n----------\n{e}", file=sys.stderr)
         return
 
-    bot = BigMommy()
-    logger.debug("Bot instance created.")
+    tomodachi = Tomodachi()
+    logger.debug("Tomodachi bot instance created")
+
+    cogs = glob(join(dirname(__file__), "tomodachi/cogs/*.py"))
+    for ext_path in cogs:
+        filename = basename(ext_path)[:-3]
+
+        if not filename.endswith("disabled"):
+            tomodachi.load_extension(f"tomodachi.cogs.{filename}")
+            logger.info(f"{filename} extension loaded")
 
     environ["JISHAKU_HIDE"] = "True"
-    bot.load_extension("jishaku")
-    bot.run()
+    tomodachi.load_extension("jishaku")
+    tomodachi.run()
 
 
 @click.command()

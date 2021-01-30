@@ -1,14 +1,14 @@
 import pytz
 from discord.ext import commands
 
-from bot import BigMommy
-from src.decos import typing_indicator
-from src.myembed import MyEmbed
-from utils import is_manager_or_bot_owner
+from tomodachi.core.__init__ import Tomodachi
+from tomodachi.src.myembed import MyEmbed
+from tomodachi.utils import is_manager_or_bot_owner
+from tomodachi.utils.decos import typing_indicator
 
 
 class Admin(commands.Cog):
-    def __init__(self, bot: BigMommy):
+    def __init__(self, bot: Tomodachi):
         self.bot = bot
 
     @commands.group(aliases=("cfg",))

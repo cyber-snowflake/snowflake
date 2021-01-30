@@ -4,11 +4,11 @@ from discord import Activity, ActivityType, Guild
 from discord.ext import commands, tasks
 from loguru import logger
 
-from bot import BigMommy
+from tomodachi.core.__init__ import Tomodachi
 
 
 class Events(commands.Cog):
-    def __init__(self, bot: BigMommy):
+    def __init__(self, bot: Tomodachi):
         self.bot = bot
         self.activities = itertools.cycle(
             [

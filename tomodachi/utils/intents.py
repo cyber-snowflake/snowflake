@@ -1,5 +1,7 @@
 from discord import Intents
 
+__all__ = ["MyIntents"]
+
 
 class MyIntents(Intents):
     def __init__(self):

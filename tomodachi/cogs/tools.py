@@ -9,15 +9,15 @@ from discord.ext import commands
 from gtts import gTTS
 from polyglot.detect import Detector
 
-from bot import BigMommy
-from src.decos import executor, typing_indicator
-from src.exceptions import InformUser
-from src.regulars import IMGUR_EXTENSIONS
-from utils.checks import is_manager_or_bot_owner
+from tomodachi.core.__init__ import Tomodachi
+from tomodachi.src.exceptions import InformUser
+from tomodachi.src.regulars import IMGUR_EXTENSIONS
+from tomodachi.utils import is_manager_or_bot_owner
+from tomodachi.utils.decos import executor, typing_indicator
 
 
 class Tools(commands.Cog):
-    def __init__(self, bot: BigMommy) -> None:
+    def __init__(self, bot: Tomodachi) -> None:
         self.bot = bot
 
     @staticmethod
