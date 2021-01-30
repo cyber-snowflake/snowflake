@@ -5,6 +5,7 @@ import sys
 from glob import glob
 from os import environ
 from os.path import basename, dirname, join
+from typing import Any
 
 import click
 import matplotlib
@@ -16,7 +17,7 @@ from tomodachi.src.loguru_intercept import InterceptHandler
 from tomodachi.utils import cachemanager, psql
 
 try:
-    uvloop = importlib.import_module("uvloop")
+    uvloop: Any = importlib.import_module("uvloop")
 except ImportError:
     logger.warning(f"uvloop package not found, used {asyncio.get_event_loop_policy()} policy")
 else:
