@@ -9,6 +9,8 @@ from loguru import logger
 import configurator as config
 from tomodachi.utils import Emojis, MyIntents, cachemanager, psql, is_blacklisted
 
+__all__ = ["Tomodachi"]
+
 
 async def get_prefix(client, message: Message):
     # Checks if the message in DMs
