@@ -4,7 +4,7 @@ from discord import Activity, ActivityType, Guild
 from discord.ext import commands, tasks
 from loguru import logger
 
-from tomodachi.core.bot import Tomodachi
+from tomodachi.core.__init__ import Tomodachi
 
 
 class Events(commands.Cog):

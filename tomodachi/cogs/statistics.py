@@ -9,7 +9,7 @@ import seaborn as sns
 from discord import File, Message, Member, RawMessageDeleteEvent, RawMessageUpdateEvent, Guild, User
 from discord.ext import commands
 
-from tomodachi.core.bot import Tomodachi
+from tomodachi.core.__init__ import Tomodachi
 from tomodachi.utils.decos import executor
 
 
