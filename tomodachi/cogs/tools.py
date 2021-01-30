@@ -9,7 +9,7 @@ from discord.ext import commands
 from gtts import gTTS
 from polyglot.detect import Detector
 
-from tomodachi.core.__init__ import Tomodachi
+from tomodachi.core import Tomodachi
 from tomodachi.src.exceptions import InformUser
 from tomodachi.src.regulars import IMGUR_EXTENSIONS
 from tomodachi.utils import is_manager_or_bot_owner
@@ -91,7 +91,7 @@ class Tools(commands.Cog):
 
         fp = await attachment.read()
 
-        headers = {"Authorization": f"Client-ID {self.bot.config.Bot.imgur_id}"}
+        headers = {"Authorization": f"Client-ID {self.bot.config.imgur_id}"}
 
         data = FormData()
         data.add_field("image", fp)

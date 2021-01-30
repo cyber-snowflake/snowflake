@@ -4,6 +4,8 @@ from typing import Optional
 import ujson
 from discord import Colour
 
+__all__ = ["bot_config", "redis_config", "postgres_config"]
+
 
 class PostgresConfig:
     __slots__ = (

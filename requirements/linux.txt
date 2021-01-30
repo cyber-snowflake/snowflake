@@ -1,0 +1,3 @@
+PyICU==2.6
+pycld2==0.41
+uvloop>=0.14.0

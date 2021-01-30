@@ -3,7 +3,7 @@ import itertools
 import discord
 from discord.ext import commands
 
-from tomodachi.core.__init__ import Tomodachi
+from tomodachi.core import Tomodachi
 from tomodachi.src.myembed import MyEmbed
 
 
@@ -78,7 +78,7 @@ class MyHelpCommand(commands.MinimalHelpCommand):
 
     def add_bot_commands_formatting(self, commands, heading, *, description=False):
         if commands:
-            joined = "".join(f"`{c.name}` " for c in commands)
+            joined = " • ".join(f"{c.name}" for c in commands)
             if not description:
                 self.embed.add_field(name=f"**{heading}**", value=joined, inline=False)
             else:
@@ -134,7 +134,7 @@ class MyHelpCommand(commands.MinimalHelpCommand):
 
         for category, _commands in to_iterate:
             _commands = sorted(_commands, key=lambda c: c.name) if self.sort_commands else list(_commands)
-            self.add_bot_commands_formatting(_commands, category, description=False)
+            self.add_bot_commands_formatting(_commands, category, description=True)
 
         self.embed.set_thumbnail(url=f"{self.bot.user.avatar_url}")
 
