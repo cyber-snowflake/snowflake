@@ -10,6 +10,8 @@ from tomodachi.src.singleton import MetaSingleton
 from tomodachi.utils.decos import executor
 from .sql import psql
 
+__all__ = ["SETTINGS_PREFIX", "GuildSettings", "cachemanager"]
+
 SETTINGS_PREFIX = "S-"  # S-{GUILD}
 
 

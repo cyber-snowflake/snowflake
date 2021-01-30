@@ -6,6 +6,8 @@ from discord import Emoji
 
 from tomodachi.src.singleton import MetaSingleton
 
+__all__ = ["Emojis"]
+
 
 class Emojis(metaclass=MetaSingleton):
     @staticmethod

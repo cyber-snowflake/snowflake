@@ -5,6 +5,8 @@ from loguru import logger
 
 from tomodachi.src.singleton import MetaSingleton
 
+__all__ = ["psql"]
+
 
 class psql(metaclass=MetaSingleton):  # noqa
     __slots__ = ("_pool",)

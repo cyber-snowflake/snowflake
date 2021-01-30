@@ -6,6 +6,8 @@ from discord import HTTPException, Member, NotFound, User
 from discord.ext.commands import BadArgument, Context, Converter
 from discord.ext.commands.converter import MemberConverter, UserConverter
 
+__all__ = ["TimeInput", "DUser"]
+
 
 class TimeInput(Converter):
     async def convert(self, ctx: Context, argument: str) -> timedelta:
