@@ -9,7 +9,7 @@ from discord.ext import commands
 from gtts import gTTS
 from polyglot.detect import Detector
 
-from bot import Tomodachi
+from tomodachi.core.bot import Tomodachi
 from tomodachi.src.exceptions import InformUser
 from tomodachi.src.regulars import IMGUR_EXTENSIONS
 from tomodachi.utils import is_manager_or_bot_owner

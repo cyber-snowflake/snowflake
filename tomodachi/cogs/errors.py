@@ -4,7 +4,7 @@ from discord import Forbidden, TextChannel, Embed
 from discord.ext import commands
 from loguru import logger
 
-from bot import Tomodachi
+from tomodachi.core.bot import Tomodachi
 from tomodachi.src.exceptions import BlacklistedUser, InformUser, NotInVoiceChat
 
 

@@ -5,8 +5,8 @@ from typing import Optional, Union
 from discord import Attachment, File, Member, User
 from discord.ext import commands
 
-from bot import Tomodachi
 from tomodachi import utils
+from tomodachi.core.bot import Tomodachi
 from tomodachi.src.exceptions import InformUser
 from tomodachi.src.myembed import MyEmbed
 from tomodachi.src.regulars import IMAGE_EXTENSIONS

@@ -1,7 +1,7 @@
 import pytz
 from discord.ext import commands
 
-from bot import Tomodachi
+from tomodachi.core.bot import Tomodachi
 from tomodachi.src.myembed import MyEmbed
 from tomodachi.utils import is_manager_or_bot_owner
 from tomodachi.utils.decos import typing_indicator
