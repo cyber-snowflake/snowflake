@@ -20,7 +20,7 @@ from discord import ConnectionClosed, Forbidden
 from discord.ext import commands
 from discord.ext.menus import MenuPages
 
-from tomodachi.core.__init__ import Tomodachi
+from tomodachi.core import Tomodachi
 from tomodachi.src.myembed import MyEmbed
 from tomodachi.src.mymenus import MyPagesSource
 from tomodachi.utils import TimeInput

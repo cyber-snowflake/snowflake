@@ -12,7 +12,7 @@ import matplotlib
 from loguru import logger
 
 import configurator as config
-from tomodachi.core.__init__ import Tomodachi
+from tomodachi.core import Tomodachi
 from tomodachi.src.loguru_intercept import InterceptHandler
 from tomodachi.utils import cachemanager, psql
 

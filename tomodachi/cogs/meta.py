@@ -5,7 +5,7 @@ import arrow
 from discord import Activity, ActivityType, CustomActivity, Guild, Member, Permissions, Role, Spotify, User, utils
 from discord.ext import commands
 
-from tomodachi.core.__init__ import Tomodachi
+from tomodachi.core import Tomodachi
 from tomodachi.src.myembed import MyEmbed
 from tomodachi.utils import DUser
 from tomodachi.utils.decos import typing_indicator
