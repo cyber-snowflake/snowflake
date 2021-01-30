@@ -1,4 +1,5 @@
 import asyncio
+from contextlib import suppress
 from typing import Optional
 
 import aiohttp
@@ -58,8 +59,11 @@ class Tomodachi(commands.AutoShardedBot):
         super().run(config.bot_config.token, reconnect=True)
 
     async def close(self):
-        await self.aiosession.close()
         await super().close()
+
+        with suppress(Exception):
+            await self.aiosession.close()
+            await self.pg.pool.close()
 
     async def fetch_bot_owner(self):
         try:
