@@ -10,10 +10,10 @@ from gtts import gTTS
 from polyglot.detect import Detector
 
 from bot import Tomodachi
-from src.decos import executor, typing_indicator
-from src.exceptions import InformUser
-from src.regulars import IMGUR_EXTENSIONS
-from utils.checks import is_manager_or_bot_owner
+from tomodachi.src.decos import executor, typing_indicator
+from tomodachi.src.exceptions import InformUser
+from tomodachi.src.regulars import IMGUR_EXTENSIONS
+from tomodachi.utils import is_manager_or_bot_owner
 
 
 class Tools(commands.Cog):

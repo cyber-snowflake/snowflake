@@ -11,8 +11,8 @@ from loguru import logger
 
 import configurator as config
 from bot import Tomodachi
-from src.loguru_intercept import InterceptHandler
-from utils import cachemanager, psql
+from tomodachi.src.loguru_intercept import InterceptHandler
+from tomodachi.utils import cachemanager, psql
 
 try:
     uvloop = importlib.import_module("uvloop")

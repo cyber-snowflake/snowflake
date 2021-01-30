@@ -5,7 +5,7 @@ from discord.ext import commands
 from loguru import logger
 
 from bot import Tomodachi
-from src.exceptions import BlacklistedUser, InformUser, NotInVoiceChat
+from tomodachi.src.exceptions import BlacklistedUser, InformUser, NotInVoiceChat
 
 
 class ErrorHandler(commands.Cog):

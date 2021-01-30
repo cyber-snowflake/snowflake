@@ -4,7 +4,7 @@ import discord
 from discord.ext import commands
 
 from bot import Tomodachi
-from src.myembed import MyEmbed
+from tomodachi.src.myembed import MyEmbed
 
 
 class Help(commands.Cog):

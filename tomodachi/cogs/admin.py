@@ -2,9 +2,9 @@ import pytz
 from discord.ext import commands
 
 from bot import Tomodachi
-from src.decos import typing_indicator
-from src.myembed import MyEmbed
-from utils import is_manager_or_bot_owner
+from tomodachi.src.decos import typing_indicator
+from tomodachi.src.myembed import MyEmbed
+from tomodachi.utils import is_manager_or_bot_owner
 
 
 class Admin(commands.Cog):

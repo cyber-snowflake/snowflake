@@ -5,12 +5,12 @@ from typing import Optional, Union
 from discord import Attachment, File, Member, User
 from discord.ext import commands
 
-import utils
 from bot import Tomodachi
-from src.decos import executor, typing_indicator
-from src.exceptions import InformUser
-from src.myembed import MyEmbed
-from src.regulars import IMAGE_EXTENSIONS
+from tomodachi import utils
+from tomodachi.src.decos import executor, typing_indicator
+from tomodachi.src.exceptions import InformUser
+from tomodachi.src.myembed import MyEmbed
+from tomodachi.src.regulars import IMAGE_EXTENSIONS
 
 
 class Images(commands.Cog):

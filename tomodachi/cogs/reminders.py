@@ -21,9 +21,9 @@ from discord.ext import commands
 from discord.ext.menus import MenuPages
 
 from bot import Tomodachi
-from src.myembed import MyEmbed
-from src.mymenus import MyPagesSource
-from utils import TimeInput
+from tomodachi.src.myembed import MyEmbed
+from tomodachi.src.mymenus import MyPagesSource
+from tomodachi.utils import TimeInput
 
 
 class Reminder:

@@ -1,7 +1,7 @@
 from discord import Member
 from discord.ext import commands
 
-from src.exceptions import NotInVoiceChat, BlacklistedUser
+from tomodachi.src.exceptions import NotInVoiceChat, BlacklistedUser
 
 
 def is_manager_or_bot_owner():

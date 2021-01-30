@@ -5,10 +5,10 @@ import aioredis
 import orjson
 from loguru import logger
 
-from src.decos import executor
-from src.exceptions import CacheException, CacheMiss
-from src.singleton import MetaSingleton
-from utils.sql import psql
+from tomodachi.src.decos import executor
+from tomodachi.src.exceptions import CacheException, CacheMiss
+from tomodachi.src.singleton import MetaSingleton
+from .sql import psql
 
 SETTINGS_PREFIX = "S-"  # S-{GUILD}
 

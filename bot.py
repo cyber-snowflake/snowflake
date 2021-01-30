@@ -9,7 +9,7 @@ from discord.ext import commands
 from loguru import logger
 
 import configurator as config
-from utils import Emojis, MyIntents, cachemanager, psql, is_blacklisted
+from tomodachi.utils import Emojis, MyIntents, cachemanager, psql, is_blacklisted
 
 
 async def get_prefix(client, message: Message):
@@ -90,12 +90,12 @@ class Tomodachi(commands.AutoShardedBot):
             asyncio.create_task(self.fetch_bot_owner())
             asyncio.create_task(self.cache.blacklist_refresh())
 
-            cogs = glob(join(dirname(__file__), "cogs/*.py"))
+            cogs = glob(join(dirname(__file__), "tomodachi/cogs/*.py"))
             for ext_path in cogs:
                 filename = basename(ext_path)[:-3]
 
                 if not filename.endswith("disabled"):
-                    self.load_extension(f"cogs.{filename}")
+                    self.load_extension(f"tomodachi.cogs.{filename}")
                     logger.info(f"{filename} extension loaded")
 
         logger.info(f"{self.user} is ready and working")

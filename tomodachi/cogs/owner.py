@@ -6,10 +6,10 @@ from discord.ext.menus import MenuPages
 from tabulate import tabulate
 
 from bot import Tomodachi
-from src.exceptions import InformUser
-from src.myembed import MyEmbed
-from src.mymenus import GuildsPagesSource
-from utils import DUser
+from tomodachi.src.exceptions import InformUser
+from tomodachi.src.myembed import MyEmbed
+from tomodachi.src.mymenus import GuildsPagesSource
+from tomodachi.utils import DUser
 
 
 class Owner(commands.Cog):
