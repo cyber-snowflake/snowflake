@@ -10,7 +10,7 @@ from discord import File, Message, Member, RawMessageDeleteEvent, RawMessageUpda
 from discord.ext import commands
 
 from bot import Tomodachi
-from tomodachi.src.decos import executor
+from tomodachi.utils.decos import executor
 
 
 class Statistics(commands.Cog):

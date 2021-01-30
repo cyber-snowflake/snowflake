@@ -5,9 +5,9 @@ import aioredis
 import orjson
 from loguru import logger
 
-from tomodachi.src.decos import executor
 from tomodachi.src.exceptions import CacheException, CacheMiss
 from tomodachi.src.singleton import MetaSingleton
+from tomodachi.utils.decos import executor
 from .sql import psql
 
 SETTINGS_PREFIX = "S-"  # S-{GUILD}

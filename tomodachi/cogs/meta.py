@@ -6,9 +6,9 @@ from discord import Activity, ActivityType, CustomActivity, Guild, Member, Permi
 from discord.ext import commands
 
 from bot import Tomodachi
-from tomodachi.src.decos import typing_indicator
 from tomodachi.src.myembed import MyEmbed
 from tomodachi.utils import DUser
+from tomodachi.utils.decos import typing_indicator
 
 
 class Meta(commands.Cog):
