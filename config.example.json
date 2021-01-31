@@ -6,6 +6,7 @@
     "shard_ids": [0],
     "support_guild_id": -1,
     "imgur_id": "backtomonkey",
+    "brand_color": [97, 161, 245],
     "default_status": "hello!"
   },
   "POSTGRES": {
