@@ -3,7 +3,7 @@ from contextlib import suppress
 from typing import Optional
 
 import aiohttp
-from discord import Guild, HTTPException, Message, User, AllowedMentions
+from discord import Guild, HTTPException, Message, User, AllowedMentions, Activity, ActivityType, Status
 from discord.ext import commands
 from loguru import logger
 
@@ -74,6 +74,14 @@ class Tomodachi(commands.AutoShardedBot):
         except HTTPException as e:
             logger.error(e)
 
+    async def reset_status(self):
+        a = Activity(
+            name=f"{config.bot_config.default_status}",
+            type=ActivityType.playing,
+        )
+
+        await self.change_presence(activity=a, status=Status.dnd)
+
     async def on_message_edit(self, before: Message, after: Message):
         # process the message as a command if it was edited quickly
         delta = after.created_at - before.created_at
@@ -93,6 +101,7 @@ class Tomodachi(commands.AutoShardedBot):
 
             asyncio.create_task(self.fetch_bot_owner())
             asyncio.create_task(self.cache.blacklist_refresh())
+            asyncio.create_task(self.reset_status())
 
         logger.info(f"{self.user} is ready and working")
         logger.info(f"Guilds: {len(self.guilds)}")
