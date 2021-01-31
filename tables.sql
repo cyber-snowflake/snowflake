@@ -49,23 +49,23 @@ alter table blacklisted
 		primary key (user_id);
 
 /** Stats **/
-create table stats
+create table if not exists stats
 (
-    guild_id bigint not null,
-    _date date default (current_date at time zone 'UTC')::date not null,
-    members_joined bigint default 0 not null,
-    members_left bigint default 0 not null,
-    members_banned bigint default 0 not null,
-    messages_sent bigint default 0 not null,
-    messages_edited bigint default 0 not null,
-    messages_deleted bigint default 0 not null
+    guild_id         bigint                                              not null,
+    _date            date   default (timezone('utc'::text, now()))::date not null,
+    members_joined   bigint default 0                                    not null,
+    members_left     bigint default 0                                    not null,
+    members_banned   bigint default 0                                    not null,
+    messages_sent    bigint default 0                                    not null,
+    messages_edited  bigint default 0                                    not null,
+    messages_deleted bigint default 0                                    not null
 );
 
-create index stats__date_index
+create index if not exists stats__date_index
     on stats (_date);
 
-create unique index stats_guild_id_and__date_uindex
+create unique index if not exists stats_guild_id_and__date_uindex
     on stats (guild_id, _date);
 
-create index stats_guild_id_index
+create index if not exists stats_guild_id_index
     on stats (guild_id);
