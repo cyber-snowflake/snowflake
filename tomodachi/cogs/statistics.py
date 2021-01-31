@@ -10,7 +10,7 @@ from discord import File, Message, Member, RawMessageDeleteEvent, RawMessageUpda
 from discord.ext import commands
 
 from tomodachi.core import Tomodachi
-from tomodachi.utils.decos import executor
+from tomodachi.utils import executor, typing_indicator
 
 
 class Statistics(commands.Cog):
@@ -125,6 +125,7 @@ class Statistics(commands.Cog):
             await ctx.send("See help for stats command, you need a subcommand here")
 
     @stats.command()
+    @typing_indicator
     async def messages(self, ctx: commands.Context):
         """Generates a chart with messages activity for the last week"""
         async with self.bot.pg.pool.acquire() as conn:
@@ -185,6 +186,7 @@ class Statistics(commands.Cog):
         await ctx.send(file=_file)
 
     @stats.command()
+    @typing_indicator
     async def badges(self, ctx: commands.Context):
         """Generates a chart of counted flags (badges)"""
 
@@ -219,6 +221,7 @@ class Statistics(commands.Cog):
         await ctx.send(file=_file)
 
     @stats.command()
+    @typing_indicator
     async def statuses(self, ctx: commands.Context):
         """Creates a chart of members by statuses"""
 
