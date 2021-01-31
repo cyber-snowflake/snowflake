@@ -53,10 +53,10 @@ class Tomodachi(commands.AutoShardedBot):
         self.aiosession = aiohttp.ClientSession()
 
     def run(self):
-        # Implement blacklist check
-        self.add_check(is_blacklisted)
         # Run the bot
         super().run(config.bot_config.token, reconnect=True)
+        # Implement blacklist check
+        self.add_check(is_blacklisted)
 
     async def close(self):
         await super().close()
