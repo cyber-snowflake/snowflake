@@ -49,12 +49,12 @@ class MyHelpCommand(commands.MinimalHelpCommand):
         self.embed.clear_fields()
 
     async def prepare_help_command(self, ctx, command):
-        await ctx.trigger_typing()
-        self.aliases_heading = "Aliases"
-        self.commands_heading = "Commands"
-        self.paginator.clear()
-        self.prepare_embed()
-        await super().prepare_help_command(ctx, command)
+        async with ctx.typing():
+            self.aliases_heading = "Aliases"
+            self.commands_heading = "Commands"
+            self.paginator.clear()
+            self.prepare_embed()
+            await super().prepare_help_command(ctx, command)
 
     async def send_pages(self):
         destination = self.get_destination()
