@@ -1,6 +1,6 @@
 import asyncio
 from functools import wraps
-from typing import TypeVar
+from typing import TypeVar, Optional, Any
 
 from discord.ext import commands
 from loguru import logger
@@ -24,11 +24,15 @@ def executor(func):
 def typing_indicator(func):
     @wraps(func)
     async def wrapper(*args, **kwargs):
-        for obj in args:
+        executed: Optional[Any] = None
+
+        for obj in set(args):
             if isinstance(obj, commands.Context):
-                await obj.trigger_typing()
+                async with obj.typing():
+                    executed = await func(*args, **kwargs)
                 break
+            else:
+                continue
 
-        return await func(*args, **kwargs)
-
+        return executed
     return wrapper
