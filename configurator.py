@@ -38,6 +38,7 @@ class BotConfig:
         "support_guild_id",
         "imgur_id",
         "_brand_color",
+        "default_status",
     )
 
     def __init__(self, *args, **kwargs) -> None:
@@ -49,6 +50,7 @@ class BotConfig:
         self.support_guild_id: int = kwargs.pop("support_guild_id")
         self.imgur_id: str = kwargs.pop("imgur_id")
         self._brand_color = Colour.from_rgb(*kwargs.pop("brand_color"))
+        self.default_status: str = kwargs.pop("default_status")
 
     @property
     def brand_color(self):

@@ -5,7 +5,8 @@
     "shard_count": 1,
     "shard_ids": [0],
     "support_guild_id": -1,
-    "imgur_id": "backtomonkey"
+    "imgur_id": "backtomonkey",
+    "default_status": "hello!"
   },
   "POSTGRES": {
     "user": "postgres",
