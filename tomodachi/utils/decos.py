@@ -1,6 +1,6 @@
 import asyncio
-from functools import wraps
-from typing import TypeVar, Optional, Any
+from functools import wraps, partial
+from typing import TypeVar, Optional, Any, Callable
 
 from discord.ext import commands
 from loguru import logger
@@ -10,13 +10,15 @@ __all__ = ["executor", "typing_indicator"]
 T = TypeVar("T")
 
 
-def executor(func):
+def executor(func: Callable):
     @wraps(func)
-    def wrapper(*args, **kwargs):
-        loop = asyncio.get_running_loop()
+    async def wrapper(*args, **kwargs):
         logger.debug(f"Running {func.__name__}")
-        future = loop.run_in_executor(None, lambda: func(*args, **kwargs))
-        return future
+        to_run = partial(func, *args, **kwargs)
+
+        loop = asyncio.get_event_loop()
+        result = await loop.run_in_executor(None, to_run)
+        return result
 
     return wrapper
 
@@ -35,4 +37,5 @@ def typing_indicator(func):
                 continue
 
         return executed
+
     return wrapper
