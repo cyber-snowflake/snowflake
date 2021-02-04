@@ -10,7 +10,7 @@ from tomodachi.core import Tomodachi
 from tomodachi.src.exceptions import InformUser
 from tomodachi.src.myembed import MyEmbed
 from tomodachi.src.regulars import IMAGE_EXTENSIONS
-from tomodachi.utils.decos import executor, typing_indicator
+from tomodachi.utils import executor, typing
 
 
 class Images(commands.Cog):
@@ -47,7 +47,7 @@ class Images(commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
-    @typing_indicator
+    @typing(inform_if_long=True)
     async def magik(self, ctx: commands.Context, user_or_url: Optional[Union[User, Member, str]] = None):
         """Woosh! It's a magik..."""
         fp = await self.get_img_bytes(ctx.message.attachments, user_or_url or ctx.author)
@@ -77,7 +77,7 @@ class Images(commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
-    @typing_indicator
+    @typing(inform_if_long=True)
     async def implode(
         self, ctx: commands.Context, amount: float = 0.35, user_or_url: Optional[Union[User, Member, str]] = None
     ):
@@ -104,7 +104,7 @@ class Images(commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
-    @typing_indicator
+    @typing(inform_if_long=True)
     async def swirl(
         self, ctx: commands.Context, degrees: int = -90, user_or_url: Optional[Union[User, Member, str]] = None
     ):
@@ -135,7 +135,7 @@ class Images(commands.Cog):
             raise InformUser("You have to specify a subcommand, see help.")
 
     @blur.command()
-    @typing_indicator
+    @typing(inform_if_long=True)
     async def normal(
         self,
         ctx: commands.Context,
@@ -162,7 +162,7 @@ class Images(commands.Cog):
         await ctx.send(file=_file, embed=e)
 
     @blur.command()
-    @typing_indicator
+    @typing(inform_if_long=True)
     async def adaptive(
         self,
         ctx: commands.Context,
