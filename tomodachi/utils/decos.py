@@ -1,11 +1,13 @@
 import asyncio
 from functools import wraps, partial
-from typing import TypeVar, Optional, Any, Callable
+from typing import TypeVar, Optional, Callable
 
+from discord import Message
 from discord.ext import commands
+from discord.utils import find
 from loguru import logger
 
-__all__ = ["executor", "typing_indicator"]
+__all__ = ["executor", "typing"]
 
 T = TypeVar("T")
 
@@ -23,19 +25,29 @@ def executor(func: Callable):
     return wrapper
 
 
-def typing_indicator(func):
-    @wraps(func)
-    async def wrapper(*args, **kwargs):
-        executed: Optional[Any] = None
+def typing(inform_if_long: bool = False):
+    def inner(func: Callable):
+        @wraps(func)
+        async def wrapper(*args, **kwargs):
+            ctx: Optional[commands.Context] = find(lambda el: isinstance(el, commands.Context), args)
 
-        for obj in set(args):
-            if isinstance(obj, commands.Context):
-                async with obj.typing():
+            if not ctx:
+                return await func(*args, **kwargs)
+
+            info: Optional[Message] = None
+
+            if inform_if_long is True:
+                info = await ctx.reply("This operation may take a while, please, be patient.")
+
+            try:
+                async with ctx.typing():
                     executed = await func(*args, **kwargs)
-                break
-            else:
-                continue
+            finally:
+                if inform_if_long and info:
+                    await info.delete()
 
-        return executed
+            return executed
 
-    return wrapper
+        return wrapper
+
+    return inner

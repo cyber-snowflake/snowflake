@@ -7,8 +7,7 @@ from discord.ext import commands
 
 from tomodachi.core import Tomodachi
 from tomodachi.src.myembed import MyEmbed
-from tomodachi.utils import DUser
-from tomodachi.utils.decos import typing_indicator
+from tomodachi.utils import DUser, typing
 
 
 class Meta(commands.Cog):
@@ -42,7 +41,7 @@ class Meta(commands.Cog):
     @commands.command(aliases=("ui",))
     @commands.guild_only()
     @commands.cooldown(1, 10, commands.BucketType.user)
-    @typing_indicator
+    @typing()
     async def userinfo(self, ctx: commands.Context, user: DUser = None):
         """Shows information about discord users."""
         settings = await self.bot.cache.get(ctx.guild.id)
@@ -141,7 +140,7 @@ class Meta(commands.Cog):
     @commands.command(aliases=("server", "si"))
     @commands.guild_only()
     @commands.cooldown(1, 5, commands.BucketType.user)
-    @typing_indicator
+    @typing()
     async def serverinfo(self, ctx: commands.Context, server_id: int = None):
         """Shows information summary about the server"""
         settings = await self.bot.cache.get(ctx.guild.id)

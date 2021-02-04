@@ -12,8 +12,7 @@ from polyglot.detect import Detector
 from tomodachi.core import Tomodachi
 from tomodachi.src.exceptions import InformUser
 from tomodachi.src.regulars import IMGUR_EXTENSIONS
-from tomodachi.utils import is_manager_or_bot_owner
-from tomodachi.utils.decos import executor, typing_indicator
+from tomodachi.utils import is_manager_or_bot_owner, executor, typing
 
 
 class Tools(commands.Cog):
@@ -62,7 +61,7 @@ class Tools(commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
-    @typing_indicator
+    @typing()
     async def tts(self, ctx: commands.Context, *, text: str):
         """Converts text into a speech"""
         if len(text) <= 4:
@@ -78,7 +77,7 @@ class Tools(commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 4, commands.BucketType.user)
-    @typing_indicator
+    @typing()
     async def imgur(self, ctx: commands.Context):
         """Upload an image from discord to imgur"""
         attachment: Attachment = a[0] if len(a := ctx.message.attachments) > 0 else None
