@@ -7,7 +7,7 @@ from discord.ext import commands
 from discord.utils import find
 from loguru import logger
 
-__all__ = ["executor", "typing_indicator", "typing"]
+__all__ = ["executor", "typing"]
 
 T = TypeVar("T")
 
@@ -26,6 +26,7 @@ def executor(func: Callable):
 
 
 def typing_indicator(func):
+    """deprecated, use `@typing()` decorator instead"""
     @wraps(func)
     async def wrapper(*args, **kwargs):
         executed: Optional[Any] = None
