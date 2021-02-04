@@ -1,6 +1,6 @@
 import asyncio
 from functools import wraps, partial
-from typing import TypeVar, Optional, Any, Callable
+from typing import TypeVar, Optional, Callable
 
 from discord import Message
 from discord.ext import commands
@@ -21,25 +21,6 @@ def executor(func: Callable):
         loop = asyncio.get_event_loop()
         result = await loop.run_in_executor(None, to_run)
         return result
-
-    return wrapper
-
-
-def typing_indicator(func):
-    """deprecated, use `@typing()` decorator instead"""
-    @wraps(func)
-    async def wrapper(*args, **kwargs):
-        executed: Optional[Any] = None
-
-        for obj in set(args):
-            if isinstance(obj, commands.Context):
-                async with obj.typing():
-                    executed = await func(*args, **kwargs)
-                break
-            else:
-                continue
-
-        return executed
 
     return wrapper
 
