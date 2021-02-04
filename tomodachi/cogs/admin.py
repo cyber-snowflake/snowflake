@@ -3,8 +3,7 @@ from discord.ext import commands
 
 from tomodachi.core import Tomodachi
 from tomodachi.src.myembed import MyEmbed
-from tomodachi.utils import is_manager_or_bot_owner
-from tomodachi.utils.decos import typing_indicator
+from tomodachi.utils import is_manager_or_bot_owner, typing
 
 
 class Admin(commands.Cog):
@@ -26,7 +25,7 @@ class Admin(commands.Cog):
             await ctx.send(embed=embed)
 
     @config.command()
-    @typing_indicator
+    @typing()
     async def prefix(self, ctx: commands.Context, new_prefix: str = None):
         """Manage server's prefix."""
         if not new_prefix:
@@ -48,7 +47,7 @@ class Admin(commands.Cog):
                 await ctx.send(":x: Bot's prefix didn't change. Contact bot owner if it happens again.")
 
     @config.command(aliases=("tz",))
-    @typing_indicator
+    @typing()
     async def timezone(self, ctx: commands.Context, tz: str = None):
         """Changes server's timezone.
 
