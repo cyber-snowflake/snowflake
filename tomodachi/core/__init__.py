@@ -10,7 +10,7 @@ from loguru import logger
 import configurator as config
 from tomodachi.utils import Emojis, MyIntents, cachemanager, psql, is_blacklisted
 
-__all__ = ["Tomodachi"]
+__all__ = ["Tomodachi", "Module"]
 
 
 async def get_prefix(client, message: Message):
@@ -106,3 +106,10 @@ class Tomodachi(commands.AutoShardedBot):
         logger.info(f"{self.user} is ready and working")
         logger.info(f"Guilds: {len(self.guilds)}")
         logger.info(f"Cached Users: {len(set(self.users))}")
+
+
+class Module(commands.Cog):
+    """Subclassed Cog just to reduce the amount of duplicate code"""
+
+    def __init__(self, bot: Tomodachi):
+        self.bot = bot
