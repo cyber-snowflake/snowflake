@@ -97,7 +97,7 @@ class MyHelpCommand(commands.MinimalHelpCommand):
 
         if cooldown := command._buckets._cooldown:
             self.embed.add_field(
-                name="Cooldowns", value=f"{self.bot.my_emojis('rich_presence')} {int(cooldown.per)} seconds"
+                name="Cooldowns", value=f"{self.bot.my_emojis('slowmode')} {int(cooldown.per)} seconds"
             )
 
         signature = self.get_command_signature(command)
