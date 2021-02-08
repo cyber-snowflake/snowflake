@@ -25,7 +25,7 @@ class Emojis(metaclass=MetaSingleton):
         logging.info("~ Custom Emojis initiated.")
 
     @cache
-    def use(self, name: str):
+    def __call__(self, name: str):
         return str(self._emojis[name])
 
     def find_attr(self, query: str):
