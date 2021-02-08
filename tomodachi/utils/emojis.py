@@ -1,5 +1,6 @@
 import logging
 from collections import defaultdict
+from functools import cache
 from typing import Iterable, Union
 
 from discord import Emoji
@@ -22,6 +23,10 @@ class Emojis(metaclass=MetaSingleton):
             self._emojis[emoji.name] = emoji
 
         logging.info("~ Custom Emojis initiated.")
+
+    @cache
+    def use(self, name: str):
+        return str(self._emojis[name])
 
     def find_attr(self, query: str):
         """Simplified getattr for this emojis singleton class"""
