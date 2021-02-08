@@ -200,7 +200,7 @@ class Reminders(commands.Cog):
         actions = (Reminder(data=dict(row)) for row in rows)
         entries = [f"**(ID: {action.id})** {arrow.get(action.trigger_at).humanize()}" for action in actions]
 
-        src = MyPagesSource(entries, per_page=5, title=f"{self.bot.my_emojis.slowmode} Reminders List")
+        src = MyPagesSource(entries, per_page=5, title=f"{self.bot.my_emojis('slowmode')} Reminders List")
         menu = MenuPages(src, clear_reactions_after=True)
 
         await menu.start(ctx)

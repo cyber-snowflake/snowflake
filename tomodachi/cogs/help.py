@@ -95,8 +95,10 @@ class MyHelpCommand(commands.MinimalHelpCommand):
         if command.description:
             self.paginator.add_line(command.description, empty=True)
 
-        if cooldown := command._buckets._cooldown:  # noqa
-            self.embed.add_field(name="Cooldowns", value=f"{self.bot.my_emojis.slowmode} {int(cooldown.per)} seconds")
+        if cooldown := command._buckets._cooldown:
+            self.embed.add_field(
+                name="Cooldowns", value=f"{self.bot.my_emojis('rich_presence')} {int(cooldown.per)} seconds"
+            )
 
         signature = self.get_command_signature(command)
         if command.aliases:
@@ -107,7 +109,7 @@ class MyHelpCommand(commands.MinimalHelpCommand):
 
         if command.help:
             try:
-                self.paginator.add_line(f"{self.bot.my_emojis.rich_presence} {command.help}", empty=True)
+                self.paginator.add_line(f"{self.bot.my_emojis('rich_presence')} {command.help}", empty=True)
             except RuntimeError:
                 for line in command.help.splitlines():
                     self.paginator.add_line(line)
