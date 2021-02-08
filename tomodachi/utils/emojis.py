@@ -18,12 +18,6 @@ class Emojis(metaclass=MetaSingleton):
     def __init__(self):
         self._emojis: defaultdict[str, Union[Emoji, str]] = defaultdict(self._default_emoji_factory)
 
-    def setup(self, emojis: Iterable[Emoji]):
-        for emoji in set(emojis):
-            self._emojis[emoji.name] = emoji
-
-        logging.info("~ Custom Emojis initiated.")
-
     @cache
     def __call__(self, name: str):
         return str(self._emojis[name])
@@ -36,6 +30,12 @@ class Emojis(metaclass=MetaSingleton):
             return None
         else:
             return x
+
+    def setup(self, emojis: Iterable[Emoji]):
+        for emoji in set(emojis):
+            self._emojis[emoji.name] = emoji
+
+        logging.info("~ Custom Emojis initiated.")
 
     @property
     def staff(self):
