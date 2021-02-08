@@ -57,10 +57,10 @@ class Meta(commands.Cog):
 
         flags = ""
         if user.id == self.bot.owner.id:
-            flags += f"{self.bot.my_emojis.owner} **Bot Owner**\n"
+            flags += f"{self.bot.my_emojis('owner')} **Bot Owner**\n"
 
         for flag in sorted(user.public_flags.all(), key=lambda x: x.value):
-            flags += f"{self.bot.my_emojis.find_attr(flag.name)} {self.flag_humanize(flag.name)}\n"
+            flags += f"{self.bot.my_emojis(flag.name)} {self.flag_humanize(flag.name)}\n"
 
         if flags:
             embed.add_field(name="Flags", value=flags, inline=False)
@@ -91,14 +91,14 @@ class Meta(commands.Cog):
             embed.add_field(
                 name="Join date",
                 inline=False,
-                value=f"{self.bot.my_emojis.slowmode} {arrow_joined_at.humanize()} (`{arrow_joined_at}`)",
+                value=f"{self.bot.my_emojis('slowmode')} {arrow_joined_at.humanize()} (`{arrow_joined_at}`)",
             )
 
         arrow_created_at = arrow.get(user.created_at).to(settings.tz)
         embed.add_field(
             name="Account creation date",
             inline=False,
-            value=f"{self.bot.my_emojis.slowmode} {arrow_created_at.humanize()} (`{arrow_created_at}`)",
+            value=f"{self.bot.my_emojis('slowmode')} {arrow_created_at.humanize()} (`{arrow_created_at}`)",
         )
 
         if user.id in self.bot.cache.blacklist:
@@ -158,8 +158,8 @@ class Meta(commands.Cog):
         if guild.description:
             embed.description += f"{guild.description}\n"
         embed.description += (
-            f"{self.bot.my_emojis.owner} {guild.owner}\n"
-            f"{self.bot.my_emojis.wump_flag} {str(guild.region).replace('-', ' ').capitalize()}"
+            f"{self.bot.my_emojis('owner')} {guild.owner}\n"
+            f"{self.bot.my_emoji('wump_flag')} {str(guild.region).replace('-', ' ').capitalize()}"
         )
 
         if guild.features:
@@ -186,16 +186,16 @@ class Meta(commands.Cog):
             features = ""
             for feature in guild.features:
                 if humanized_feature := feature_cases.get(feature):
-                    features += f"{self.bot.my_emojis.rounded_check} {humanized_feature}\n"
+                    features += f"{self.bot.my_emojis('rounded_check')} {humanized_feature}\n"
             embed.add_field(name="Features", value=features)
 
         members = Counter(str(m.status) for m in guild.members)
         members_field = (
-            f"{self.bot.my_emojis.online} {members['online']} "
-            f"{self.bot.my_emojis.idle} {members['idle']} "
-            f"{self.bot.my_emojis.dnd} {members['dnd']} "
-            f"{self.bot.my_emojis.offline} {members['offline']}\n"
-            f"{self.bot.my_emojis.members} Total: {guild.member_count}"
+            f"{self.bot.my_emojis('online')} {members['online']} "
+            f"{self.bot.my_emojis('idle')} {members['idle']} "
+            f"{self.bot.my_emojis('dnd')} {members['dnd']} "
+            f"{self.bot.my_emojis('offline')} {members['offline']}\n"
+            f"{self.bot.my_emojis('members')} Total: {guild.member_count}"
         )
 
         embed.add_field(name="Members", value=members_field)
@@ -209,7 +209,7 @@ class Meta(commands.Cog):
         flags_field = ""
         sflags = Counter(walk_members_flags())
         for flag in OrderedDict(sflags.most_common()):
-            flags_field += f"{self.bot.my_emojis.find_attr(flag)} {sflags[flag]} "
+            flags_field += f"{self.bot.my_emojis(flag)} {sflags[flag]} "
 
         if flags_field:
             embed.add_field(name="Badges Stats", value=flags_field, inline=False)
@@ -217,7 +217,7 @@ class Meta(commands.Cog):
         created_at = arrow.get(guild.created_at).to(settings.tz)
         embed.add_field(
             name="Server creation date",
-            value=f"{self.bot.my_emojis.slowmode} {created_at.humanize()} (`{created_at}`)",
+            value=f"{self.bot.my_emojis('slowmode')} {created_at.humanize()} (`{created_at}`)",
             inline=False,
         )
 
