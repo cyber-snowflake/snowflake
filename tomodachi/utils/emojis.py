@@ -11,6 +11,8 @@ __all__ = ["Emojis"]
 
 
 class Emojis(metaclass=MetaSingleton):
+    __slots__ = ("_emojis",)
+
     @staticmethod
     def _default_emoji_factory():
         return "\U0001f614"
