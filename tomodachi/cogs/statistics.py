@@ -9,14 +9,11 @@ import seaborn as sns
 from discord import File, Message, Member, RawMessageDeleteEvent, RawMessageUpdateEvent, Guild, User
 from discord.ext import commands
 
-from tomodachi.core import Tomodachi
+from tomodachi.core import Module
 from tomodachi.utils import executor, typing
 
 
-class Statistics(commands.Cog):
-    def __init__(self, bot: Tomodachi) -> None:
-        self.bot = bot
-
+class Statistics(Module):
     @staticmethod
     def save_plot():
         buf = io.BytesIO()

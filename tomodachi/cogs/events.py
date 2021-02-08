@@ -2,13 +2,10 @@ from discord import Guild
 from discord.ext import commands
 from loguru import logger
 
-from tomodachi.core import Tomodachi
+from tomodachi.core import Module
 
 
-class Events(commands.Cog):
-    def __init__(self, bot: Tomodachi):
-        self.bot = bot
-
+class Events(Module):
     @commands.Cog.listener()
     async def on_guild_join(self, guild: Guild):
         await self.bot.pg.add_guild(guild.id)

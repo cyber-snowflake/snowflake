@@ -5,17 +5,14 @@ from discord.ext import commands
 from discord.ext.menus import MenuPages
 from tabulate import tabulate
 
-from tomodachi.core import Tomodachi
+from tomodachi.core import Module
 from tomodachi.src.exceptions import InformUser
 from tomodachi.src.myembed import MyEmbed
 from tomodachi.src.mymenus import GuildsPagesSource
 from tomodachi.utils import DUser
 
 
-class Owner(commands.Cog):
-    def __init__(self, bot: Tomodachi):
-        self.bot = bot
-
+class Owner(Module):
     async def cog_check(self, ctx: commands.Context):
         return await ctx.bot.is_owner(ctx.author)
 

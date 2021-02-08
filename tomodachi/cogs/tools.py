@@ -9,16 +9,13 @@ from discord.ext import commands
 from gtts import gTTS
 from polyglot.detect import Detector
 
-from tomodachi.core import Tomodachi
+from tomodachi.core import Module
 from tomodachi.src.exceptions import InformUser
 from tomodachi.src.regulars import IMGUR_EXTENSIONS
 from tomodachi.utils import is_manager_or_bot_owner, executor, typing
 
 
-class Tools(commands.Cog):
-    def __init__(self, bot: Tomodachi) -> None:
-        self.bot = bot
-
+class Tools(Module):
     @staticmethod
     @executor
     def make_tts(text: str, *, language_code: str = None):

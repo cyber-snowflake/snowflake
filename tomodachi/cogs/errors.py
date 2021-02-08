@@ -4,14 +4,12 @@ from discord import Forbidden, TextChannel, Embed
 from discord.ext import commands
 from loguru import logger
 
-from tomodachi.core import Tomodachi
+from tomodachi.core import Module
 from tomodachi.src.exceptions import BlacklistedUser, InformUser, NotInVoiceChat
 
 
-class ErrorHandler(commands.Cog):
-    def __init__(self, bot: Tomodachi):
-        self.bot = bot
-        self.ignored = (BlacklistedUser, commands.CommandNotFound)
+class ErrorHandler(Module):
+    ignored = (BlacklistedUser, commands.CommandNotFound)
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx: commands.Context, error):

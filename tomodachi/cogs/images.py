@@ -6,17 +6,14 @@ from discord import Attachment, File, Member, User
 from discord.ext import commands
 
 from tomodachi import utils
-from tomodachi.core import Tomodachi
+from tomodachi.core import Module
 from tomodachi.src.exceptions import InformUser
 from tomodachi.src.myembed import MyEmbed
 from tomodachi.src.regulars import IMAGE_EXTENSIONS
 from tomodachi.utils import executor, typing
 
 
-class Images(commands.Cog):
-    def __init__(self, bot: Tomodachi) -> None:
-        self.bot = bot
-
+class Images(Module):
     async def get_img_bytes(self, attachments: list[Attachment], _obj: Optional[Union[User, Member, str]]) -> bytes:
         if len(attachments) > 0:
             fp: bytes = await attachments[0].read()

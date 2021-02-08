@@ -3,19 +3,19 @@ import itertools
 import discord
 from discord.ext import commands
 
-from tomodachi.core import Tomodachi
+from tomodachi.core import Module, Tomodachi
 from tomodachi.src.myembed import MyEmbed
 
 
-class Help(commands.Cog):
-    def __init__(self, bot: Tomodachi):
-        self._bot = bot
+class Help(Module):
+    def __init__(self, bot):
+        super().__init__(bot)
         self._original_help_command = bot.help_command
         bot.help_command = MyHelpCommand()
         bot.help_command.cog = self
 
     def cog_unload(self):
-        self._bot.help_command = self._original_help_command
+        self.bot.help_command = self._original_help_command
 
 
 class MyHelpCommand(commands.MinimalHelpCommand):

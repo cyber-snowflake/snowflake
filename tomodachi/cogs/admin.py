@@ -1,15 +1,12 @@
 import pytz
 from discord.ext import commands
 
-from tomodachi.core import Tomodachi
+from tomodachi.core import Module
 from tomodachi.src.myembed import MyEmbed
 from tomodachi.utils import is_manager_or_bot_owner, typing
 
 
-class Admin(commands.Cog):
-    def __init__(self, bot: Tomodachi):
-        self.bot = bot
-
+class Admin(Module):
     @commands.group(aliases=("cfg",))
     @commands.guild_only()
     @is_manager_or_bot_owner()
