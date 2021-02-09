@@ -69,3 +69,22 @@ create unique index if not exists stats_guild_id_and__date_uindex
 
 create index if not exists stats_guild_id_index
     on stats (guild_id);
+
+/** Reaction roles **/
+create table if not exists reaction_roles
+(
+    guild_id   bigint not null,
+    channel_id bigint not null,
+    message_id bigint not null,
+    emoji      text   not null,
+    role_id    bigint not null
+);
+
+create unique index if not exists reaction_roles_guild_id_channel_id_message_id_emoji_role_id_uin
+    on reaction_roles (guild_id, channel_id, message_id, emoji, role_id);
+
+create index if not exists reaction_roles_guild_id_index
+    on reaction_roles (guild_id);
+
+create index if not exists reaction_roles_message_id_index
+    on reaction_roles (message_id);
