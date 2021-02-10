@@ -3,7 +3,17 @@ from contextlib import suppress
 from typing import Optional
 
 import aiohttp
-from discord import Guild, HTTPException, Message, User, AllowedMentions, Activity, ActivityType, Status
+from discord import (
+    Guild,
+    HTTPException,
+    Message,
+    User,
+    AllowedMentions,
+    Activity,
+    ActivityType,
+    Status,
+    MemberCacheFlags,
+)
 from discord.ext import commands
 from loguru import logger
 
@@ -29,7 +39,7 @@ async def get_prefix(client, message: Message):
 
 
 class Tomodachi(commands.AutoShardedBot):
-    def __init__(self, **options):
+    def __init__(self):
         super().__init__(
             command_prefix=get_prefix,
             allowed_mentions=AllowedMentions(everyone=False, users=False, roles=False, replied_user=False),
@@ -37,7 +47,8 @@ class Tomodachi(commands.AutoShardedBot):
             shard_count=config.bot_config.shard_count,
             shard_ids=config.bot_config.shard_ids,
             intents=MyIntents(),
-            **options,
+            max_messages=200,
+            member_cache_flags=MemberCacheFlags(online=True, voice=False, joined=True),
         )
 
         self.was_ready_once = False
