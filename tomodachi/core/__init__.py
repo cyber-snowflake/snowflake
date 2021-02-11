@@ -63,6 +63,8 @@ class Tomodachi(commands.AutoShardedBot):
 
         self.aiosession = aiohttp.ClientSession()
 
+        self.default_cd = commands.CooldownMapping.from_cooldown(10, 12, commands.BucketType.user)
+
     def run(self):
         # Run the bot
         super().run(config.bot_config.token, reconnect=True)
@@ -92,6 +94,16 @@ class Tomodachi(commands.AutoShardedBot):
         )
 
         await self.change_presence(activity=a, status=Status.dnd)
+
+    async def on_message(self, message):
+        bucket = self.default_cd.get_bucket(message)
+        retry_after = bucket.update_rate_limit()
+        ctx = await self.get_context(message)
+
+        if retry_after:
+            raise commands.CommandOnCooldown(self.default_cd, retry_after) from None
+        else:
+            await self.invoke(ctx)
 
     async def on_message_edit(self, before: Message, after: Message):
         # process the message as a command if it was edited quickly
