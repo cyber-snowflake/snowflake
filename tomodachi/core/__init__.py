@@ -3,27 +3,17 @@ from contextlib import suppress
 from typing import Optional
 
 import aiohttp
-from discord import (
-    Guild,
-    HTTPException,
-    Message,
-    User,
-    AllowedMentions,
-    Activity,
-    ActivityType,
-    Status,
-    MemberCacheFlags,
-)
+import discord as dc
 from discord.ext import commands
 from loguru import logger
 
 import configurator as config
-from tomodachi.utils import Emojis, MyIntents, cachemanager, psql, is_blacklisted
+from tomodachi.utils import Emojis, MyIntents, cachemanager, is_blacklisted, psql
 
 __all__ = ["Tomodachi", "Module"]
 
 
-async def get_prefix(client, message: Message):
+async def get_prefix(client, message: dc.Message):
     # Checks if the message in DMs
     if not message.guild:
         return commands.when_mentioned_or(config.bot_config.default_prefix)(client, message)
@@ -42,13 +32,13 @@ class Tomodachi(commands.AutoShardedBot):
     def __init__(self):
         super().__init__(
             command_prefix=get_prefix,
-            allowed_mentions=AllowedMentions(everyone=False, users=False, roles=False, replied_user=False),
+            allowed_mentions=dc.AllowedMentions(everyone=False, users=False, roles=False, replied_user=False),
             case_insensitive=True,
             shard_count=config.bot_config.shard_count,
             shard_ids=config.bot_config.shard_ids,
             intents=MyIntents(),
             max_messages=200,
-            member_cache_flags=MemberCacheFlags(online=True, voice=False, joined=True),
+            member_cache_flags=dc.MemberCacheFlags(online=True, voice=False, joined=True),
         )
 
         self.was_ready_once = False
@@ -57,8 +47,8 @@ class Tomodachi(commands.AutoShardedBot):
         self.pg = psql()
         self.cache = cachemanager()
 
-        self.owner: Optional[User] = None
-        self.support_guild: Optional[Guild] = None
+        self.owner: Optional[dc.User] = None
+        self.support_guild: Optional[dc.Guild] = None
         self.my_emojis = Emojis()
 
         self.aiosession = aiohttp.ClientSession()
@@ -84,18 +74,18 @@ class Tomodachi(commands.AutoShardedBot):
             self.owner = info.owner
 
             logger.info("Owner data has been refreshed.")
-        except HTTPException as e:
+        except dc.HTTPException as e:
             logger.error(e)
 
     async def reset_status(self):
-        a = Activity(
+        a = dc.Activity(
             name=f"{config.bot_config.default_status}",
-            type=ActivityType.playing,
+            type=dc.ActivityType.playing,
         )
 
-        await self.change_presence(activity=a, status=Status.dnd)
+        await self.change_presence(activity=a, status=dc.Status.dnd)
 
-    async def on_message(self, message):
+    async def on_message(self, message: dc.Message):
         bucket = self.default_cd.get_bucket(message)
         retry_after = bucket.update_rate_limit()
         ctx = await self.get_context(message)
@@ -105,7 +95,7 @@ class Tomodachi(commands.AutoShardedBot):
         else:
             await self.invoke(ctx)
 
-    async def on_message_edit(self, before: Message, after: Message):
+    async def on_message_edit(self, before: dc.Message, after: dc.Message):
         # process the message as a command if it was edited quickly
         delta = after.created_at - before.created_at
         if delta.seconds <= 60:
