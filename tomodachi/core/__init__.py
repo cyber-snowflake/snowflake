@@ -88,10 +88,12 @@ class Tomodachi(commands.AutoShardedBot):
     async def on_message(self, message: dc.Message):
         bucket = self.default_cd.get_bucket(message)
         retry_after = bucket.update_rate_limit()
+        author_id = message.author.id
+
         ctx = await self.get_context(message)
 
-        if retry_after:
-            raise commands.CommandOnCooldown(self.default_cd, retry_after) from None
+        if retry_after and author_id != self.owner_id:
+            logger.debug(f"{message.author} ({author_id}) is spamming.")
         else:
             await self.invoke(ctx)
 
