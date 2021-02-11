@@ -123,6 +123,65 @@ class Statistics(Module):
 
     @stats.command()
     @typing()
+    async def members(self, ctx: commands.Context):
+        """Generates a chart of audience retention for the last 7 days"""
+        async with self.bot.pg.pool.acquire() as conn:
+            query = """
+                SELECT
+                    unnest(array[_date, _date, _date]) as day,
+                    unnest(array['Members Joined', 'Members Left', 'Members Banned']) as criteria,
+                    unnest(array[members_joined, members_left, members_banned]) as counter
+                FROM stats
+                WHERE stats._date >= timezone('utc'::text, now()) - INTERVAL '7 days'
+                AND guild_id = $1
+                ORDER BY _date DESC, criteria DESC;
+                """
+
+            rows = await conn.fetch(query, ctx.guild.id)
+
+        @executor
+        def gen_image():
+            df = pd.DataFrame(dict(row) for row in rows)
+
+            sns.set_theme(style="whitegrid")
+            fig, ax = plt.subplots(figsize=(12, 7))
+            fig.suptitle("Members retention for the last 7 days")
+
+            g = sns.lineplot(
+                ax=ax,
+                alpha=0.8,
+                x="day",
+                y="counter",
+                hue="criteria",
+                data=df,
+                palette="husl",
+                ci="cd",
+                style="criteria",
+                markers=True,
+                dashes=False,
+                linewidth=2,
+            )
+            g.set(xlabel="", ylabel="")
+
+            # format the ticks
+            ax.xaxis.set_major_locator(mdates.DayLocator())
+            ax.xaxis.set_minor_locator(mticker.NullLocator())
+
+            ax.yaxis.get_major_locator().set_params(integer=True)
+
+            fig.autofmt_xdate()
+            ax.fmt_xdata = mdates.DateFormatter("%Y-%m-%d")
+
+            plt.tight_layout()
+
+            return self.save_plot()
+
+        fp = await gen_image()
+        _file = File(fp, "stats.png")
+        await ctx.send(file=_file)
+
+    @stats.command()
+    @typing()
     async def messages(self, ctx: commands.Context):
         """Generates a chart with messages activity for the last week"""
         async with self.bot.pg.pool.acquire() as conn:
