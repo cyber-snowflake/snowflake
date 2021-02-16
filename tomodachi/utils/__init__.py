@@ -1,8 +1,23 @@
-from .cache_v2 import *
-from .checks import *
-from .converters import *
-from .decos import *
-from .emojis import *
-from .intents import *
-from .sql import *
-from .wand_helpers import *
+from .cache_v2 import *  # noqa
+from .checks import *  # noqa
+from .converters import *  # noqa
+from .decos import *  # noqa
+from .emojis import *  # noqa
+from .intents import *  # noqa
+from .sql import *  # noqa
+from .wand_helpers import *  # noqa
+
+
+def make_progress_bar(position: float, total: float, *, length: int = 15, filler="█", emptiness=" ", in_brackets=False):
+    bar = ""
+
+    target_pos = (position * 100) / total
+
+    for i in range(1, length + 1):
+        i_pos = round(i * 100 / length)
+        if i_pos <= target_pos:
+            bar += filler
+        else:
+            bar += emptiness
+
+    return bar if not in_brackets else f"[{bar}]"
