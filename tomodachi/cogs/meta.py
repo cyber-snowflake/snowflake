@@ -1,35 +1,17 @@
 from collections import Counter, OrderedDict
-from typing import Generator, List, Optional, Union
+from datetime import datetime
+from typing import Generator, List, Union
 
 import arrow
-from datetime import datetime
 from discord import Activity, ActivityType, CustomActivity, Guild, Member, Permissions, Role, Spotify, User, utils
 from discord.ext import commands
 
 from tomodachi.core.module import Module
 from tomodachi.src.myembed import MyEmbed
-from tomodachi.utils import DUser, make_progress_bar, typing
+from tomodachi.utils import FLAGS_TO_HUMAN, DUser, make_progress_bar, typing
 
 
 class Meta(Module):
-    flags_repr = {
-        "staff": "Discord Staff",
-        "partner": "Discord Partner",
-        "hypesquad": "HypeSquad Events",
-        "bug_hunter": "Discord Bug Hunter",
-        "bug_hunter_level_2": "Discord Bug Hunter",
-        "hypesquad_balance": "HypeSquad Balance",
-        "hypesquad_brilliance": "HypeSquad Brilliance",
-        "hypesquad_bravery": "HypeSquad Bravery",
-        "early_supporter": "Early Supporter",
-        "verified_bot": "Verified Bot",
-        "verified_bot_developer": "Verified Bot Developer",
-    }
-
-    @classmethod
-    def flag_humanize(cls, flag: str) -> Optional[str]:
-        return cls.flags_repr.get(flag)
-
     @staticmethod
     def roles(guild: Guild, roles: List[Role]):
         for r in reversed(roles):
@@ -58,7 +40,7 @@ class Meta(Module):
             flags += f"{self.bot.my_emojis('owner')} **Bot Owner**\n"
 
         for flag in sorted(user.public_flags.all(), key=lambda x: x.value):
-            flags += f"{self.bot.my_emojis(flag.name)} {self.flag_humanize(flag.name)}\n"
+            flags += f"{self.bot.my_emojis(flag.name)} {FLAGS_TO_HUMAN[flag.name]}\n"
 
         if flags:
             embed.add_field(name="Flags", value=flags, inline=False)

@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 import discord
 
 from .cache_v2 import *  # noqa
@@ -7,6 +9,23 @@ from .decos import *  # noqa
 from .emojis import *  # noqa
 from .sql import *  # noqa
 from .wand_helpers import *  # noqa
+
+
+_FLAGS_TO_HUMAN = {
+    "staff": "Discord Staff",
+    "partner": "Discord Partner",
+    "hypesquad": "HypeSquad Events",
+    "bug_hunter": "Discord Bug Hunter",
+    "bug_hunter_level_2": "Discord Bug Hunter",
+    "hypesquad_balance": "HypeSquad Balance",
+    "hypesquad_brilliance": "HypeSquad Brilliance",
+    "hypesquad_bravery": "HypeSquad Bravery",
+    "early_supporter": "Early Supporter",
+    "verified_bot": "Verified Bot",
+    "verified_bot_developer": "Verified Bot Developer",
+}
+
+FLAGS_TO_HUMAN = defaultdict(lambda: "Unknown Flags", _FLAGS_TO_HUMAN)
 
 
 def make_progress_bar(position: float, total: float, *, length: int = 15, filler="█", emptiness=" ", in_brackets=False):
