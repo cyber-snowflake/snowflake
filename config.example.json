@@ -3,11 +3,18 @@
     "default_prefix": "?",
     "token": "pepepopo",
     "shard_count": 1,
-    "shard_ids": [0],
+    "shard_ids": [
+      0
+    ],
     "support_guild_id": -1,
     "imgur_id": "backtomonkey",
-    "brand_color": [97, 161, 245],
-    "default_status": "hello!"
+    "brand_color": [
+      97,
+      161,
+      245
+    ],
+    "default_status": "hello!",
+    "default_emoji_id": 811187425090076672
   },
   "POSTGRES": {
     "user": "postgres",
