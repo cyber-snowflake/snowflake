@@ -126,10 +126,3 @@ class Tomodachi(commands.AutoShardedBot):
 
         logger.info(f"Guilds: {len(self.guilds)}")
         logger.info(f"Cached Users: {len(set(self.users))}")
-
-
-class Module(commands.Cog):
-    """Subclassed Cog just to reduce the amount of duplicate code"""
-
-    def __init__(self, bot: Tomodachi):
-        self.bot = bot
