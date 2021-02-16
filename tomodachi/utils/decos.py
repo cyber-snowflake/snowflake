@@ -30,13 +30,20 @@ def loading(func: Callable):
     @wraps(func)
     async def wrapper(*args, **kwargs):
         ctx = find(lambda el: isinstance(el, commands.Context), args)
-        task = asyncio.create_task(func(*args, **kwargs))
 
         if not ctx:
-            return await task
+            try:
+                return await func(*args, **kwargs)
+            except:
+                raise
 
         emote = ctx.bot.my_emojis("loading")
         is_added = False
+
+        async def cleanup():
+            if is_added:
+                with contextlib.suppress(Exception):
+                    await ctx.message.remove_reaction(emote, ctx.bot.user)
 
         try:
             await ctx.message.add_reaction(emote)
@@ -45,12 +52,14 @@ def loading(func: Callable):
         else:
             is_added = True
 
-        if not task.done():
-            await task
+        try:
+            executed = await func(*args, **kwargs)
+        except:
+            await cleanup()
+            raise
 
-        if is_added:
-            with contextlib.suppress(Exception):
-                await ctx.message.remove_reaction(emote, ctx.bot.user)
+        await cleanup()
+        return executed
 
     return wrapper
 
