@@ -1,13 +1,14 @@
 import asyncio
-from functools import wraps, partial
-from typing import TypeVar, Optional, Callable
+import contextlib
+from functools import partial, wraps
+from typing import Callable, Optional, TypeVar
 
 from discord import Message
 from discord.ext import commands
 from discord.utils import find
 from loguru import logger
 
-__all__ = ["executor", "typing"]
+__all__ = ["executor", "typing", "loading"]
 
 T = TypeVar("T")
 
@@ -21,6 +22,35 @@ def executor(func: Callable):
         loop = asyncio.get_event_loop()
         result = await loop.run_in_executor(None, to_run)
         return result
+
+    return wrapper
+
+
+def loading(func: Callable):
+    @wraps(func)
+    async def wrapper(*args, **kwargs):
+        ctx = find(lambda el: isinstance(el, commands.Context), args)
+        task = asyncio.create_task(func(*args, **kwargs))
+
+        if not ctx:
+            return await task
+
+        emote = ctx.bot.my_emojis("loading")
+        is_added = False
+
+        try:
+            await ctx.message.add_reaction(emote)
+        except:
+            pass
+        else:
+            is_added = True
+
+        if not task.done():
+            await task
+
+        if is_added:
+            with contextlib.suppress(Exception):
+                await ctx.message.remove_reaction(emote, ctx.bot.user)
 
     return wrapper
 
