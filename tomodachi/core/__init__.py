@@ -103,22 +103,27 @@ class Tomodachi(commands.AutoShardedBot):
         if delta.seconds <= 60:
             await self.process_commands(after)
 
-    async def on_ready(self):
-        for guild in self.guilds:
-            if guild.id == self.config.support_guild_id:
-                self.support_guild = guild
-                self.my_emojis.setup(self.support_guild.emojis)
+    async def once_ready(self):
+        self.support_guild = await self.fetch_guild(config.bot_config.support_guild_id)
 
+        emoji = await self.support_guild.fetch_emoji(config.bot_config.default_emoji_id)
+        self.my_emojis.setup(self.support_guild.emojis, default_emoji=lambda: emoji)
+
+        for guild in self.guilds:
             await self.pg.add_guild(guild.id)
 
+        # Run all the setup methods
+        await asyncio.gather(
+            self.fetch_bot_owner(),
+            self.cache.blacklist_refresh(),
+            self.reset_status(),
+        )
+
+    async def on_ready(self):
         if not self.was_ready_once:
             self.was_ready_once = not self.was_ready_once
+            asyncio.create_task(self.once_ready())
 
-            asyncio.create_task(self.fetch_bot_owner())
-            asyncio.create_task(self.cache.blacklist_refresh())
-            asyncio.create_task(self.reset_status())
-
-        logger.info(f"{self.user} is ready and working")
         logger.info(f"Guilds: {len(self.guilds)}")
         logger.info(f"Cached Users: {len(set(self.users))}")
 
