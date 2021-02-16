@@ -2,12 +2,13 @@ from collections import Counter, OrderedDict
 from typing import Generator, List, Optional, Union
 
 import arrow
+from datetime import datetime
 from discord import Activity, ActivityType, CustomActivity, Guild, Member, Permissions, Role, Spotify, User, utils
 from discord.ext import commands
 
 from tomodachi.core.module import Module
 from tomodachi.src.myembed import MyEmbed
-from tomodachi.utils import DUser, typing
+from tomodachi.utils import DUser, make_progress_bar, typing
 
 
 class Meta(Module):
@@ -123,12 +124,25 @@ class Meta(Module):
             track_url = f"https://open.spotify.com/track/{spot.track_id}"
 
             embed = MyEmbed(colour=0x1DB954)
-            embed.set_thumbnail(url=spot.album_cover_url)
-            embed.set_author(name=f"{member}", icon_url=f"{member.avatar_url}")
+            embed.set_image(url=spot.album_cover_url)
+            embed.set_author(name=f"{member}", icon_url=self.bot.my_emojis("spotify").url)
 
             embed.add_field(name="Title", value=f"[{spot.title}]({track_url})")
             embed.add_field(name="Artists", value=", ".join(spot.artists))
             embed.add_field(name="Album", value=f"{spot.album}")
+
+            current_pos = datetime.utcnow() - spot.start
+            bar = make_progress_bar(
+                current_pos.seconds,
+                spot.duration.seconds,
+                length=6 if ctx.author.is_on_mobile() else 18,
+                in_brackets=True,
+                emptiness="░",
+            )
+            elapsed = "%02d:%02d" % divmod(current_pos.seconds, 60)
+            total = "%02d:%02d" % divmod(spot.duration.seconds, 60)
+
+            embed.add_field(name="Player", value=f"{elapsed} {bar} {total}")
 
             await ctx.send(embed=embed)
         else:
