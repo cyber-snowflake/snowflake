@@ -61,11 +61,11 @@ class Tomodachi(commands.AutoShardedBot):
         self.add_check(is_blacklisted)
 
     async def close(self):
-        await super().close()
-
         with suppress(Exception):
             await self.aiosession.close()
             await self.pg.pool.close()
+
+        await super().close()
 
     async def fetch_bot_owner(self):
         try:
