@@ -1,3 +1,5 @@
+import discord
+
 from .cache_v2 import *  # noqa
 from .checks import *  # noqa
 from .converters import *  # noqa
@@ -21,3 +23,19 @@ def make_progress_bar(position: float, total: float, *, length: int = 15, filler
             bar += emptiness
 
     return bar if not in_brackets else f"[{bar}]"
+
+
+def make_intents():
+    intents = discord.Intents()
+
+    intents.guilds = True
+    intents.members = True
+    intents.bans = True
+    intents.emojis = True
+    intents.invites = True
+    intents.voice_states = True
+    intents.presences = True
+    intents.messages = True
+    intents.reactions = True
+
+    return intents
