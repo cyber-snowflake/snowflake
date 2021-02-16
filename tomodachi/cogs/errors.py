@@ -1,10 +1,10 @@
 import traceback
 
-from discord import Forbidden, TextChannel, Embed
+from discord import Embed, Forbidden, TextChannel
 from discord.ext import commands
 from loguru import logger
 
-from tomodachi.core import Module
+from tomodachi.core.module import Module
 from tomodachi.src.exceptions import BlacklistedUser, InformUser, NotInVoiceChat
 
 

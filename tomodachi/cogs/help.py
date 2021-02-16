@@ -3,7 +3,8 @@ import itertools
 import discord
 from discord.ext import commands
 
-from tomodachi.core import Module, Tomodachi
+from tomodachi.core import Tomodachi
+from tomodachi.core.module import Module
 from tomodachi.src.myembed import MyEmbed
 
 

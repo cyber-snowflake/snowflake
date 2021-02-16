@@ -5,7 +5,7 @@ from discord.ext import commands
 from discord.ext.menus import MenuPages
 from tabulate import tabulate
 
-from tomodachi.core import Module
+from tomodachi.core.module import Module
 from tomodachi.src.exceptions import InformUser
 from tomodachi.src.myembed import MyEmbed
 from tomodachi.src.mymenus import GuildsPagesSource

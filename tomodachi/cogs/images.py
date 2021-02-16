@@ -6,7 +6,7 @@ from discord import Attachment, File, Member, User
 from discord.ext import commands
 
 from tomodachi import utils
-from tomodachi.core import Module
+from tomodachi.core.module import Module
 from tomodachi.src.exceptions import InformUser
 from tomodachi.src.myembed import MyEmbed
 from tomodachi.src.regulars import IMAGE_EXTENSIONS

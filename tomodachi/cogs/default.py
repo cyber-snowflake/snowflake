@@ -1,8 +1,9 @@
-from tomodachi.core import Module
-
-from discord.ext import commands
-from discord import Member, Message
 import asyncio
+
+from discord import Member, Message
+from discord.ext import commands
+
+from tomodachi.core.module import Module
 
 
 class Default(Module):

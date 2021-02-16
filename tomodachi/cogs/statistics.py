@@ -6,10 +6,10 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import pandas as pd
 import seaborn as sns
-from discord import File, Message, Member, RawMessageDeleteEvent, RawMessageUpdateEvent, Guild, User
+from discord import File, Guild, Member, Message, RawMessageDeleteEvent, RawMessageUpdateEvent, User
 from discord.ext import commands
 
-from tomodachi.core import Module
+from tomodachi.core.module import Module
 from tomodachi.utils import executor, typing
 
 

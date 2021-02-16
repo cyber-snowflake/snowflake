@@ -4,15 +4,15 @@ import sys
 from io import BytesIO
 
 from aiohttp import FormData
-from discord import Attachment, File, Forbidden, NotFound, AllowedMentions, Message
+from discord import AllowedMentions, Attachment, File, Forbidden, Message, NotFound
 from discord.ext import commands
 from gtts import gTTS
 from polyglot.detect import Detector
 
-from tomodachi.core import Module
+from tomodachi.core.module import Module
 from tomodachi.src.exceptions import InformUser
 from tomodachi.src.regulars import IMGUR_EXTENSIONS
-from tomodachi.utils import is_manager_or_bot_owner, executor, loading
+from tomodachi.utils import executor, is_manager_or_bot_owner, loading
 
 
 class Tools(Module):
