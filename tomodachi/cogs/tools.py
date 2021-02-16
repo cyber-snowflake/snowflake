@@ -87,7 +87,7 @@ class Tools(Module):
 
         fp = await attachment.read()
 
-        headers = {"Authorization": f"Client-ID {self.bot.config.imgur_id}"}
+        headers = {"Authorization": f"Client-ID {self.bot.config.IMGUR_ID}"}
 
         data = FormData()
         data.add_field("image", fp)

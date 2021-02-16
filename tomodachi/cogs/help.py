@@ -44,7 +44,7 @@ class MyHelpCommand(commands.MinimalHelpCommand):
         await destination.send(embed=self.embed)
 
     def prepare_embed(self):
-        self.embed.color = self.bot.config.brand_color
+        self.embed.color = self.bot.config.BRAND_COLOR
         self.embed.description = None
         self.embed.title = None
         self.embed.clear_fields()

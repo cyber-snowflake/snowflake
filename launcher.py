@@ -11,7 +11,7 @@ import click
 import matplotlib
 from loguru import logger
 
-import configurator as config
+import config
 from tomodachi.core import Tomodachi
 from tomodachi.src.loguru_intercept import InterceptHandler
 from tomodachi.utils import cachemanager, psql
@@ -43,13 +43,13 @@ def start_bot():
     loop = asyncio.get_event_loop()
 
     try:
-        loop.run_until_complete(psql().connect(config.postgres_config.dsn))
+        loop.run_until_complete(psql().connect(config.POSTGRES_DSN))
     except Exception as e:
         click.echo(f"Failed to connect to the PostgreSQL\n----------\n{e}", file=sys.stderr)
         return
 
     try:
-        loop.run_until_complete(cachemanager().connect_redis(config.redis_config.uri))
+        loop.run_until_complete(cachemanager().connect_redis(config.REDIS_URI))
     except Exception as e:
         click.echo(f"Failed to connect to the Redis\n----------\n{e}", file=sys.stderr)
         return
