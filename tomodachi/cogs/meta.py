@@ -120,33 +120,30 @@ class Meta(Module):
 
         spot = utils.find(lambda activity: isinstance(activity, Spotify), member.activities)
 
-        if spot:
-            track_url = f"https://open.spotify.com/track/{spot.track_id}"
+        if not spot:
+            return await ctx.send(f":x: **{member}** is not listening to Spotify.")
 
-            embed = MyEmbed(colour=0x1DB954)
-            embed.set_image(url=spot.album_cover_url)
-            embed.set_author(name=f"{member}", icon_url=self.bot.my_emojis("spotify").url)
+        track_url = f"https://open.spotify.com/track/{spot.track_id}"
 
-            embed.add_field(name="Title", value=f"[{spot.title}]({track_url})")
-            embed.add_field(name="Artists", value=", ".join(spot.artists))
-            embed.add_field(name="Album", value=f"{spot.album}")
+        current_pos = datetime.utcnow() - spot.start
+        bar = make_progress_bar(
+            current_pos.seconds,
+            spot.duration.seconds,
+            length=6 if ctx.author.is_on_mobile() else 18,
+            in_brackets=True,
+            emptiness="░",
+        )
+        elapsed = "%02d:%02d" % divmod(current_pos.seconds, 60)
+        total = "%02d:%02d" % divmod(spot.duration.seconds, 60)
 
-            current_pos = datetime.utcnow() - spot.start
-            bar = make_progress_bar(
-                current_pos.seconds,
-                spot.duration.seconds,
-                length=6 if ctx.author.is_on_mobile() else 18,
-                in_brackets=True,
-                emptiness="░",
-            )
-            elapsed = "%02d:%02d" % divmod(current_pos.seconds, 60)
-            total = "%02d:%02d" % divmod(spot.duration.seconds, 60)
-
-            embed.add_field(name="Player", value=f"{elapsed} {bar} {total}")
-
-            await ctx.send(embed=embed)
-        else:
-            await ctx.send(f":x: **{member}** is not listening to Spotify.")
+        embed = MyEmbed(colour=0x1DB954)
+        embed.set_image(url=spot.album_cover_url)
+        embed.set_author(name=f"{member}", icon_url=self.bot.my_emojis("spotify").url)
+        embed.add_field(name="Title", value=f"[{spot.title}]({track_url})")
+        embed.add_field(name="Artists", value=", ".join(spot.artists))
+        embed.add_field(name="Album", value=f"{spot.album}")
+        embed.add_field(name="Player", value=f"{elapsed} {bar} {total}")
+        await ctx.send(embed=embed)
 
     @commands.command(aliases=("server", "si"))
     @commands.guild_only()
