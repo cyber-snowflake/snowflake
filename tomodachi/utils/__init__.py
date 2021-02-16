@@ -5,7 +5,6 @@ from .checks import *  # noqa
 from .converters import *  # noqa
 from .decos import *  # noqa
 from .emojis import *  # noqa
-from .intents import *  # noqa
 from .sql import *  # noqa
 from .wand_helpers import *  # noqa
 

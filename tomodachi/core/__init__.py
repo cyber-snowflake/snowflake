@@ -7,7 +7,7 @@ from discord.ext import commands
 from loguru import logger
 
 import config
-from tomodachi.utils import Emojis, MyIntents, cachemanager, is_blacklisted, psql
+from tomodachi.utils import Emojis, cachemanager, is_blacklisted, psql, make_intents
 
 __all__ = ["Tomodachi", "Module"]
 
@@ -35,7 +35,7 @@ class Tomodachi(commands.AutoShardedBot):
             case_insensitive=True,
             shard_count=config.SHARD_COUNT,
             shard_ids=config.SHARD_IDS,
-            intents=MyIntents(),
+            intents=make_intents(),
             max_messages=200,
             member_cache_flags=dc.MemberCacheFlags(online=True, voice=False, joined=True),
         )
