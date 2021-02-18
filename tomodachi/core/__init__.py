@@ -12,19 +12,20 @@ from tomodachi.utils import Emojis, cachemanager, is_blacklisted, psql, make_int
 __all__ = ["Tomodachi"]
 
 
-async def get_prefix(client, message: dc.Message):
-    # Checks if the message in DMs
-    if not message.guild:
-        return commands.when_mentioned_or(config.DEFAULT_PREFIX)(client, message)
+async def get_prefix(bot, message: dc.Message):
+    prefixes = [config.DEFAULT_PREFIX]
 
-    settings = await client.cache.get(message.guild.id)
-
-    prefix = None
-    if settings is not None:
+    if message.guild:
+        settings = await bot.cache.get(message.guild.id)
         prefix = settings.prefix
+        if prefix:
+            prefixes.remove(config.DEFAULT_PREFIX)
+            prefixes.append(prefix)
 
-    # prefix can be None and in that case it will use bot's default prefix
-    return commands.when_mentioned_or(prefix or config.DEFAULT_PREFIX)(client, message)
+    if bot.listen_without_prefix is True and message.author.id == bot.owner_id:
+        prefixes.append("")
+
+    return commands.when_mentioned_or(*prefixes)(bot, message)
 
 
 class Tomodachi(commands.AutoShardedBot):
