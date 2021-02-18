@@ -48,6 +48,7 @@ class Tomodachi(commands.AutoShardedBot):
 
         self.owner = None
         self.support_guild = None
+        self.listen_without_prefix = False
         self.my_emojis = Emojis()
 
         self.aiosession = aiohttp.ClientSession()
