@@ -9,7 +9,7 @@ from loguru import logger
 import config
 from tomodachi.utils import Emojis, cachemanager, is_blacklisted, psql, make_intents
 
-__all__ = ["Tomodachi", "Module"]
+__all__ = ["Tomodachi"]
 
 
 async def get_prefix(client, message: dc.Message):
