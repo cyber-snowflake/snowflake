@@ -16,6 +16,14 @@ class Owner(Module):
     async def cog_check(self, ctx: commands.Context):
         return await ctx.bot.is_owner(ctx.author)
 
+    @commands.command()
+    async def noprefix(self, ctx, mode: Optional[bool] = None):
+        if mode is None:
+            return await ctx.send(f"{self.bot.listen_without_prefix=}")
+
+        self.bot.listen_without_prefix = mode
+        await ctx.send(f"Set `{self.bot.listen_without_prefix=}`")
+
     @commands.group()
     async def blacklist(self, ctx: commands.Context):
         if not ctx.invoked_subcommand:
