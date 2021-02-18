@@ -10,7 +10,6 @@ from .emojis import *  # noqa
 from .sql import *  # noqa
 from .wand_helpers import *  # noqa
 
-
 _FLAGS_TO_HUMAN = {
     "staff": "Discord Staff",
     "partner": "Discord Partner",
@@ -44,16 +43,15 @@ def make_progress_bar(position: float, total: float, *, length: int = 15, filler
 
 
 def make_intents():
-    intents = discord.Intents()
-
-    intents.guilds = True
-    intents.members = True
-    intents.bans = True
-    intents.emojis = True
-    intents.invites = True
-    intents.voice_states = True
-    intents.presences = True
-    intents.messages = True
-    intents.reactions = True
+    intents = discord.Intents(
+        guilds=True,
+        members=True,
+        bans=True,
+        emojis=True,
+        invites=True,
+        presences=True,
+        messages=True,
+        reactions=True,
+    )
 
     return intents
