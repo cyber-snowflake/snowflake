@@ -4,6 +4,7 @@
 #  License, v. 2.0. If a copy of the MPL was not distributed with this
 #  file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import asyncio
 from typing import Optional
 
 import asyncpg
@@ -17,9 +18,18 @@ class pg(metaclass=MetaSingleton):  # noqa
     def __init__(self):
         self.__pool_: Optional[asyncpg.Pool] = None
 
+        # this event can be used to understand when
+        # the bot has a connection to the database
+        self.connection_established = asyncio.Event()
+
     async def setup(self, dsn: str):
-        self.__pool_ = await asyncpg.create_pool(dsn)
-        print("connection established to pgsql")
+        try:
+            self.__pool_ = await asyncpg.create_pool(dsn)
+        except:  # noqa
+            raise
+        else:
+            self.connection_established.set()
+            print("connection established to pgsql")
 
     @property
     def pool(self):
