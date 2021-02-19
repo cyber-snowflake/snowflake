@@ -23,4 +23,5 @@ loop = asyncio.get_event_loop()
 loop.run_until_complete(pg().setup(config.POSTGRES_DSN))
 
 tomodachi = Tomodachi()
+tomodachi.load_extension("jishaku")
 tomodachi.run()
