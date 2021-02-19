@@ -44,6 +44,7 @@ class Images(Module):
 
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
+    @commands.max_concurrency(1, commands.BucketType.channel)
     @typing(inform_if_long=True)
     async def magik(self, ctx: commands.Context, user_or_url: Optional[Union[User, Member, str]] = None):
         """Woosh! It's a magik..."""
@@ -74,6 +75,7 @@ class Images(Module):
 
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
+    @commands.max_concurrency(1, commands.BucketType.channel)
     @typing(inform_if_long=True)
     async def implode(
         self, ctx: commands.Context, amount: float = 0.35, user_or_url: Optional[Union[User, Member, str]] = None
@@ -101,6 +103,7 @@ class Images(Module):
 
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
+    @commands.max_concurrency(1, commands.BucketType.channel)
     @typing(inform_if_long=True)
     async def swirl(
         self, ctx: commands.Context, degrees: int = -90, user_or_url: Optional[Union[User, Member, str]] = None
@@ -127,11 +130,15 @@ class Images(Module):
         await ctx.send(file=_file, embed=e)
 
     @commands.group()
+    @commands.cooldown(1, 3, commands.BucketType.user)
+    @commands.max_concurrency(1, commands.BucketType.channel)
     async def blur(self, ctx: commands.Context):
         if not ctx.invoked_subcommand:
             raise InformUser("You have to specify a subcommand, see help.")
 
     @blur.command()
+    @commands.cooldown(1, 3, commands.BucketType.user)
+    @commands.max_concurrency(1, commands.BucketType.channel)
     @typing(inform_if_long=True)
     async def normal(
         self,
@@ -159,6 +166,8 @@ class Images(Module):
         await ctx.send(file=_file, embed=e)
 
     @blur.command()
+    @commands.cooldown(1, 3, commands.BucketType.user)
+    @commands.max_concurrency(1, commands.BucketType.channel)
     @typing(inform_if_long=True)
     async def adaptive(
         self,
