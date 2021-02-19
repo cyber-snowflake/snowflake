@@ -26,12 +26,22 @@ class Tomodachi(commands.AutoShardedBot):
         super().__init__(*args, **kwargs, command_prefix=get_prefix)
 
         self.pg = pg()
+        self.prefixes = {}
 
         self.__once_ready_ = asyncio.Event()
         self.loop.create_task(self.once_ready())
+        self.loop.create_task(self.fetch_prefixes())
 
     def run(self):
         super().run(config.TOKEN, reconnect=True)
+
+    async def fetch_prefixes(self):
+        await self.pg.connection_established.wait()
+
+        async with self.pg.pool.acquire() as conn:
+            records = await conn.fetch("SELECT guild_id, prefix FROM guilds;")
+
+        self.prefixes.update({k: v for k, v in map(tuple, records)})
 
     async def on_ready(self):
         if not self.__once_ready_.is_set():
