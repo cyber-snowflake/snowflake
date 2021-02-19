@@ -9,7 +9,7 @@ from tomodachi import utils
 from tomodachi.core.module import Module
 from tomodachi.src.exceptions import InformUser
 from tomodachi.src.regulars import IMAGE_EXTENSIONS
-from tomodachi.utils import executor, typing
+from tomodachi.utils import executor, loading
 
 
 class Images(Module):
@@ -38,7 +38,7 @@ class Images(Module):
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
     @commands.max_concurrency(1, commands.BucketType.channel)
-    @typing(inform_if_long=True)
+    @loading
     async def magik(self, ctx: commands.Context, user_or_url: Optional[Union[User, Member, str]] = None):
         """Woosh! It's a magik..."""
         fp = await self.get_img_bytes(ctx.message.attachments, user_or_url or ctx.author)
@@ -67,7 +67,7 @@ class Images(Module):
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
     @commands.max_concurrency(1, commands.BucketType.channel)
-    @typing(inform_if_long=True)
+    @loading
     async def implode(
         self, ctx: commands.Context, amount: float = 0.35, user_or_url: Optional[Union[User, Member, str]] = None
     ):
@@ -93,7 +93,7 @@ class Images(Module):
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
     @commands.max_concurrency(1, commands.BucketType.channel)
-    @typing(inform_if_long=True)
+    @loading
     async def swirl(
         self, ctx: commands.Context, degrees: int = -90, user_or_url: Optional[Union[User, Member, str]] = None
     ):
@@ -126,7 +126,7 @@ class Images(Module):
     @blur.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
     @commands.max_concurrency(1, commands.BucketType.channel)
-    @typing(inform_if_long=True)
+    @loading
     async def normal(
         self,
         ctx: commands.Context,
@@ -153,7 +153,7 @@ class Images(Module):
     @blur.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
     @commands.max_concurrency(1, commands.BucketType.channel)
-    @typing(inform_if_long=True)
+    @loading
     async def adaptive(
         self,
         ctx: commands.Context,
