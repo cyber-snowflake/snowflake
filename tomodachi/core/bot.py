@@ -16,7 +16,12 @@ __all__ = ["Tomodachi"]
 
 
 async def get_prefix(bot, message: discord.Message):
-    prefixes = [config.DEFAULT_PREFIX]
+    prefixes = []
+
+    if not (p := bot.prefixes.get(message.guild.id)):
+        prefixes.append(config.DEFAULT_PREFIX)
+    else:
+        prefixes.append(p)
 
     return commands.when_mentioned_or(*prefixes)(bot, message)
 
