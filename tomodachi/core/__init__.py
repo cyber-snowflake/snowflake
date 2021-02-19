@@ -41,7 +41,6 @@ class Tomodachi(commands.AutoShardedBot):
             member_cache_flags=dc.MemberCacheFlags(online=True, voice=False, joined=True),
         )
 
-        self.was_ready_once = False
         self.config = config
 
         self.pg = psql()
@@ -55,6 +54,9 @@ class Tomodachi(commands.AutoShardedBot):
         self.aiosession = aiohttp.ClientSession()
 
         self.default_cd = commands.CooldownMapping.from_cooldown(10, 12, commands.BucketType.user)
+
+        self.__once_ready = asyncio.Event()
+        self.loop.create_task(self.once_ready())
 
     def run(self):
         # Run the bot
@@ -105,6 +107,8 @@ class Tomodachi(commands.AutoShardedBot):
             await self.process_commands(after)
 
     async def once_ready(self):
+        await self.__once_ready.wait()
+
         self.support_guild = await self.fetch_guild(config.SUPPORT_GUILD_ID)
 
         emoji = await self.support_guild.fetch_emoji(config.DEFAULT_EMOJI_ID)
@@ -121,9 +125,8 @@ class Tomodachi(commands.AutoShardedBot):
         )
 
     async def on_ready(self):
-        if not self.was_ready_once:
-            self.was_ready_once = not self.was_ready_once
-            asyncio.create_task(self.once_ready())
+        if not self.__once_ready.is_set():
+            self.__once_ready.set()
 
         logger.info(f"Guilds: {len(self.guilds)}")
         logger.info(f"Cached Users: {len(set(self.users))}")
