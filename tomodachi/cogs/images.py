@@ -8,7 +8,6 @@ from discord.ext import commands
 from tomodachi import utils
 from tomodachi.core.module import Module
 from tomodachi.src.exceptions import InformUser
-from tomodachi.src.myembed import MyEmbed
 from tomodachi.src.regulars import IMAGE_EXTENSIONS
 from tomodachi.utils import executor, typing
 
@@ -35,12 +34,6 @@ class Images(Module):
                 fp = await resp.read()
 
                 return fp
-
-    async def to_embed(self, filename: str):
-        e = MyEmbed()
-        e.set_image(url=f"attachment://{filename}")
-
-        return e
 
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
@@ -69,9 +62,7 @@ class Images(Module):
 
         image = await run()
         _file = File(image, "magik.png")
-        e = await self.to_embed("magik.png")
-
-        await ctx.send(file=_file, embed=e)
+        await ctx.send(file=_file)
 
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
@@ -97,9 +88,7 @@ class Images(Module):
 
         image = await run()
         _file = File(image, "result.png")
-        e = await self.to_embed("result.png")
-
-        await ctx.send(file=_file, embed=e)
+        await ctx.send(file=_file)
 
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
@@ -125,9 +114,7 @@ class Images(Module):
 
         image = await run()
         _file = File(image, "result.png")
-        e = await self.to_embed("result.png")
-
-        await ctx.send(file=_file, embed=e)
+        await ctx.send(file=_file)
 
     @commands.group()
     @commands.cooldown(1, 3, commands.BucketType.user)
@@ -161,9 +148,7 @@ class Images(Module):
 
         image = await run()
         _file = File(image, "blur.png")
-        e = await self.to_embed("blur.png")
-
-        await ctx.send(file=_file, embed=e)
+        await ctx.send(file=_file)
 
     @blur.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
@@ -190,9 +175,7 @@ class Images(Module):
 
         image = await run()
         _file = File(image, "adaptive_blur.png")
-        e = await self.to_embed("adaptive_blur.png")
-
-        await ctx.send(file=_file, embed=e)
+        await ctx.send(file=_file)
 
 
 def setup(bot):
