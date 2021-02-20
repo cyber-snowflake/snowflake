@@ -6,3 +6,4 @@
 
 from .factories import *
 from .pgsql import pg
+from .text import *
