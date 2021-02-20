@@ -30,6 +30,9 @@ class Tomodachi(commands.AutoShardedBot):
 
         # Global rate limit cooldowns mapping
         self.global_rate_limit = commands.CooldownMapping.from_cooldown(10, 12, commands.BucketType.user)
+        # Toggle rate limits for bot owner or not
+        # by default bot owner can be rate limited
+        self.owner_has_limits = True
 
         self.__once_ready_ = asyncio.Event()
         self.loop.create_task(self.once_ready())
