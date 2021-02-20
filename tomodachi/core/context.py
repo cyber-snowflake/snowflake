@@ -8,6 +8,8 @@ from discord.ext import commands
 
 from tomodachi.core.bot import Tomodachi
 
+__all__ = ["TomodachiContext"]
+
 
 class TomodachiContext(commands.Context):
     bot: Tomodachi
