@@ -10,10 +10,9 @@ import discord
 from discord.ext import commands
 
 import config
-from tomodachi.core.context import TomodachiContext
 from tomodachi.utils import pg, make_intents
 
-__all__ = ["Tomodachi"]
+__all__ = ["Tomodachi", "TomodachiContext"]
 
 
 class Tomodachi(commands.AutoShardedBot):
@@ -65,3 +64,7 @@ class Tomodachi(commands.AutoShardedBot):
 
         for ext in config.EXTENSIONS:
             self.load_extension(f"tomodachi.exts.{ext}")
+
+
+class TomodachiContext(commands.Context):
+    bot: Tomodachi
