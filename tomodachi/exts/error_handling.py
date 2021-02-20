@@ -11,6 +11,7 @@ from discord.ext import commands
 from loguru import logger
 
 from tomodachi.core.bot import Tomodachi
+from tomodachi.core.exceptions import GloballyRateLimited
 
 
 class ErrorHandling(commands.Cog):
@@ -28,6 +29,18 @@ class ErrorHandling(commands.Cog):
         if isinstance(error, self.ignored) or hasattr(ctx.command, "on_error"):
             return
 
+        if isinstance(error, GloballyRateLimited):
+            if not self.bot.owner_has_limits:
+                return await ctx.reinvoke()
+
+            retry_after = f"{error.retry_after:.2f}"
+            return await ctx.reply(
+                f"You are being rate limited. Please, chill out and try again in `{retry_after}` seconds.",
+                delete_after=error.retry_after,
+                mention_author=True,
+            )
+
+        # send some debug information to bot owner
         tb = "".join(traceback.format_exception(type(error), error, error.__traceback__))
         logger.error(f"Ignoring exception in command {ctx.command}.")
         logger.exception(tb)
