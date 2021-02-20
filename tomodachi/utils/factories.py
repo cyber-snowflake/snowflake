@@ -1,0 +1,22 @@
+#  Copyright (c) 2020 — present, moretzu (モーレツ)
+#
+#  This Source Code Form is subject to the terms of the Mozilla Public
+#  License, v. 2.0. If a copy of the MPL was not distributed with this
+#  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import discord
+
+__all__ = ["make_intents"]
+
+
+def make_intents():
+    return discord.Intents(
+        members=True,
+        presences=True,
+        guilds=True,
+        emojis=True,
+        reactions=True,
+        bans=True,
+        invites=True,
+        messages=True,
+    )
