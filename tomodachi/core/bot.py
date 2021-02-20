@@ -54,4 +54,6 @@ class Tomodachi(commands.AutoShardedBot):
 
     async def once_ready(self):
         await self.__once_ready_.wait()
-        print("hi")
+
+        for ext in config.EXTENSIONS:
+            self.load_extension(f"tomodachi.exts.{ext}")
