@@ -10,6 +10,7 @@ import discord
 from discord.ext import commands
 
 import config
+from tomodachi.core.context import TomodachiContext
 from tomodachi.utils import pg, make_intents
 
 __all__ = ["Tomodachi"]
@@ -40,6 +41,9 @@ class Tomodachi(commands.AutoShardedBot):
             prefixes.append(p)
 
         return commands.when_mentioned_or(*prefixes)(self, message)
+
+    async def get_context(self, message, *, cls=None):
+        return await super().get_context(message, cls=cls or TomodachiContext)
 
     def run(self):
         super().run(config.TOKEN, reconnect=True)
