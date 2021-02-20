@@ -6,6 +6,7 @@
 
 import asyncio
 import importlib
+import os
 from typing import Any
 
 import config
@@ -18,6 +19,9 @@ except ImportError:
     pass
 else:
     asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
+
+for flag in config.JISHAKU_FLAGS:
+    os.environ[f"JISHAKU_{flag}"] = "True"
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(pg().setup(config.POSTGRES_DSN))
