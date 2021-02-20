@@ -10,7 +10,7 @@ import discord
 from discord.ext import commands
 
 import config
-from tomodachi.utils import pg
+from tomodachi.utils import pg, make_intents
 
 __all__ = ["Tomodachi"]
 
@@ -28,7 +28,12 @@ async def get_prefix(bot, message: discord.Message):
 
 class Tomodachi(commands.AutoShardedBot):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs, command_prefix=get_prefix)
+        super().__init__(
+            *args,
+            **kwargs,
+            command_prefix=get_prefix,
+            intents=make_intents(),
+        )
 
         self.pg = pg()
         self.prefixes = {}
