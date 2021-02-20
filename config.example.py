@@ -23,3 +23,6 @@ POSTGRES_CREDENTIALS = {
     "port": 5432,
 }
 POSTGRES_DSN = "postgresql://{user}:{password}@{host}:{port}/{database}".format(**POSTGRES_CREDENTIALS)
+
+EXTENSIONS = ("default",)
+JISHAKU_FLAGS = ("HIDE",)
