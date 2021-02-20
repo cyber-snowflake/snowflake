@@ -10,6 +10,7 @@ import discord
 from discord.ext import commands
 
 import config
+from tomodachi.core.checks import spam_control
 from tomodachi.utils import pg, make_intents
 
 __all__ = ["Tomodachi", "TomodachiContext"]
@@ -26,6 +27,9 @@ class Tomodachi(commands.AutoShardedBot):
 
         self.pg = pg()
         self.prefixes = {}
+
+        # Global rate limit cooldowns mapping
+        self.global_rate_limit = commands.CooldownMapping.from_cooldown(10, 12, commands.BucketType.user)
 
         self.__once_ready_ = asyncio.Event()
         self.loop.create_task(self.once_ready())
