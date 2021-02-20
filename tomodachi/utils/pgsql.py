@@ -8,6 +8,7 @@ import asyncio
 from typing import Optional
 
 import asyncpg
+from loguru import logger
 
 from .singleton import MetaSingleton
 
@@ -29,7 +30,7 @@ class pg(metaclass=MetaSingleton):  # noqa
             raise
         else:
             self.connection_established.set()
-            print("connection established to pgsql")
+            logger.info("connection to pgsql established")
 
     @property
     def pool(self):
