@@ -15,23 +15,12 @@ from tomodachi.utils import pg, make_intents
 __all__ = ["Tomodachi"]
 
 
-async def get_prefix(bot, message: discord.Message):
-    prefixes = []
-
-    if not (p := bot.prefixes.get(message.guild.id)):
-        prefixes.append(config.DEFAULT_PREFIX)
-    else:
-        prefixes.append(p)
-
-    return commands.when_mentioned_or(*prefixes)(bot, message)
-
-
 class Tomodachi(commands.AutoShardedBot):
     def __init__(self, *args, **kwargs):
         super().__init__(
             *args,
             **kwargs,
-            command_prefix=get_prefix,
+            command_prefix=self.get_prefix,
             intents=make_intents(),
         )
 
@@ -41,6 +30,16 @@ class Tomodachi(commands.AutoShardedBot):
         self.__once_ready_ = asyncio.Event()
         self.loop.create_task(self.once_ready())
         self.loop.create_task(self.fetch_prefixes())
+
+    async def get_prefix(self, message: discord.Message):
+        prefixes = []
+
+        if not (p := self.prefixes.get(message.guild.id)):
+            prefixes.append(config.DEFAULT_PREFIX)
+        else:
+            prefixes.append(p)
+
+        return commands.when_mentioned_or(*prefixes)(self, message)
 
     def run(self):
         super().run(config.TOKEN, reconnect=True)
