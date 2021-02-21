@@ -5,12 +5,14 @@
 #  file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import asyncio
+from typing import Optional
 
 import discord
 from discord.ext import commands
 
 import config
 from tomodachi.core.checks import spam_control
+from tomodachi.core.icons import Icons
 from tomodachi.utils import pg, make_intents
 
 __all__ = ["Tomodachi", "TomodachiContext"]
@@ -27,6 +29,11 @@ class Tomodachi(commands.AutoShardedBot):
 
         self.pg = pg()
         self.prefixes = {}
+
+        # Alias to Icons singleton
+        self.icon = Icons()
+        # Faster access to support guild data
+        self.support_guild: Optional[discord.Guild] = None
 
         # Global rate limit cooldowns mapping
         self.global_rate_limit = commands.CooldownMapping.from_cooldown(10, 12, commands.BucketType.user)
@@ -73,6 +80,9 @@ class Tomodachi(commands.AutoShardedBot):
 
         for ext in config.EXTENSIONS:
             self.load_extension(f"tomodachi.exts.{ext}")
+
+        self.support_guild = support_guild = await self.fetch_guild(config.SUPPORT_GUILD_ID)
+        await self.icon.setup(support_guild.emojis)
 
 
 class TomodachiContext(commands.Context):
