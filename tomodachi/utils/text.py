@@ -6,7 +6,9 @@
 
 from collections import defaultdict
 
-__all__ = ["make_progress_bar", "HUMAN_READABLE_FLAGS"]
+import discord
+
+__all__ = ["make_progress_bar", "HUMAN_READABLE_FLAGS", "HUMANIZED_ACTIVITY"]
 
 
 _HUMAN_READABLE_FLAGS = {
@@ -29,6 +31,15 @@ def _human_readable_flags_factory():
 
 
 HUMAN_READABLE_FLAGS = defaultdict(_human_readable_flags_factory, _HUMAN_READABLE_FLAGS)
+
+HUMANIZED_ACTIVITY = {
+    discord.ActivityType.unknown: "Unknown activity",
+    discord.ActivityType.playing: "Playing",
+    discord.ActivityType.streaming: "Live on Twitch",
+    discord.ActivityType.listening: "Listening",
+    discord.ActivityType.watching: "Watching",
+    discord.ActivityType.custom: "Custom status",
+}
 
 
 def make_progress_bar(position: float, total: float, *, length: int = 15, filler="█", emptiness=" ", in_brackets=False):
