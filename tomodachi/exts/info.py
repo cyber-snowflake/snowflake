@@ -42,7 +42,7 @@ class Info(commands.Cog):
         progression = f"{elapsed} `{bar}` {duration}"
 
         e = dc.Embed(colour=0x1ED760)
-        # todo: add set_author with spotify logo
+        e.set_author(name=f"{ctx.author.name}", icon_url=self.bot.icon("spotify").url)
         e.add_field(name="Title", value=f"[{activity.title}]({track_url})")
         e.add_field(name="Artists", value=", ".join(activity.artists))
         e.add_field(name="Album", value=f"{activity.album}")
