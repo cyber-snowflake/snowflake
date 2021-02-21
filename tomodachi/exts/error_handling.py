@@ -37,7 +37,7 @@ class ErrorHandling(commands.Cog):
             return await ctx.reply(
                 f"You are being rate limited. Please, chill out and try again in `{retry_after}` seconds.",
                 delete_after=error.retry_after,
-                mention_author=True,
+                mention_author=False,
             )
 
         elif isinstance(error, commands.CommandOnCooldown):
@@ -45,7 +45,10 @@ class ErrorHandling(commands.Cog):
                 return await ctx.reinvoke()
 
             retry_after = f"{error.retry_after:.2f}"
-            return await ctx.reply(f"Please, try again in `{retry_after}` seconds.", mention_author=True)
+            return await ctx.reply(
+                f"Please, try again in `{retry_after}` seconds.",
+                mention_author=False,
+            )
 
         # send some debug information to bot owner
         tb = "".join(traceback.format_exception(type(error), error, error.__traceback__))
