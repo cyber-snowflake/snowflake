@@ -5,18 +5,60 @@
 #  file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Union
 
 import discord
+import humanize
 from discord.ext import commands
 
-from tomodachi.core.bot import Tomodachi
-from tomodachi.utils import make_progress_bar
+from tomodachi.core.bot import Tomodachi, TomodachiContext
+from tomodachi.utils import make_progress_bar, HUMAN_READABLE_FLAGS, HUMANIZED_ACTIVITY
 
 
 class Info(commands.Cog):
     def __init__(self, bot: Tomodachi):
         self.bot = bot
+
+    @commands.command(aliases=("ui", "memberinfo", "mi"))
+    @commands.cooldown(1, 3, commands.BucketType.user)
+    async def userinfo(self, ctx: TomodachiContext, user: Union[discord.Member, discord.User] = None):
+        # if target user not specified use author
+        user = user or ctx.author
+
+        embed = discord.Embed(colour=0x2F3136)
+        embed.set_thumbnail(url=f"{user.avatar_url}")
+
+        embed.add_field(name="Username", value=f"{user}")
+        embed.add_field(name="ID", value=f"{user.id}")
+
+        flags = "\n".join(f"{self.bot.icon(f.name)} {HUMAN_READABLE_FLAGS[f.name]}" for f in user.public_flags.all())
+        if flags:
+            embed.add_field(name="Badges", value=f"{flags}", inline=False)
+
+        if isinstance(user, discord.Member):
+            embed.colour = user.colour
+
+            for activity in user.activities:
+                if isinstance(activity, discord.Spotify):
+                    track_url = f"https://open.spotify.com/track/{activity.track_id}"
+                    artists = ", ".join(activity.artists)
+                    value = f"[{artists} — {activity.title}]({track_url})"
+
+                    embed.add_field(name="Listening", value=value, inline=False)
+
+                else:
+                    embed.add_field(name=f"{HUMANIZED_ACTIVITY[activity.type]}", value=f"{activity.name}", inline=False)
+
+            roles = ", ".join(reversed(tuple(r.mention for r in user.roles if "everyone" not in r.name)))
+            embed.add_field(name="Roles", value=roles or "None", inline=False)
+
+            joined = "%s (`%s`)" % (humanize.naturaltime(datetime.utcnow() - user.joined_at), user.joined_at)
+            embed.add_field(name="Join date", value=f"{self.bot.icon('slowmode')} {joined}", inline=False)
+
+        created = "%s (`%s`)" % (humanize.naturaltime(datetime.utcnow() - user.created_at), user.created_at)
+        embed.add_field(name="Creation date", value=f"{self.bot.icon('slowmode')} {created}", inline=False)
+
+        await ctx.send(embed=embed)
 
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
