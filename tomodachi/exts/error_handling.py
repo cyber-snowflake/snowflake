@@ -40,6 +40,13 @@ class ErrorHandling(commands.Cog):
                 mention_author=True,
             )
 
+        elif isinstance(error, commands.CommandOnCooldown):
+            if not self.bot.owner_has_limits:
+                return await ctx.reinvoke()
+
+            retry_after = f"{error.retry_after:.2f}"
+            return await ctx.reply(f"Please, try again in `{retry_after}` seconds.", mention_author=True)
+
         # send some debug information to bot owner
         tb = "".join(traceback.format_exception(type(error), error, error.__traceback__))
         logger.error(f"Ignoring exception in command {ctx.command}.")
