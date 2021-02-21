@@ -7,7 +7,7 @@
 from datetime import datetime
 from typing import Optional
 
-import discord as dc
+import discord
 from discord.ext import commands
 
 from tomodachi.core.bot import Tomodachi
@@ -20,9 +20,9 @@ class Info(commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
-    async def spotify(self, ctx, member: Optional[dc.Member] = None):
+    async def spotify(self, ctx, member: Optional[discord.Member] = None):
         member = member or ctx.author
-        activity = dc.utils.find(lambda a: isinstance(a, dc.Spotify), member.activities)
+        activity = discord.utils.find(lambda a: isinstance(a, discord.Spotify), member.activities)
 
         if not activity:
             return await ctx.send(f"{member} is not using Spotify right now.")
@@ -41,7 +41,7 @@ class Info(commands.Cog):
         duration = "%02d:%02d" % divmod(activity.duration.seconds, 60)
         progression = f"{elapsed} `{bar}` {duration}"
 
-        e = dc.Embed(colour=0x1ED760)
+        e = discord.Embed(colour=0x1ED760)
         e.set_author(name=f"{ctx.author.name}", icon_url=self.bot.icon("spotify").url)
         e.add_field(name="Title", value=f"[{activity.title}]({track_url})")
         e.add_field(name="Artists", value=", ".join(activity.artists))
