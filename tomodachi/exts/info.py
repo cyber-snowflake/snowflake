@@ -33,7 +33,7 @@ class Info(commands.Cog):
         bar = make_progress_bar(
             current_pos.seconds,
             activity.duration.seconds,
-            length=16,
+            length=18,
             in_brackets=True,
             emptiness="#",
         )
