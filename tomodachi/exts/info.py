@@ -19,6 +19,7 @@ class Info(commands.Cog):
         self.bot = bot
 
     @commands.command()
+    @commands.cooldown(1, 3, commands.BucketType.user)
     async def spotify(self, ctx, member: Optional[dc.Member] = None):
         member = member or ctx.author
         activity = dc.utils.find(lambda a: isinstance(a, dc.Spotify), member.activities)
