@@ -61,6 +61,11 @@ class Tomodachi(commands.AutoShardedBot):
 
         return commands.when_mentioned_or(*prefixes)(self, message)
 
+    async def update_prefix(self, guild_id: int, new_prefix: str):
+        prefix = await self.pg.update_prefix(guild_id, new_prefix)
+        self.prefixes[guild_id] = prefix
+        return self.prefixes[guild_id]
+
     async def get_context(self, message, *, cls=None):
         return await super().get_context(message, cls=cls or TomodachiContext)
 

@@ -39,3 +39,9 @@ class pg(metaclass=MetaSingleton):  # noqa
     @pool.setter
     def pool(self, value):
         raise AttributeError("Can not set this.") from None
+
+    async def update_prefix(self, guild_id: int, new_prefix: str):
+        async with self.__pool_.acquire() as conn:
+            query = "UPDATE guilds SET prefix = $1 WHERE guild_id = $2 RETURNING prefix;"
+            prefix = await conn.fetchval(query, new_prefix, guild_id)
+        return prefix
