@@ -30,6 +30,9 @@ class Tomodachi(commands.AutoShardedBot):
             intents=make_intents(),
         )
 
+        # Alias to config module
+        self.config = config
+
         self.pg = pg()
         self.prefixes = {}
 
