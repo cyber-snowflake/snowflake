@@ -20,8 +20,8 @@ class Info(commands.Cog):
     def __init__(self, bot: Tomodachi):
         self.bot = bot
 
-    @commands.command(aliases=("ui", "memberinfo", "mi"))
     @commands.cooldown(1, 3, commands.BucketType.user)
+    @commands.command(aliases=("ui", "memberinfo", "mi"), help="Shows general information about discord users")
     async def userinfo(self, ctx: TomodachiContext, user: Union[discord.Member, discord.User] = None):
         # if target user not specified use author
         user = user or ctx.author
@@ -61,8 +61,8 @@ class Info(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @commands.command()
     @commands.cooldown(1, 3, commands.BucketType.user)
+    @commands.command(aliases=("spot",), help="Checks what discord user is listening to")
     async def spotify(self, ctx, member: Optional[discord.Member] = None):
         member = member or ctx.author
         activity = discord.utils.find(lambda a: isinstance(a, discord.Spotify), member.activities)
