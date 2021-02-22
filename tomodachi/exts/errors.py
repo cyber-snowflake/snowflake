@@ -14,7 +14,7 @@ from tomodachi.core.bot import Tomodachi
 from tomodachi.core.exceptions import GloballyRateLimited
 
 
-class ErrorHandling(commands.Cog):
+class ErrorHandler(commands.Cog):
     def __init__(self, bot: Tomodachi):
         self.bot = bot
         self.ignored = (commands.CommandNotFound,)
@@ -68,4 +68,4 @@ class ErrorHandling(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(ErrorHandling(bot))
+    bot.add_cog(ErrorHandler(bot))
