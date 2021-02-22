@@ -8,6 +8,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+import discord
+from discord.ext import commands
+
 from tomodachi.core.exceptions import GloballyRateLimited
 
 if TYPE_CHECKING:
@@ -25,3 +28,18 @@ async def spam_control(ctx: TomodachiContext):
         raise GloballyRateLimited(ctx.author, retry_after)
 
     return True
+
+
+def is_manager():
+    async def predicate(ctx: TomodachiContext):
+        if ctx.guild is None:
+            raise commands.NoPrivateMessage()
+
+        m: discord.Member = ctx.author
+
+        if not m.guild_permissions.manage_guild:
+            raise commands.CheckFailure(f"{m} ({m.id}) has insufficient permissions to run this command")
+
+        return True
+
+    return commands.check(predicate)
