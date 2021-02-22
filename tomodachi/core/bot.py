@@ -4,6 +4,8 @@
 #  License, v. 2.0. If a copy of the MPL was not distributed with this
 #  file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+from __future__ import annotations
+
 import asyncio
 from typing import Optional
 
@@ -12,10 +14,11 @@ from discord.ext import commands
 
 import config
 from tomodachi.core.checks import spam_control
+from tomodachi.core.context import TomodachiContext
 from tomodachi.core.icons import Icons
 from tomodachi.utils import pg, make_intents
 
-__all__ = ["Tomodachi", "TomodachiContext"]
+__all__ = ["Tomodachi"]
 
 
 class Tomodachi(commands.AutoShardedBot):
@@ -83,7 +86,3 @@ class Tomodachi(commands.AutoShardedBot):
 
         self.support_guild = support_guild = await self.fetch_guild(config.SUPPORT_GUILD_ID)
         await self.icon.setup(support_guild.emojis)
-
-
-class TomodachiContext(commands.Context):
-    bot: Tomodachi
