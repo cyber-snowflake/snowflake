@@ -42,7 +42,7 @@ class Tomodachi(commands.AutoShardedBot):
         self.support_guild: Optional[discord.Guild] = None
 
         # Global rate limit cooldowns mapping
-        self.global_rate_limit = commands.CooldownMapping.from_cooldown(10, 12, commands.BucketType.user)
+        self.global_rate_limit = commands.CooldownMapping.from_cooldown(12, 10, commands.BucketType.user)
         # Toggle rate limits for bot owner or not
         # by default bot owner can be rate limited
         self.owner_has_limits = True
