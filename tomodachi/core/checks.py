@@ -11,10 +11,13 @@ from typing import TYPE_CHECKING
 from tomodachi.core.exceptions import GloballyRateLimited
 
 if TYPE_CHECKING:
-    from tomodachi.core.bot import TomodachiContext
+    from tomodachi.core.context import TomodachiContext
 
 
 async def spam_control(ctx: TomodachiContext):
+    if not ctx.bot.owner_has_limits and ctx.message.author.id == ctx.bot.owner_id:
+        return True
+
     bucket = ctx.bot.global_rate_limit.get_bucket(ctx.message)
     retry_after = bucket.update_rate_limit()
 
