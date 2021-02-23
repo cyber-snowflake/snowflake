@@ -8,10 +8,7 @@ import asyncio
 import importlib
 import logging
 import os
-import sys
 from typing import Any
-
-from loguru import logger
 
 import config
 from tomodachi.core.bot import Tomodachi
@@ -28,31 +25,12 @@ else:
 for flag in config.JISHAKU_FLAGS:
     os.environ[f"JISHAKU_{flag}"] = "True"
 
-
 # Setting up logging
-class InterceptHandler(logging.Handler):
-    def emit(self, record):
-        try:
-            level = logger.level(record.levelname).name
-        except ValueError:
-            level = record.levelno
+format_ = '%(asctime)s | %(levelname)s | %(name)s - %(message)s'
+logging.basicConfig(level=logging.INFO, format=format_)
 
-        frame, depth = logging.currentframe(), 2
-        while frame.f_code.co_filename == logging.__file__:
-            frame = frame.f_back
-            depth += 1
-
-        logger.opt(depth=depth, exception=record.exc_info).log(level, record.getMessage())
-
-
-logging_level = os.environ.get("LOGGING_LEVEL", "INFO")
-
-std_logger = logging.getLogger()
-std_logger.setLevel(logging_level)
-std_logger.handlers = [InterceptHandler()]
-
-logger.remove()
-logger.add(sys.stderr, enqueue=True, level=logging_level)
+logger = logging.getLogger("discord")
+logger.setLevel(logging.INFO)
 
 # Creating database pool
 loop = asyncio.get_event_loop()

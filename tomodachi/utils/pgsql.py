@@ -5,10 +5,10 @@
 #  file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import asyncio
+import logging
 from typing import Optional
 
 import asyncpg
-from loguru import logger
 
 from .singleton import MetaSingleton
 
@@ -30,7 +30,7 @@ class pg(metaclass=MetaSingleton):  # noqa
             raise
         else:
             self.connection_established.set()
-            logger.info("connection to pgsql established")
+            logging.info("connection to pgsql established")
 
     @property
     def pool(self):

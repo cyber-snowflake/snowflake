@@ -4,11 +4,11 @@
 #  License, v. 2.0. If a copy of the MPL was not distributed with this
 #  file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import sys
 import traceback
 
 import discord
 from discord.ext import commands
-from loguru import logger
 
 from tomodachi.core.bot import Tomodachi
 from tomodachi.core.exceptions import GloballyRateLimited
@@ -62,8 +62,7 @@ class ErrorHandler(commands.Cog):
         if not isinstance(error, self.suppressed_tracebacks):
             # send some debug information to bot owner
             tb = "".join(traceback.format_exception(type(error), error, error.__traceback__))
-            logger.error(f"Ignoring exception in command {ctx.command}.")
-            logger.exception(tb)
+            traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
 
             e = discord.Embed(color=0xFF0000, title="Exception")
             e.add_field(name="Command", value=f"{ctx.message.content[0:1000]}")
