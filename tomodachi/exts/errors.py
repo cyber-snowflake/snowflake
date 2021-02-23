@@ -23,6 +23,8 @@ class ErrorHandler(commands.Cog):
         self.suppressed_tracebacks = (
             commands.CheckFailure,
             commands.CheckAnyFailure,
+            commands.UserNotFound,
+            commands.MemberNotFound,
         )
 
     @commands.Cog.listener()
