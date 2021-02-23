@@ -5,7 +5,7 @@
 #  file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 from datetime import datetime
-from typing import Optional, Union
+from typing import Union
 
 import discord
 import humanize
@@ -81,7 +81,7 @@ class Info(commands.Cog):
 
     @commands.cooldown(1, 3, commands.BucketType.user)
     @commands.command(aliases=("spot",), help="Checks what discord user is listening to")
-    async def spotify(self, ctx, member: Optional[discord.Member] = None):
+    async def spotify(self, ctx, member: discord.Member = None):
         member = member or ctx.author
         activity = discord.utils.find(lambda a: isinstance(a, discord.Spotify), member.activities)
 
