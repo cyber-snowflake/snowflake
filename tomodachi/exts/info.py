@@ -21,6 +21,24 @@ class Info(commands.Cog):
         self.bot = bot
 
     @commands.cooldown(1, 3, commands.BucketType.user)
+    @commands.command(aliases=("avy", "av"))
+    async def avatar(self, ctx: TomodachiContext, user: discord.User = None):
+        user = user or ctx.author
+
+        urls = " | ".join(f"[{ext}]({user.avatar_url_as(format=ext)})" for ext in ("png", "jpeg", "webp"))
+        if user.is_avatar_animated():
+            urls += f" | [gif]({user.avatar_url_as(format='gif')})"
+
+        embed = discord.Embed(
+            colour=0x2F3136,
+            description=urls,
+            title=f"{user} ({user.id})",
+        )
+        embed.set_image(url=f"{user.avatar_url}")
+
+        await ctx.send(embed=embed)
+
+    @commands.cooldown(1, 3, commands.BucketType.user)
     @commands.command(aliases=("ui", "memberinfo", "mi"), help="Shows general information about discord users")
     async def userinfo(self, ctx: TomodachiContext, user: Union[discord.Member, discord.User] = None):
         # if target user not specified use author
