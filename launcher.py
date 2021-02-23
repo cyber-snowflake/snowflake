@@ -26,7 +26,7 @@ for flag in config.JISHAKU_FLAGS:
     os.environ[f"JISHAKU_{flag}"] = "True"
 
 # Setting up logging
-format_ = '%(asctime)s | %(levelname)s | %(name)s - %(message)s'
+format_ = '%(asctime)s | %(levelname)-8s | %(name)-20s | %(message)s'
 logging.basicConfig(level=logging.INFO, format=format_)
 
 logger = logging.getLogger("discord")
