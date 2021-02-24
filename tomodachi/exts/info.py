@@ -50,9 +50,14 @@ class Info(commands.Cog):
         embed.add_field(name="Username", value=f"{user}")
         embed.add_field(name="ID", value=f"{user.id}")
 
-        flags = "\n".join(f"{self.bot.icon(f.name)} {HUMAN_READABLE_FLAGS[f.name]}" for f in user.public_flags.all())
-        if flags:
-            embed.add_field(name="Badges", value=f"{flags}", inline=False)
+        if user.public_flags.value > 0:
+            embed.add_field(
+                inline=False,
+                name="Badges",
+                value="\n".join(
+                    f"{self.bot.icon(f.name)} {HUMAN_READABLE_FLAGS[f.name]}" for f in user.public_flags.all()
+                ),
+            )
 
         if isinstance(user, discord.Member):
             embed.colour = user.colour
