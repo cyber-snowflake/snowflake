@@ -4,12 +4,13 @@
 #  License, v. 2.0. If a copy of the MPL was not distributed with this
 #  file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import io
 from datetime import datetime
 from typing import Union
 
 import discord
 import humanize
-from discord.ext import commands
+from discord.ext import commands, flags
 
 from tomodachi.core.bot import Tomodachi
 from tomodachi.core.context import TomodachiContext
@@ -21,8 +22,9 @@ class Info(commands.Cog):
         self.bot = bot
 
     @commands.cooldown(1, 3, commands.BucketType.user)
-    @commands.command(aliases=("avy", "av"))
-    async def avatar(self, ctx: TomodachiContext, user: discord.User = None):
+    @flags.add_flag("--steal", "-s", action="store_true")
+    @flags.command(aliases=("avy", "av"))
+    async def avatar(self, ctx: TomodachiContext, user: discord.User = None, **options):
         user = user or ctx.author
 
         urls = " | ".join(f"[{ext}]({user.avatar_url_as(format=ext)})" for ext in ("png", "jpeg", "webp"))
@@ -36,7 +38,18 @@ class Info(commands.Cog):
         )
         embed.set_image(url=f"{user.avatar_url}")
 
-        await ctx.send(embed=embed)
+        if not options["steal"]:
+            return await ctx.send(embed=embed)
+
+        filename = "{}.{}".format(user.id, "png" if not user.is_avatar_animated() else "gif")
+        asset = user.avatar_url_as(static_format="png")
+
+        buf = io.BytesIO()
+        await asset.save(buf)
+
+        f = discord.File(buf, filename)
+
+        await ctx.send(content=f"Re-uploaded avatar of {user} (`{user.id}`)", file=f)
 
     @commands.cooldown(1, 3, commands.BucketType.user)
     @commands.command(aliases=("ui", "memberinfo", "mi"), help="Shows general information about discord users")
