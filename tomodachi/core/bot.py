@@ -26,6 +26,7 @@ class Tomodachi(commands.AutoShardedBot):
         super().__init__(
             *args,
             **kwargs,
+            max_messages=150,
             command_prefix=self.get_prefix,
             intents=make_intents(),
             member_cache_flags=make_cache_policy(),
