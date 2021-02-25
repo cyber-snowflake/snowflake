@@ -23,7 +23,7 @@ class Info(commands.Cog):
 
     @commands.cooldown(1, 3, commands.BucketType.user)
     @flags.add_flag("--steal", "-s", action="store_true")
-    @flags.command(aliases=("avy", "av"))
+    @commands.command(cls=flags.FlagCommand, aliases=("avy", "av"), help="Provides you an avatar of some discord user")
     async def avatar(self, ctx: TomodachiContext, user: discord.User = None, **options):
         user = user or ctx.author
 
