@@ -16,7 +16,7 @@ import config
 from tomodachi.core.checks import spam_control
 from tomodachi.core.context import TomodachiContext
 from tomodachi.core.icons import Icons
-from tomodachi.utils import pg, make_intents
+from tomodachi.utils import pg, make_intents, make_cache_policy
 
 __all__ = ["Tomodachi"]
 
@@ -28,6 +28,7 @@ class Tomodachi(commands.AutoShardedBot):
             **kwargs,
             command_prefix=self.get_prefix,
             intents=make_intents(),
+            member_cache_flags=make_cache_policy(),
         )
 
         # Alias to config module
