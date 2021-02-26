@@ -6,6 +6,7 @@
 
 from __future__ import annotations
 
+import io
 import itertools
 from typing import Union, List
 
@@ -50,6 +51,28 @@ class TomodachiHelpCommand(commands.MinimalHelpCommand):
         e.description = "".join(self.paginator.pages)
 
         await self.get_destination().send(embed=e)
+
+    async def send_group_help(self, group):
+        buff = io.StringIO()
+        embed = discord.Embed(colour=self._e_colour)
+        embed.set_thumbnail(url=self.context.bot.user.avatar_url)
+
+        if note := self.get_opening_note():
+            buff.writelines([note, "\n\n", f"**{group} commands:**\n"])
+
+        filtered = await self.filter_commands(group.commands, sort=True)
+
+        if filtered:
+            for command in filtered:
+                fmt = "`{0}{1}` — {2}" if command.short_doc else "`{0}{1}`\n"
+                buff.write(fmt.format(self.clean_prefix, command.qualified_name, command.short_doc))
+
+        if buff.seekable():
+            buff.seek(0)
+
+        embed.description = buff.getvalue()
+
+        await self.get_destination().send(embed=embed)
 
     async def send_command_help(self, command: commands.Command):
         embed = discord.Embed(title=self.get_command_signature(command))
