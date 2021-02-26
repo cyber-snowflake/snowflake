@@ -37,6 +37,8 @@ class Tomodachi(commands.AutoShardedBot):
 
         self.pg = pg()
         self.prefixes = {}
+        # tuple with user ids
+        self.blacklist = ()
 
         # Alias to Icons singleton
         self.icon = Icons()
@@ -51,6 +53,9 @@ class Tomodachi(commands.AutoShardedBot):
 
         self.__once_ready_ = asyncio.Event()
         self.loop.create_task(self.once_ready())
+
+        # Fetch custom prefixes and blacklisted users
+        self.loop.create_task(self.fetch_blacklist())
         self.loop.create_task(self.fetch_prefixes())
 
     async def get_prefix(self, message: discord.Message):
@@ -81,6 +86,14 @@ class Tomodachi(commands.AutoShardedBot):
             records = await conn.fetch("SELECT guild_id, prefix FROM guilds;")
 
         self.prefixes.update({k: v for k, v in map(tuple, records)})
+
+    async def fetch_blacklist(self):
+        await self.pg.connection_established.wait()
+
+        async with self.pg.pool.acquire() as conn:
+            records = await conn.fetch("SELECT DISTINCT * FROM blacklisted;")
+
+        self.blacklist = tuple(r["user_id"] for r in records)
 
     async def on_ready(self):
         if not self.__once_ready_.is_set():
