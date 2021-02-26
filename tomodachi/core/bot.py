@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import asyncio
+import logging
 from typing import Optional
 
 import discord
@@ -110,6 +111,7 @@ class Tomodachi(commands.AutoShardedBot):
 
         for ext in config.EXTENSIONS:
             self.load_extension(f"tomodachi.exts.{ext}")
+            logging.info(f"loaded {ext}")
 
         self.support_guild = support_guild = await self.fetch_guild(config.SUPPORT_GUILD_ID)
         await self.icon.setup(support_guild.emojis)
