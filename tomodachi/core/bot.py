@@ -13,7 +13,7 @@ import discord
 from discord.ext import commands
 
 import config
-from tomodachi.core.checks import spam_control
+from tomodachi.core.checks import spam_control, is_blacklisted
 from tomodachi.core.context import TomodachiContext
 from tomodachi.core.icons import Icons
 from tomodachi.utils import pg, make_intents, make_cache_policy
@@ -103,6 +103,7 @@ class Tomodachi(commands.AutoShardedBot):
         await self.__once_ready_.wait()
 
         self.add_check(spam_control)
+        self.add_check(is_blacklisted)
 
         for ext in config.EXTENSIONS:
             self.load_extension(f"tomodachi.exts.{ext}")
