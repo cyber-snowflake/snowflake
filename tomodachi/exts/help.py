@@ -64,7 +64,7 @@ class TomodachiHelpCommand(commands.MinimalHelpCommand):
         if note := self.get_opening_note():
             buff.writelines([note, "\n\n", f"**{group} commands:**\n"])
 
-        filtered = await self.filter_commands(group.commands, sort=True)
+        filtered: Commands = await self.filter_commands(group.commands, sort=True)
 
         if filtered:
             for command in filtered:
