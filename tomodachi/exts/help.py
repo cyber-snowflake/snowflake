@@ -27,6 +27,16 @@ class TomodachiHelpCommand(commands.MinimalHelpCommand):
         super().__init__(**options, command_attrs=dict(hidden=True))
         self._e_colour = 0x2F3136
 
+    async def send_pages(self):
+        e = discord.Embed(colour=self._e_colour)
+        e.description = "".join(self.paginator.pages)
+
+        await self.get_destination().send(embed=e)
+
+    def format_command(self, command: Union[commands.Command, commands.Group]):
+        fmt = "`{0}{1}` — {2}\n" if command.short_doc else "`{0}{1}`\n"
+        return fmt.format(self.clean_prefix, command.qualified_name, command.short_doc)
+
     async def send_bot_help(self, mapping):
         embed = discord.Embed(colour=self._e_colour)
         embed.set_thumbnail(url=self.context.bot.user.avatar_url)
@@ -45,16 +55,6 @@ class TomodachiHelpCommand(commands.MinimalHelpCommand):
 
         channel = self.get_destination()
         await channel.send(embed=embed)
-
-    async def send_pages(self):
-        e = discord.Embed(colour=self._e_colour)
-        e.description = "".join(self.paginator.pages)
-
-        await self.get_destination().send(embed=e)
-
-    def format_command(self, command: Union[commands.Command, commands.Group]):
-        fmt = "`{0}{1}` — {2}\n" if command.short_doc else "`{0}{1}`\n"
-        return fmt.format(self.clean_prefix, command.qualified_name, command.short_doc)
 
     async def send_group_help(self, group):
         buff = io.StringIO()
