@@ -27,7 +27,7 @@ class Default(commands.Cog):
         if not ctx.invoked_subcommand:
             await ctx.send(f"See `{ctx.prefix}help config` to learn about subcommands.")
 
-    @config.command()
+    @config.command(help="Changes prefix of a bot in this server")
     async def prefix(self, ctx: TomodachiContext, new_prefix: str = None):
         if not new_prefix:
             current_prefix = self.bot.prefixes.get(ctx.guild.id, self.bot.config.DEFAULT_PREFIX)
