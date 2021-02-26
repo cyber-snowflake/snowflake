@@ -51,3 +51,8 @@ class pg(metaclass=MetaSingleton):  # noqa
             query = "INSERT INTO blacklisted (user_id, reason) VALUES ($1, $2) RETURNING TRUE;"
             is_blacklisted = await conn.fetchval(query, snowflake, reason)
         return is_blacklisted
+
+    async def unblock(self, snowflake: int):
+        async with self.__pool_.acquire() as conn:
+            query = "DELETE FROM blacklisted WHERE user_id = $1;"
+            await conn.execute(query, snowflake)
