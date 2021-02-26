@@ -45,3 +45,9 @@ class pg(metaclass=MetaSingleton):  # noqa
             query = "UPDATE guilds SET prefix = $1 WHERE guild_id = $2 RETURNING prefix;"
             prefix = await conn.fetchval(query, new_prefix, guild_id)
         return prefix
+
+    async def block(self, snowflake: int, reason: str = "No reason"):
+        async with self.__pool_.acquire() as conn:
+            query = "INSERT INTO blacklisted (user_id, reason) VALUES ($1, $2) RETURNING TRUE;"
+            is_blacklisted = await conn.fetchval(query, snowflake, reason)
+        return is_blacklisted
