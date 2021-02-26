@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import io
 import itertools
-from typing import Union, List
+from typing import Union, List, NewType
 
 import discord
 from discord.ext import commands
@@ -18,6 +18,7 @@ from tomodachi.core.context import TomodachiContext
 
 # Type alias for a commands mapping, quite helpful
 Commands = List[Union[commands.Command, commands.Group]]
+CogType = NewType("CogType", commands.Cog)
 
 
 class TomodachiHelpCommand(commands.MinimalHelpCommand):
@@ -55,6 +56,28 @@ class TomodachiHelpCommand(commands.MinimalHelpCommand):
 
         channel = self.get_destination()
         await channel.send(embed=embed)
+
+    async def send_cog_help(self, cog: CogType):
+        buff = io.StringIO()
+
+        embed = discord.Embed(title=cog.qualified_name, colour=self._e_colour)
+        embed.set_thumbnail(url=self.context.bot.user.avatar_url)
+
+        if cog.description:
+            buff.writelines([cog.description, "\n\n"])
+
+        filtered: Commands = await self.filter_commands(cog.get_commands(), sort=True)
+
+        if filtered:
+            for command in filtered:
+                buff.write(self.format_command(command))
+
+        if buff.seekable():
+            buff.seek(0)
+
+        embed.description = buff.getvalue()
+
+        await self.get_destination().send(embed=embed)
 
     async def send_group_help(self, group):
         buff = io.StringIO()
