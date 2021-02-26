@@ -40,6 +40,11 @@ class pg(metaclass=MetaSingleton):  # noqa
     def pool(self, value):
         raise AttributeError("Can not set this.") from None
 
+    async def store_guild(self, guild_id: int):
+        async with self.__pool_.acquire() as conn:
+            async with conn.transaction():
+                await self.pool.execute("INSERT INTO guilds(guild_id) VALUES($1) ON CONFLICT DO NOTHING;", guild_id)
+
     async def update_prefix(self, guild_id: int, new_prefix: str):
         async with self.__pool_.acquire() as conn:
             query = "UPDATE guilds SET prefix = $1 WHERE guild_id = $2 RETURNING prefix;"
