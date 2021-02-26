@@ -52,6 +52,10 @@ class TomodachiHelpCommand(commands.MinimalHelpCommand):
 
         await self.get_destination().send(embed=e)
 
+    def format_command(self, command: Union[commands.Command, commands.Group]):
+        fmt = "`{0}{1}` — {2}\n" if command.short_doc else "`{0}{1}`\n"
+        return fmt.format(self.clean_prefix, command.qualified_name, command.short_doc)
+
     async def send_group_help(self, group):
         buff = io.StringIO()
         embed = discord.Embed(colour=self._e_colour)
@@ -64,8 +68,7 @@ class TomodachiHelpCommand(commands.MinimalHelpCommand):
 
         if filtered:
             for command in filtered:
-                fmt = "`{0}{1}` — {2}" if command.short_doc else "`{0}{1}`\n"
-                buff.write(fmt.format(self.clean_prefix, command.qualified_name, command.short_doc))
+                buff.write(self.format_command(command))
 
         if buff.seekable():
             buff.seek(0)
