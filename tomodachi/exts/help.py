@@ -39,9 +39,12 @@ class TomodachiHelpCommand(commands.MinimalHelpCommand):
         return fmt.format(self.clean_prefix, command.qualified_name, command.short_doc)
 
     async def send_bot_help(self, mapping):
-        embed = discord.Embed(colour=self._e_colour)
+        embed = discord.Embed(
+            colour=self._e_colour,
+            description=self.get_opening_note(),
+        )
+
         embed.set_thumbnail(url=self.context.bot.user.avatar_url)
-        embed.description = self.get_opening_note()
 
         def get_category(command):
             _cog = command.cog
