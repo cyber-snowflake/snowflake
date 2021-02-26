@@ -78,8 +78,10 @@ class TomodachiHelpCommand(commands.MinimalHelpCommand):
         await self.get_destination().send(embed=embed)
 
     async def send_command_help(self, command: commands.Command):
-        embed = discord.Embed(title=self.get_command_signature(command))
-        embed.colour = self._e_colour
+        embed = discord.Embed(
+            colour=self._e_colour,
+            title=self.get_command_signature(command),
+        )
 
         if command.help:
             embed.description = f"{self.context.bot.icon('rich_presence')} {command.help}"
