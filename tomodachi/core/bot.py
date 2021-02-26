@@ -102,6 +102,9 @@ class Tomodachi(commands.AutoShardedBot):
     async def once_ready(self):
         await self.__once_ready_.wait()
 
+        for guild in self.guilds:
+            self.loop.create_task(self.pg.store_guild(guild.id))
+
         self.add_check(spam_control)
         self.add_check(is_blacklisted)
 
