@@ -34,6 +34,12 @@ class Owner(commands.Cog):
             await ctx.send(":ok_hand:")
 
     @commands.command()
+    async def unblock(self, ctx: TomodachiContext, target: discord.User):
+        await self.bot.pg.unblock(target.id)
+        await self.bot.fetch_blacklist()
+        await ctx.send(":ok_hand:")
+
+    @commands.command()
     async def steal_avatar(self, ctx: TomodachiContext, user: discord.User):
         """Sets someone's avatar as bots' avatar"""
         embed = discord.Embed(colour=0x2F3136)
