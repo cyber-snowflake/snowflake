@@ -85,14 +85,10 @@ class TomodachiHelpCommand(commands.MinimalHelpCommand):
     async def send_group_help(self, group):
         buff = io.StringIO()
 
-        embed = discord.Embed(colour=self._e_colour)
+        embed = discord.Embed(colour=self._e_colour, title=f"{group} commands")
         embed.set_thumbnail(url=self.context.bot.user.avatar_url)
 
-        if note := self.get_opening_note():
-            buff.writelines([note, "\n\n", f"**{group} commands:**\n"])
-
         filtered: Commands = await self.filter_commands(group.commands, sort=True)
-
         if filtered:
             for command in filtered:
                 buff.write(self.format_command(command))
