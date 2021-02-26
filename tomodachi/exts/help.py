@@ -84,6 +84,7 @@ class TomodachiHelpCommand(commands.MinimalHelpCommand):
 
     async def send_group_help(self, group):
         buff = io.StringIO()
+
         embed = discord.Embed(colour=self._e_colour)
         embed.set_thumbnail(url=self.context.bot.user.avatar_url)
 
