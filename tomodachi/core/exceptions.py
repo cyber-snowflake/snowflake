@@ -9,7 +9,11 @@ from typing import Union
 import discord
 from discord.ext.commands import CommandError
 
-__all__ = ["GloballyRateLimited"]
+__all__ = ["GloballyRateLimited", "Blacklisted"]
+
+
+class Blacklisted(CommandError):
+    pass
 
 
 class GloballyRateLimited(CommandError):

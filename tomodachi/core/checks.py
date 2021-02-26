@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING
 import discord
 from discord.ext import commands
 
-from tomodachi.core.exceptions import GloballyRateLimited
+from tomodachi.core.exceptions import GloballyRateLimited, Blacklisted
 
 if TYPE_CHECKING:
     from tomodachi.core.context import TomodachiContext
@@ -26,6 +26,13 @@ async def spam_control(ctx: TomodachiContext):
 
     if retry_after:
         raise GloballyRateLimited(ctx.author, retry_after)
+
+    return True
+
+
+async def is_blacklisted(ctx: TomodachiContext):
+    if ctx.author.id in ctx.bot.blacklist and ctx.author.id != ctx.bot.owner_id:
+        raise Blacklisted()
 
     return True
 
