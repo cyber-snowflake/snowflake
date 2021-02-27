@@ -10,6 +10,8 @@ import logging
 import os
 from typing import Any
 
+import discord
+
 import config
 from tomodachi.core.bot import Tomodachi
 from tomodachi.utils import pg
@@ -26,7 +28,7 @@ for flag in config.JISHAKU_FLAGS:
     os.environ[f"JISHAKU_{flag}"] = "True"
 
 # Setting up logging
-format_ = '%(asctime)s | %(levelname)-8s | %(name)-20s | %(message)s'
+format_ = "%(asctime)s | %(levelname)-8s | %(name)-20s | %(message)s"
 logging.basicConfig(level=logging.INFO, format=format_)
 
 logger = logging.getLogger("discord")
@@ -39,4 +41,12 @@ loop.run_until_complete(pg().setup(config.POSTGRES_DSN))
 # Running the bot
 tomodachi = Tomodachi()
 tomodachi.load_extension("jishaku")
-tomodachi.run()
+
+try:
+    loop.run_until_complete(tomodachi.start(config.TOKEN))
+
+except KeyboardInterrupt:
+    loop.run_until_complete(tomodachi.logout())
+
+finally:
+    discord.client._cleanup_loop(loop)  # noqa
