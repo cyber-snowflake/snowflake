@@ -28,6 +28,8 @@ class ErrorHandler(commands.Cog):
             commands.CheckAnyFailure,
             commands.UserNotFound,
             commands.MemberNotFound,
+            commands.BadArgument,
+            commands.MissingRequiredArgument,
         )
 
     @commands.Cog.listener()
