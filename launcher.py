@@ -13,6 +13,7 @@ from typing import Any
 import discord
 
 import config
+import patches  # noqa
 from tomodachi.core.bot import Tomodachi
 from tomodachi.utils import pg
 
@@ -22,6 +23,7 @@ except ImportError:
     pass
 else:
     asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
+
 
 # Enforcing jishaku flags
 for flag in config.JISHAKU_FLAGS:
