@@ -6,3 +6,5 @@ discord-ext-menus@git+https://github.com/Rapptz/discord-ext-menus@master
 jishaku>=1.20.0.220
 humanize>=3.2.0
 discord-flags~=2.1.1
+idna==2.5
+gTTS==2.2.2
