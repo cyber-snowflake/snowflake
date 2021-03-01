@@ -30,6 +30,7 @@ class ErrorHandler(commands.Cog):
             commands.MemberNotFound,
             commands.BadArgument,
             commands.MissingRequiredArgument,
+            commands.MaxConcurrencyReached,
         )
 
     @commands.Cog.listener()
