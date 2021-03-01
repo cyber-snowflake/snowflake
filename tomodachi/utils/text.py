@@ -49,9 +49,5 @@ def make_progress_bar(position: float, total: float, *, length: int = 15, filler
 
     for i in range(1, length + 1):
         i_pos = round(i * 100 / length)
-        if i_pos <= target_pos:
-            bar += filler
-        else:
-            bar += emptiness
-
+        bar += filler if i_pos <= target_pos else emptiness
     return bar if not in_brackets else f"[{bar}]"
