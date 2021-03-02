@@ -47,6 +47,7 @@ class AniMedia:
         "banner_image",
         "url",
         "episodes",
+        "_is_adult",
     )
 
     def __init__(self, **kwargs):
@@ -63,6 +64,7 @@ class AniMedia:
         self.banner_image: str = kwargs.get("bannerImage")
         self.url: str = kwargs.get("siteUrl")
         self.episodes: int = kwargs.get("episodes")
+        self._is_adult: bool = kwargs.get("isAdult", False)
 
     def __repr__(self):
         return f"<AniMedia id={self.id} title={self.title}>"
@@ -80,6 +82,10 @@ class AniMedia:
     def cover_image(self):
         return MediaCoverImage(**self._coverImage)
 
+    @property
+    def is_adult(self):
+        return self._is_adult
+
 
 class AniList:
     __base_url: ClassVar[str] = "https://graphql.anilist.co"
@@ -90,7 +96,7 @@ class AniList:
         cls.__session = session
 
     @classmethod
-    async def lookup(cls, search: str, *, raw=False):
+    async def lookup(cls, search: str, *, raw=False, hide_adult=True):
         query = """
                 query ($id: Int, $page: Int, $search: String) {
                   Page(page: $page, perPage: 100) {
@@ -128,6 +134,7 @@ class AniList:
                       bannerImage
                       siteUrl
                       episodes
+                      isAdult
                     }
                   }
                 }
@@ -147,4 +154,7 @@ class AniList:
         if raw:
             return _json
         else:
-            return [AniMedia(**obj) for obj in _json["data"]["Page"]["media"]]
+            if hide_adult:
+                return [AniMedia(**obj) for obj in _json["data"]["Page"]["media"] if obj["isAdult"] is False]
+            else:
+                return [AniMedia(**obj) for obj in _json["data"]["Page"]["media"]]
