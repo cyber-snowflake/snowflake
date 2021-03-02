@@ -37,7 +37,7 @@ class AniMedia:
         "id",
         "title",
         "type",
-        "description",
+        "_description",
         "genres",
         "duration",
         "_startDate",
@@ -46,13 +46,14 @@ class AniMedia:
         "_coverImage",
         "banner_image",
         "url",
+        "episodes",
     )
 
     def __init__(self, **kwargs):
         self.id: int = kwargs.get("id")
         self.title: MediaTitle = kwargs.get("title", {})
         self.type: str = kwargs.get("type")
-        self.description: str = kwargs.get("description")
+        self._description: str = kwargs.get("description")
         self.genres: list[str] = kwargs.get("genres", [])
         self.duration: int = kwargs.get("duration", 0)
         self._startDate: dict[str, int] = kwargs.get("startDate", {})
@@ -61,9 +62,15 @@ class AniMedia:
         self._coverImage: dict[str, str] = kwargs.get("coverImage")
         self.banner_image: str = kwargs.get("bannerImage")
         self.url: str = kwargs.get("siteUrl")
+        self.episodes: int = kwargs.get("episodes")
 
     def __repr__(self):
         return f"<AniMedia id={self.id} title={self.title}>"
+
+    @property
+    def description(self):
+        # absolute genius move here
+        return self._description.replace("\n", "").replace("<br>", "\n")
 
     @property
     def start_date(self):
@@ -120,6 +127,7 @@ class AniList:
                       }
                       bannerImage
                       siteUrl
+                      episodes
                     }
                   }
                 }
