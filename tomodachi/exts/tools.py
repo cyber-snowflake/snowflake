@@ -149,7 +149,7 @@ class Tools(commands.Cog):
 
         await ctx.send(file=file, embed=embed)
 
-    @commands.cooldown(1, 5.0, commands.BucketType.user)
+    @commands.cooldown(1, 7.0, commands.BucketType.user)
     @commands.command(help="Performs anime lookup on AniList")
     async def anime(self, ctx: TomodachiContext, *, query: str):
         async with ctx.typing():
