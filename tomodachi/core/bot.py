@@ -10,6 +10,7 @@ import asyncio
 import logging
 from typing import Optional
 
+import aiohttp
 import discord
 from discord.ext import commands
 
@@ -52,12 +53,20 @@ class Tomodachi(commands.AutoShardedBot):
         # by default bot owner can be rate limited
         self.owner_has_limits = True
 
+        self.session = aiohttp.ClientSession()
+
         self.__once_ready_ = asyncio.Event()
         self.loop.create_task(self.once_ready())
 
         # Fetch custom prefixes and blacklisted users
         self.loop.create_task(self.fetch_blacklist())
         self.loop.create_task(self.fetch_prefixes())
+
+    async def close(self):
+        if self.session.closed:
+            await self.session.close()
+
+        await super().close()
 
     async def get_prefix(self, message: discord.Message):
         prefixes = []
