@@ -77,9 +77,6 @@ class Tomodachi(commands.AutoShardedBot):
     async def get_context(self, message, *, cls=None):
         return await super().get_context(message, cls=cls or TomodachiContext)
 
-    def run(self):
-        super().run(config.TOKEN, reconnect=True)
-
     async def fetch_prefixes(self):
         await self.pg.connection_established.wait()
 
