@@ -45,6 +45,7 @@ class AniMedia:
         "status",
         "_coverImage",
         "banner_image",
+        "url",
     )
 
     def __init__(self, **kwargs):
@@ -59,6 +60,7 @@ class AniMedia:
         self.status: str = kwargs.get("status")
         self._coverImage: dict[str, str] = kwargs.get("coverImage")
         self.banner_image: str = kwargs.get("bannerImage")
+        self.url: str = kwargs.get("siteUrl")
 
     def __repr__(self):
         return f"<AniMedia id={self.id} title={self.title}>"
@@ -117,6 +119,7 @@ class AniList:
                         color
                       }
                       bannerImage
+                      siteUrl
                     }
                   }
                 }
