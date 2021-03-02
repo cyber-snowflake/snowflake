@@ -34,10 +34,13 @@ class Tools(commands.Cog):
     @commands.max_concurrency(1, commands.BucketType.channel)
     @commands.command(help="Transforms text data into speech")
     async def tts(self, ctx: TomodachiContext, language: str, *, text: str):
-        buff = await self.make_text_to_speech(language, text)
-        file = discord.File(buff, "tts.mp3")
-
-        await ctx.reply("Here's your requested text to speech!", file=file, mention_author=False)
+        try:
+            buff = await self.make_text_to_speech(language, text)
+        except ValueError:
+            await ctx.send("Make sure you have provided correct language code.")
+        else:
+            file = discord.File(buff, "tts.mp3")
+            await ctx.reply("Here's your requested text to speech!", file=file, mention_author=False)
 
 
 def setup(bot):
