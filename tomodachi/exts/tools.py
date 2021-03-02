@@ -4,6 +4,7 @@
 #  License, v. 2.0. If a copy of the MPL was not distributed with this
 #  file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import asyncio
 import io
 
 import discord
@@ -82,6 +83,42 @@ class AniListMenu(menus.Menu):
     @menus.button("\N{BLACK SQUARE FOR STOP}\ufe0f")
     async def on_stop(self, _payload):
         self.stop()
+
+    @menus.button("\N{INPUT SYMBOL FOR NUMBERS}")
+    async def on_input_number(self, payload: discord.RawReactionActionEvent):
+        channel = self.message.channel
+
+        def check(m):
+            return m.author.id == payload.user_id and channel.id == m.channel.id
+
+        question = await channel.send(embed=discord.Embed(title="Which page would you like to open?"))
+
+        try:
+            msg = await self.bot.wait_for("message", check=check, timeout=30.0)
+        except asyncio.TimeoutError:
+            await question.edit(embed=discord.Embed(title=":x: Too slow! "))
+        else:
+            if not msg.content.isdigit():
+                return await question.edit(embed=discord.Embed(title=":x: You have to provide a digit!"))
+
+            page_to_open = int(msg.content)
+            if page_to_open > self.max_index + 1 or page_to_open < 1:
+                return await question.edit(embed=discord.Embed(title=":x: You have to provided an invalid page."))
+
+            if page_to_open == self.current_index + 1:
+                return await question.edit(embed=discord.Embed(title="You are already on this page."))
+
+            await question.edit(embed=discord.Embed(title=f"Opening page {page_to_open}..."))
+            self.current_index = page_to_open - 1
+            await self.update_page()
+
+        finally:
+
+            async def cleanup():
+                await asyncio.sleep(3)
+                await question.delete()
+
+            asyncio.create_task(cleanup())
 
     @menus.button("\N{BLACK RIGHT-POINTING TRIANGLE}")
     async def on_arrow_right(self, _payload):
