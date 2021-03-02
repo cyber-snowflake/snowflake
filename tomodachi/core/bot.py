@@ -18,7 +18,7 @@ import config
 from tomodachi.core.checks import spam_control, is_blacklisted
 from tomodachi.core.context import TomodachiContext
 from tomodachi.core.icons import Icons
-from tomodachi.utils import pg, make_intents, make_cache_policy
+from tomodachi.utils import pg, make_intents, make_cache_policy, AniList
 
 __all__ = ["Tomodachi"]
 
@@ -117,6 +117,7 @@ class Tomodachi(commands.AutoShardedBot):
 
         self.support_guild = support_guild = await self.fetch_guild(config.SUPPORT_GUILD_ID)
         await self.icon.setup(support_guild.emojis)
+        await AniList.setup(self.session)
 
         for ext in config.EXTENSIONS:
             self.load_extension(f"tomodachi.exts.{ext}")
