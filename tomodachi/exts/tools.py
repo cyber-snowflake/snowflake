@@ -7,6 +7,7 @@
 import io
 
 import discord
+from PIL import Image
 from discord.ext import commands
 from gtts import gTTS
 
@@ -18,6 +19,17 @@ from tomodachi.utils import run_in_executor
 class Tools(commands.Cog):
     def __init__(self, bot: Tomodachi):
         self.bot = bot
+
+    @staticmethod
+    @run_in_executor
+    def make_color_circle(color):
+        buff = io.BytesIO()
+
+        with Image.new("RGB", (256, 256), color) as im:
+            im.save(buff, format="png")
+
+        buff.seek(0)
+        return buff
 
     @staticmethod
     @run_in_executor
@@ -41,6 +53,22 @@ class Tools(commands.Cog):
         else:
             file = discord.File(buff, "tts.mp3")
             await ctx.reply("Here's your requested text to speech!", file=file, mention_author=False)
+
+    @commands.cooldown(1, 3.0, commands.BucketType.user)
+    @commands.command(help="Shows information about colours")
+    async def color(self, ctx: TomodachiContext, color: discord.Colour):
+        buff = await self.make_color_circle(color.to_rgb())
+        file = discord.File(buff, "color.png")
+
+        embed = discord.Embed()
+        embed.colour = color
+
+        embed.add_field(name="HEX", value=f"{color}")
+        embed.add_field(name="RGB", value=f"{color.to_rgb()}")
+
+        embed.set_thumbnail(url="attachment://color.png")
+
+        await ctx.send(file=file, embed=embed)
 
 
 def setup(bot):

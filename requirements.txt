@@ -8,3 +8,4 @@ discord-flags~=2.1.1
 idna==2.5
 gTTS==2.2.2
 aiohttp[speedups]==3.7.4
+Pillow~=8.1.1
