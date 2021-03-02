@@ -152,10 +152,13 @@ class Tools(commands.Cog):
     @commands.cooldown(1, 5.0, commands.BucketType.user)
     @commands.command(help="Performs anime lookup on AniList")
     async def anime(self, ctx: TomodachiContext, *, query: str):
-        data = await AniList.lookup(query)
-        menu = AniListMenu(data)
+        async with ctx.typing():
+            data = await AniList.lookup(query)
+            if not data:
+                return await ctx.send(embed=discord.Embed(title=":x: Nothing was found!"))
 
-        await menu.start(ctx)
+            menu = AniListMenu(data)
+            await menu.start(ctx)
 
 
 def setup(bot):
