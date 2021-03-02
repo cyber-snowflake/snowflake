@@ -49,7 +49,11 @@ class AniListMenu(menus.Menu):
         self.embed.title = title
         self.embed.url = media.url
 
-        self.embed.colour = await commands.ColourConverter().convert(None, media.cover_image.color) or 0x2F3136
+        if media.cover_image.color:
+            self.embed.colour = await commands.ColourConverter().convert(None, media.cover_image.color)
+        else:
+            self.embed.colour = 0x2F3136
+
         self.embed.description = media.description
         self.embed.timestamp = media.start_date
 
