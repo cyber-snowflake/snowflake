@@ -39,7 +39,8 @@ class AniListMenu(menus.Menu):
         media_title = media.title.get("english") or media.title.get("romaji") or media.title.get("native")
         title = f"{media_title} ({self.current_index + 1}/{self.max_index + 1})"
 
-        self.embed.set_author(name=title, url=media.url)
+        self.embed.title = title
+        self.embed.url = media.url
 
         self.embed.colour = await commands.ColourConverter().convert(None, media.cover_image.color) or 0x2F3136
         self.embed.description = media.description
