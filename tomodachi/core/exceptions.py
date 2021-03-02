@@ -20,3 +20,7 @@ class GloballyRateLimited(CommandError):
     def __init__(self, user: Union[discord.User, discord.Member], retry_after: Union[int, float]):
         self.user = user
         self.retry_after = retry_after
+
+
+class AniListException(CommandError):
+    pass
