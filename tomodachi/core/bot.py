@@ -63,7 +63,7 @@ class Tomodachi(commands.AutoShardedBot):
         self.loop.create_task(self.fetch_prefixes())
 
     async def close(self):
-        if self.session.closed:
+        if not self.session.closed:
             await self.session.close()
 
         await super().close()
