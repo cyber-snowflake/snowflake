@@ -25,6 +25,12 @@ class AniListMenu(menus.Menu):
         self.current_index = 0
         self.max_index = len(data) - 1
 
+    async def start(self, ctx, *, channel=None, wait=False):
+        if len(self.data) > 1:
+            await super().start(ctx, channel=channel, wait=wait)
+        else:
+            await self.send_initial_message(ctx, ctx.channel)
+
     def increase_index(self):
         next_index = self.current_index + 1
         self.current_index = 0 if next_index > self.max_index else next_index
