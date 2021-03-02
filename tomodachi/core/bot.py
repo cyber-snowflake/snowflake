@@ -115,9 +115,9 @@ class Tomodachi(commands.AutoShardedBot):
         self.add_check(spam_control)
         self.add_check(is_blacklisted)
 
+        self.support_guild = support_guild = await self.fetch_guild(config.SUPPORT_GUILD_ID)
+        await self.icon.setup(support_guild.emojis)
+
         for ext in config.EXTENSIONS:
             self.load_extension(f"tomodachi.exts.{ext}")
             logging.info(f"loaded {ext}")
-
-        self.support_guild = support_guild = await self.fetch_guild(config.SUPPORT_GUILD_ID)
-        await self.icon.setup(support_guild.emojis)
