@@ -153,7 +153,7 @@ class Tools(commands.Cog):
     @commands.command(help="Performs anime lookup on AniList")
     async def anime(self, ctx: TomodachiContext, *, query: str):
         async with ctx.typing():
-            data = await AniList.lookup(query)
+            data = await AniList.lookup(query, hide_adult=not ctx.channel.is_nsfw())
             if not data:
                 return await ctx.send(embed=discord.Embed(title=":x: Nothing was found!"))
 
