@@ -110,7 +110,7 @@ class AniList:
         cls.__session = session
 
     @classmethod
-    async def lookup(cls, search: str, _type: str = "ANIME", *, raw=False, hide_adult=True):
+    async def lookup(cls, search: str, _type: MediaType = MediaType.ANIME, *, raw=False, hide_adult=True):
         query = """
                 query ($id: Int, $page: Int, $search: String, $type: MediaType) {
                   Page(page: $page, perPage: 100) {
@@ -157,7 +157,7 @@ class AniList:
         """
 
         variables = {
-            "type": _type,
+            "type": _type.name,
             "search": search,
             "page": 1,
         }
