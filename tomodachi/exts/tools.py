@@ -33,7 +33,7 @@ class AniListMenu(TomodachiMenu):
             self.embed.colour = 0x2F3136
 
         self.embed.description = media.description
-        self.embed.timestamp = media.start_date
+        self.embed.timestamp = media.start_date or discord.Embed.Empty
 
         self.embed.set_image(url=media.banner_image or media.cover_image.large)
 
