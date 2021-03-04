@@ -96,9 +96,9 @@ class AniList:
         cls.__session = session
 
     @classmethod
-    async def lookup(cls, search: str, *, raw=False, hide_adult=True):
+    async def lookup(cls, search: str, _type: str = "ANIME", *, raw=False, hide_adult=True):
         query = """
-                query ($id: Int, $page: Int, $search: String) {
+                query ($id: Int, $page: Int, $search: String, $type: MediaType) {
                   Page(page: $page, perPage: 100) {
                     pageInfo {
                       total
@@ -107,7 +107,7 @@ class AniList:
                       hasNextPage
                       perPage
                     }
-                    media(id: $id, search: $search, type: ANIME, sort: POPULARITY_DESC) {
+                    media(id: $id, search: $search, type: $type, sort: POPULARITY_DESC) {
                       type
                       id
                       title {
@@ -141,6 +141,7 @@ class AniList:
         """
 
         variables = {
+            "type": _type,
             "search": search,
             "page": 1,
         }
