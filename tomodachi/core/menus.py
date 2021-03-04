@@ -83,18 +83,17 @@ class TomodachiMenu(menus.Menu):
 
     @menus.button("\N{BLACK LEFT-POINTING DOUBLE TRIANGLE}")
     async def on_double_arrow_left(self, _payload):
-        if self.current_index != 0:
-            self.current_index = 0
-            await self.update_page()
-
-    @menus.button("\N{BLACK LEFT-POINTING TRIANGLE}")
-    async def on_arrow_left(self, _payload):
         try:
             await self.reset_index()
         except IndexNotChanged:
             pass
         else:
             await self.update_page()
+
+    @menus.button("\N{BLACK LEFT-POINTING TRIANGLE}")
+    async def on_arrow_left(self, _payload):
+        await self.decrease_index()
+        await self.update_page()
 
     @menus.button("\N{BLACK SQUARE FOR STOP}\ufe0f")
     async def on_stop(self, _payload):
