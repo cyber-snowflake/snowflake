@@ -15,7 +15,6 @@ import discord
 from discord.ext import commands
 
 import config
-from tomodachi.core.checks import is_blacklisted
 from tomodachi.core.context import TomodachiContext
 from tomodachi.core.icons import Icons
 from tomodachi.utils import pg, make_intents, make_cache_policy, AniList
@@ -91,6 +90,9 @@ class Tomodachi(commands.AutoShardedBot):
         if message.author.bot:
             return
 
+        if message.author.id in self.blacklist:
+            return
+
         ctx = await self.get_context(message)
 
         bucket = self.global_rate_limit.get_bucket(ctx.message)
@@ -129,8 +131,6 @@ class Tomodachi(commands.AutoShardedBot):
 
         for guild in self.guilds:
             self.loop.create_task(self.pg.store_guild(guild.id))
-
-        self.add_check(is_blacklisted)
 
         self.support_guild = support_guild = await self.fetch_guild(config.SUPPORT_GUILD_ID)
         await self.icon.setup(support_guild.emojis)
