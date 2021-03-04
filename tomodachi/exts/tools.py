@@ -38,6 +38,7 @@ class AniListMenu(TomodachiMenu):
         self.embed.set_image(url=media.banner_image or media.cover_image.large)
 
         self.embed.add_field(name="Episodes", value=f"`{media.episodes}`")
+        self.embed.add_field(name="Average duration", value=f"`{media.duration}` minutes")
         self.embed.add_field(name="Mean score", value=f"`{media.mean_score}`")
 
         if media.genres:
