@@ -45,7 +45,10 @@ class AniListMenu(TomodachiMenu):
             self.embed.add_field(name="Volumes", value=f"`{media.volumes}`")
             self.embed.add_field(name="Chapters", value=f"`{media.chapters}`")
 
-        self.embed.add_field(name="Mean score", value=f"`{media.mean_score}`")
+        if media.average_score is not None:
+            self.embed.add_field(name="Average score", value=f"`{media.average_score}%`")
+        else:
+            self.embed.add_field(name="Mean score", value=f"`{media.mean_score}`%")
 
         if media.genres:
             self.embed.add_field(name="Genres", value=", ".join(media.genres))
