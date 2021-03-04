@@ -54,6 +54,8 @@ class AniMedia:
         "url",
         "episodes",
         "_is_adult",
+        "volumes",
+        "chapters",
     )
 
     def __init__(self, **kwargs):
@@ -71,6 +73,8 @@ class AniMedia:
         self.url: str = kwargs.get("siteUrl")
         self.episodes: int = kwargs.get("episodes")
         self._is_adult: bool = kwargs.get("isAdult", False)
+        self.volumes: Optional[int] = kwargs.get("volumes", 0)
+        self.chapters: Optional[int] = kwargs.get("chapters", 0)
 
     def __repr__(self):
         return f"<AniMedia id={self.id} title={self.title}>"
@@ -145,6 +149,8 @@ class AniList:
                       siteUrl
                       episodes
                       isAdult
+                      volumes
+                      chapters
                     }
                   }
                 }
