@@ -14,7 +14,7 @@ from gtts import gTTS
 from tomodachi.core.bot import Tomodachi
 from tomodachi.core.context import TomodachiContext
 from tomodachi.core.menus import TomodachiMenu
-from tomodachi.utils import run_in_executor, AniList, AniMedia
+from tomodachi.utils import run_in_executor, AniList, AniMedia, MediaType
 
 
 class AniListMenu(TomodachiMenu):
@@ -37,8 +37,14 @@ class AniListMenu(TomodachiMenu):
 
         self.embed.set_image(url=media.banner_image or media.cover_image.large)
 
-        self.embed.add_field(name="Episodes", value=f"`{media.episodes}`")
-        self.embed.add_field(name="Average duration", value=f"`{media.duration}` minutes")
+        if media.type is MediaType.ANIME:
+            self.embed.add_field(name="Episodes", value=f"`{media.episodes}`")
+            self.embed.add_field(name="Average duration", value=f"`{media.duration}` minutes")
+
+        if media.type is MediaType.MANGA:
+            self.embed.add_field(name="Volumes", value=f"`{media.volumes}`")
+            self.embed.add_field(name="Chapters", value=f"`{media.chapters}`")
+
         self.embed.add_field(name="Mean score", value=f"`{media.mean_score}`")
 
         if media.genres:
