@@ -87,6 +87,23 @@ class Tomodachi(commands.AutoShardedBot):
     async def get_context(self, message, *, cls=None) -> Union[TomodachiContext, commands.Context]:
         return await super().get_context(message, cls=cls or TomodachiContext)
 
+    async def process_commands(self, message: discord.Message):
+        if message.author.bot:
+            return
+
+        ctx = await self.get_context(message)
+
+        bucket = self.global_rate_limit.get_bucket(ctx.message)
+        retry_after = bucket.update_rate_limit()
+
+        if retry_after and ctx.author.id != self.owner_id:
+            return await message.channel.send(
+                content=f"You are being globally rate limited. Please, wait `{retry_after:.2f}` seconds.",
+                delete_after=retry_after,
+            )
+
+        await self.invoke(ctx)
+
     async def fetch_prefixes(self):
         await self.pg.connection_established.wait()
 
@@ -113,7 +130,6 @@ class Tomodachi(commands.AutoShardedBot):
         for guild in self.guilds:
             self.loop.create_task(self.pg.store_guild(guild.id))
 
-        self.add_check(spam_control)
         self.add_check(is_blacklisted)
 
         self.support_guild = support_guild = await self.fetch_guild(config.SUPPORT_GUILD_ID)
