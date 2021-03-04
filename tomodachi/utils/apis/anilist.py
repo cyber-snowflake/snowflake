@@ -48,6 +48,7 @@ class AniMedia:
         "duration",
         "_startDate",
         "mean_score",
+        "average_score",
         "status",
         "_coverImage",
         "banner_image",
@@ -66,7 +67,8 @@ class AniMedia:
         self.genres: list[str] = kwargs.get("genres", [])
         self.duration: int = kwargs.get("duration", 0)
         self._startDate: dict[str, int] = kwargs.get("startDate", {})
-        self.mean_score: int = kwargs.get("meanScore")
+        self.mean_score: int = kwargs.get("meanScore", 0)
+        self.average_score: Optional[int] = kwargs.get("averageScore", 0)
         self.status: str = kwargs.get("status")
         self._coverImage: dict[str, str] = kwargs.get("coverImage")
         self.banner_image: str = kwargs.get("bannerImage")
@@ -138,6 +140,7 @@ class AniList:
                         day
                       }
                       meanScore
+                      averageScore
                       status
                       coverImage {
                         extraLarge
