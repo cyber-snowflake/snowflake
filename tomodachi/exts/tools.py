@@ -106,6 +106,17 @@ class Tools(commands.Cog):
         await ctx.send(file=file, embed=embed)
 
     @commands.cooldown(1, 7.0, commands.BucketType.user)
+    @commands.command(help="Searches for information about mangas on AniList")
+    async def manga(self, ctx: TomodachiContext, *, query: str):
+        async with ctx.typing():
+            data = await AniList.lookup(query, MediaType.MANGA, hide_adult=not ctx.channel.is_nsfw())
+            if not data:
+                return await ctx.send(embed=discord.Embed(title=":x: Nothing was found!"))
+
+            menu = AniListMenu(data)
+            await menu.start(ctx)
+
+    @commands.cooldown(1, 7.0, commands.BucketType.user)
     @commands.command(help="Performs anime lookup on AniList")
     async def anime(self, ctx: TomodachiContext, *, query: str):
         async with ctx.typing():
