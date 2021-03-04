@@ -7,13 +7,19 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+from enum import Enum
 from typing import Optional, ClassVar, TypedDict
 
 from aiohttp import ClientSession
 
 from tomodachi.core.exceptions import AniListException
 
-__all__ = ["AniList", "AniMedia"]
+__all__ = ["AniList", "AniMedia", "MediaType"]
+
+
+class MediaType(Enum):
+    ANIME = "ANIME"
+    MANGA = "MANGA"
 
 
 class MediaTitle(TypedDict):
@@ -36,7 +42,7 @@ class AniMedia:
     __slots__ = (
         "id",
         "title",
-        "type",
+        "_type",
         "_description",
         "genres",
         "duration",
@@ -53,7 +59,7 @@ class AniMedia:
     def __init__(self, **kwargs):
         self.id: int = kwargs.get("id")
         self.title: MediaTitle = kwargs.get("title", {})
-        self.type: str = kwargs.get("type")
+        self._type: str = kwargs.get("type")
         self._description: str = kwargs.get("description")
         self.genres: list[str] = kwargs.get("genres", [])
         self.duration: int = kwargs.get("duration", 0)
@@ -68,6 +74,10 @@ class AniMedia:
 
     def __repr__(self):
         return f"<AniMedia id={self.id} title={self.title}>"
+
+    @property
+    def type(self):
+        return MediaType(self._type)
 
     @property
     def description(self):
