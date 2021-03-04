@@ -8,14 +8,14 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from typing import Optional
+from typing import Optional, Union
 
 import aiohttp
 import discord
 from discord.ext import commands
 
 import config
-from tomodachi.core.checks import spam_control, is_blacklisted
+from tomodachi.core.checks import is_blacklisted
 from tomodachi.core.context import TomodachiContext
 from tomodachi.core.icons import Icons
 from tomodachi.utils import pg, make_intents, make_cache_policy, AniList
@@ -84,7 +84,7 @@ class Tomodachi(commands.AutoShardedBot):
         self.prefixes[guild_id] = prefix
         return self.prefixes[guild_id]
 
-    async def get_context(self, message, *, cls=None):
+    async def get_context(self, message, *, cls=None) -> Union[TomodachiContext, commands.Context]:
         return await super().get_context(message, cls=cls or TomodachiContext)
 
     async def fetch_prefixes(self):
