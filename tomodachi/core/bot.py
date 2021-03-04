@@ -33,6 +33,7 @@ class Tomodachi(commands.AutoShardedBot):
             intents=make_intents(),
             member_cache_flags=make_cache_policy(),
         )
+        self._BotBase__cogs = commands.core._CaseInsensitiveDict()  # noqa
 
         # Alias to config module
         self.config = config
