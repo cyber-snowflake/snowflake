@@ -11,17 +11,8 @@ from typing import TYPE_CHECKING
 import discord
 from discord.ext import commands
 
-from tomodachi.core.exceptions import Blacklisted
-
 if TYPE_CHECKING:
     from tomodachi.core.context import TomodachiContext
-
-
-async def is_blacklisted(ctx: TomodachiContext):
-    if ctx.author.id in ctx.bot.blacklist and ctx.author.id != ctx.bot.owner_id:
-        raise Blacklisted()
-
-    return True
 
 
 def is_manager():

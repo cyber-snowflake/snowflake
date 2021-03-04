@@ -11,7 +11,6 @@ import discord
 from discord.ext import commands
 
 from tomodachi.core.bot import Tomodachi
-from tomodachi.core.exceptions import Blacklisted
 
 
 class ErrorHandler(commands.Cog):
@@ -19,7 +18,6 @@ class ErrorHandler(commands.Cog):
         self.bot = bot
         self.ignored = (
             commands.CommandNotFound,
-            Blacklisted,
         )
         # these error types will remain unhandled
         # but also there will be logging with traceback
