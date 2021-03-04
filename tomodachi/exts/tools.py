@@ -117,7 +117,7 @@ class Tools(commands.Cog):
             await menu.start(ctx)
 
     @commands.cooldown(1, 7.0, commands.BucketType.user)
-    @commands.command(help="Performs anime lookup on AniList")
+    @commands.command(help="Searches for information about animes on AniList")
     async def anime(self, ctx: TomodachiContext, *, query: str):
         async with ctx.typing():
             data = await AniList.lookup(query, hide_adult=not ctx.channel.is_nsfw())
