@@ -92,6 +92,9 @@ class AniMedia:
 
     @property
     def start_date(self):
+        if any(n is None for n in self._startDate.values()):
+            return None
+
         return datetime(self._startDate["year"], self._startDate["month"], self._startDate["day"], tzinfo=timezone.utc)
 
     @property
