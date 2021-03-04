@@ -9,7 +9,7 @@ from typing import Union
 import discord
 from discord.ext.commands import CommandError
 
-__all__ = ["GloballyRateLimited", "Blacklisted", "AniListException"]
+__all__ = ["Blacklisted", "AniListException"]
 
 
 class Blacklisted(CommandError):
@@ -17,8 +17,8 @@ class Blacklisted(CommandError):
 
 
 class GloballyRateLimited(CommandError):
-    def __init__(self, user: Union[discord.User, discord.Member], retry_after: Union[int, float]):
-        self.user = user
+    def __init__(self, message: discord.Message, retry_after: Union[int, float]):
+        self.message = message
         self.retry_after = retry_after
 
 

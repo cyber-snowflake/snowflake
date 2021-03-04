@@ -11,7 +11,7 @@ import discord
 from discord.ext import commands
 
 from tomodachi.core.bot import Tomodachi
-from tomodachi.core.exceptions import GloballyRateLimited, Blacklisted
+from tomodachi.core.exceptions import Blacklisted
 
 
 class ErrorHandler(commands.Cog):
@@ -42,17 +42,6 @@ class ErrorHandler(commands.Cog):
         # to let local's handle the error
         if isinstance(error, self.ignored) or hasattr(ctx.command, "on_error"):
             return
-
-        if isinstance(error, GloballyRateLimited):
-            if not self.bot.owner_has_limits:
-                return await ctx.reinvoke()
-
-            retry_after = f"{error.retry_after:.2f}"
-            return await ctx.reply(
-                f"You are being rate limited. Please, chill out and try again in `{retry_after}` seconds.",
-                delete_after=error.retry_after,
-                mention_author=False,
-            )
 
         elif isinstance(error, commands.CommandOnCooldown):
             if not self.bot.owner_has_limits:

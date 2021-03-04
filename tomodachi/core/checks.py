@@ -11,23 +11,10 @@ from typing import TYPE_CHECKING
 import discord
 from discord.ext import commands
 
-from tomodachi.core.exceptions import GloballyRateLimited, Blacklisted
+from tomodachi.core.exceptions import Blacklisted
 
 if TYPE_CHECKING:
     from tomodachi.core.context import TomodachiContext
-
-
-async def spam_control(ctx: TomodachiContext):
-    if not ctx.bot.owner_has_limits and ctx.message.author.id == ctx.bot.owner_id:
-        return True
-
-    bucket = ctx.bot.global_rate_limit.get_bucket(ctx.message)
-    retry_after = bucket.update_rate_limit()
-
-    if retry_after:
-        raise GloballyRateLimited(ctx.author, retry_after)
-
-    return True
 
 
 async def is_blacklisted(ctx: TomodachiContext):
