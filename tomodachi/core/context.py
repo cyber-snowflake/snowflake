@@ -6,11 +6,12 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional, Union
 
 from discord.ext import commands
 
 if TYPE_CHECKING:
+    from discord import Guild, Member, User
     from tomodachi.core.bot import Tomodachi
 
 __all__ = ["TomodachiContext"]
@@ -18,3 +19,5 @@ __all__ = ["TomodachiContext"]
 
 class TomodachiContext(commands.Context):
     bot: Tomodachi
+    guild: Optional[Guild]
+    author: Union[Member, User]
