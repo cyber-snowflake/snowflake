@@ -5,6 +5,7 @@
 #  file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import io
+from typing import Union
 
 import discord
 from PIL import Image
@@ -15,6 +16,8 @@ from tomodachi.core.bot import Tomodachi
 from tomodachi.core.context import TomodachiContext
 from tomodachi.core.menus import TomodachiMenu
 from tomodachi.utils import run_in_executor, AniList, AniMedia, MediaType
+
+EmojiProxy = Union[discord.Emoji, discord.PartialEmoji]
 
 
 class AniListMenu(TomodachiMenu):
@@ -79,6 +82,27 @@ class Tools(commands.Cog):
 
         buff.seek(0)
         return buff
+
+    @commands.cooldown(1, 7.0, commands.BucketType.user)
+    @commands.bot_has_permissions(manage_emojis=True)
+    @commands.has_permissions(manage_emojis=True)
+    @commands.command(help="Steals emojis from other servers", aliases=("steal_emojis", "se"))
+    async def steal_emoji(self, ctx: TomodachiContext, emojis: commands.Greedy[EmojiProxy]):
+        c = 0
+
+        for emoji in emojis:
+            if isinstance(emoji, (discord.Emoji, discord.PartialEmoji)):
+                if e_guild := getattr(emoji, "guild", None):
+                    if e_guild.id == ctx.guild.id:
+                        continue
+
+                buff = await emoji.url.read()
+                created_emoji = await ctx.guild.create_custom_emoji(name=emoji.name, image=buff)
+
+                if created_emoji:
+                    c += 1
+
+        await ctx.send(f":ok_hand: Uploaded `{c}`/`{len(emojis)}` emojis.")
 
     @commands.cooldown(1, 5.0, commands.BucketType.user)
     @commands.max_concurrency(1, commands.BucketType.channel)
