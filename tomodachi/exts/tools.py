@@ -99,6 +99,23 @@ class Tools(commands.Cog):
         menu = TomodachiMenu(pages, title=f"Emojis for {ctx.guild.name}")
         await menu.start(ctx)
 
+    @commands.cooldown(1, 10.0, commands.BucketType.guild)
+    @commands.bot_has_permissions(manage_emojis=True)
+    @commands.has_permissions(manage_emojis=True)
+    @emoji.command(name="add", help="Adds new emoji to the server from attached images")
+    async def emoji_add(self, ctx: TomodachiContext, name: str):
+        if not ctx.message.attachments:
+            raise commands.BadArgument("Emoji to upload was not provided as an argument or attachment")
+
+        attachment = ctx.message.attachments[0]
+        if attachment.size > 256000:
+            return await ctx.send(":x: Your attachment exceeds 256kb file size limit!")
+
+        b = await attachment.read()
+        e = await ctx.guild.create_custom_emoji(name=name, image=b)
+
+        await ctx.send(f"{e} has been uploaded")
+
     @commands.cooldown(1, 7.0, commands.BucketType.user)
     @commands.bot_has_permissions(manage_emojis=True)
     @commands.has_permissions(manage_emojis=True)
