@@ -66,14 +66,14 @@ class Tomodachi(commands.AutoShardedBot):
         await super().close()
 
     async def get_prefix(self, message: discord.Message):
-        prefixes = []
+        prefixes = (f'<@!{self.user.id}> ', f'<@{self.user.id}> ')
 
         if not (p := self.prefixes.get(message.guild.id)):
-            prefixes.append(config.DEFAULT_PREFIX)
+            prefixes += (config.DEFAULT_PREFIX,)
         else:
-            prefixes.append(p)
+            prefixes += (p,)
 
-        return commands.when_mentioned_or(*prefixes)(self, message)
+        return prefixes
 
     async def update_prefix(self, guild_id: int, new_prefix: str):
         prefix = await self.pg.update_prefix(guild_id, new_prefix)
