@@ -102,8 +102,8 @@ class Tools(commands.Cog):
     @commands.cooldown(1, 7.0, commands.BucketType.user)
     @commands.bot_has_permissions(manage_emojis=True)
     @commands.has_permissions(manage_emojis=True)
-    @commands.command(help="Steals emojis from other servers", aliases=("steal_emojis", "se"))
-    async def steal_emoji(self, ctx: TomodachiContext, emojis: commands.Greedy[EmojiProxy]):
+    @emoji.command(name="steal", aliases=("grab", "reupload"), help="Steals emojis from other servers")
+    async def emoji_steal(self, ctx: TomodachiContext, emojis: commands.Greedy[EmojiProxy]):
         c = 0
 
         for emoji in emojis:
