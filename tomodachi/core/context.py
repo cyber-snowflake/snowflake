@@ -21,3 +21,4 @@ class TomodachiContext(commands.Context):
     bot: Tomodachi
     guild: Optional[Guild]
     author: Union[Member, User]
+    command: commands.Command
