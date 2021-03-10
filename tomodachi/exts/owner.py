@@ -19,9 +19,19 @@ from tomodachi.core.context import TomodachiContext
 class Owner(commands.Cog):
     def __init__(self, bot: Tomodachi):
         self.bot = bot
+        self.deletion_emoji_detector = bot.icon("fuck")
 
     async def cog_check(self, ctx: TomodachiContext):
         return await self.bot.is_owner(ctx.author)
+
+    @commands.Cog.listener()
+    async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
+        if self.deletion_emoji_detector.id == payload.emoji.id and payload.user_id == self.bot.owner_id:
+            c = self.bot.get_channel(payload.channel_id) or await self.bot.fetch_channel(payload.channel_id)
+            m = await c.fetch_message(payload.message_id)
+
+            if m.author.id == self.bot.user.id:
+                await m.delete()
 
     @commands.command()
     async def block(self, ctx: TomodachiContext, target: discord.User, *, reason: str = None):
