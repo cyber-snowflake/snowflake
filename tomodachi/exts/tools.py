@@ -90,7 +90,7 @@ class Tools(commands.Cog):
         if not ctx.invoked_subcommand:
             await ctx.send_help(ctx.command.qualified_name)
 
-    @commands.cooldown(1, 5.0, commands.BucketType.user)
+    @commands.cooldown(1, 10.0, commands.BucketType.channel)
     @emoji.command(name="list", aliases=("ls",), help="Spawns a menu with a list of emojis of this server")
     async def emoji_list(self, ctx: TomodachiContext):
         lines_chunks = miter.chunked([f"{e} | `{e}`" for e in ctx.guild.emojis], 10)
