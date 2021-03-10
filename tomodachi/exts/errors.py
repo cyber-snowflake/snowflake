@@ -43,8 +43,9 @@ class ErrorHandler(commands.Cog):
             return
 
         elif isinstance(error, commands.CommandOnCooldown):
-            if not self.bot.owner_has_limits:
-                return await ctx.reinvoke()
+            if ctx.author.id == self.bot.owner_id:
+                await ctx.reinvoke()
+                return
 
             retry_after = f"{error.retry_after:.2f}"
             return await ctx.reply(
