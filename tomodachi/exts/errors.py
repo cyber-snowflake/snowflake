@@ -11,6 +11,7 @@ import discord
 from discord.ext import commands
 
 from tomodachi.core.bot import Tomodachi
+from tomodachi.core.context import TomodachiContext
 
 
 class ErrorHandler(commands.Cog):
@@ -32,7 +33,7 @@ class ErrorHandler(commands.Cog):
         )
 
     @commands.Cog.listener()
-    async def on_command_error(self, ctx: commands.Context, error: commands.CommandError):
+    async def on_command_error(self, ctx: TomodachiContext, error: commands.CommandError):
         error = getattr(error, "original", error)
 
         # ignored error types are being suppressed
