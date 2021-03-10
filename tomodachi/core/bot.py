@@ -49,9 +49,6 @@ class Tomodachi(commands.AutoShardedBot):
 
         # Global rate limit cooldowns mapping
         self.global_rate_limit = commands.CooldownMapping.from_cooldown(10, 10, commands.BucketType.user)
-        # Toggle rate limits for bot owner or not
-        # by default bot owner can be rate limited
-        self.owner_has_limits = True
 
         self.session = aiohttp.ClientSession()
 
