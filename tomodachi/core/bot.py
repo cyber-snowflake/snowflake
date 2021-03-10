@@ -31,6 +31,7 @@ class Tomodachi(commands.AutoShardedBot):
             command_prefix=self.get_prefix,
             intents=make_intents(),
             member_cache_flags=make_cache_policy(),
+            owner_id=config.OWNER_ID,
         )
         self._BotBase__cogs = commands.core._CaseInsensitiveDict()  # noqa
 

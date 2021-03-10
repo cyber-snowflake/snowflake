@@ -7,6 +7,7 @@ SHARD_IDS = [0]
 
 SUPPORT_GUILD_ID = -1
 DEFAULT_EMOJI_ID = -1
+OWNER_ID = -1
 
 DEFAULT_STATUS = "あなたは私の友達です。"
 BRAND_COLOR = discord.Color(0x83D0ED)
