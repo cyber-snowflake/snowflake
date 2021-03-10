@@ -8,6 +8,7 @@ import io
 from typing import Union
 
 import discord
+import more_itertools as miter
 from PIL import Image
 from discord.ext import commands
 from gtts import gTTS
@@ -82,6 +83,21 @@ class Tools(commands.Cog):
 
         buff.seek(0)
         return buff
+
+    @commands.guild_only()
+    @commands.group(aliases=("emote", "e"), help="Group of emoji related commands")
+    async def emoji(self, ctx: TomodachiContext):
+        if not ctx.invoked_subcommand:
+            await ctx.send_help(ctx.command.qualified_name)
+
+    @commands.cooldown(1, 5.0, commands.BucketType.user)
+    @emoji.command(name="list", aliases=("ls",), help="Spawns a menu with a list of emojis of this server")
+    async def emoji_list(self, ctx: TomodachiContext):
+        lines_chunks = miter.chunked([f"{e} | `{e}`" for e in ctx.guild.emojis], 10)
+        pages = ["\n".join(lines) for lines in lines_chunks]
+
+        menu = TomodachiMenu(pages, title=f"Emojis for {ctx.guild.name}")
+        await menu.start(ctx)
 
     @commands.cooldown(1, 7.0, commands.BucketType.user)
     @commands.bot_has_permissions(manage_emojis=True)
