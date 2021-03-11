@@ -106,8 +106,15 @@ class TomodachiHelpCommand(commands.MinimalHelpCommand):
             title=self.get_command_signature(command),
         )
 
+        description = ""
         if command.help:
-            embed.description = f"{self.context.bot.icon('rich_presence')} {command.help}"
+            description += f"{self.context.bot.icon('rich_presence')} {command.help}"
+
+        if command.description:
+            description += f"\n\n{command.description}"
+
+        if description:
+            embed.description = description
 
         if cooldown := command._buckets._cooldown:  # noqa
             embed.add_field(name="Cooldown", value=f"{self.context.bot.icon('slowmode')} {int(cooldown.per)} seconds")
