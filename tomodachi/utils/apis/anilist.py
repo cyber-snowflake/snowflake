@@ -176,8 +176,12 @@ class AniList:
 
         if raw:
             return _json
+
+        if hide_adult:
+            return [
+                AniMedia(**obj)
+                for obj in _json["data"]["Page"]["media"]
+                if (obj["isAdult"] is False and "Hentai" not in obj["genres"])
+            ]
         else:
-            if hide_adult:
-                return [AniMedia(**obj) for obj in _json["data"]["Page"]["media"] if obj["isAdult"] is False]
-            else:
-                return [AniMedia(**obj) for obj in _json["data"]["Page"]["media"]]
+            return [AniMedia(**obj) for obj in _json["data"]["Page"]["media"]]
