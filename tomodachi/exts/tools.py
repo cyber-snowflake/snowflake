@@ -10,6 +10,7 @@ from typing import Union
 import discord
 import more_itertools as miter
 from PIL import Image
+from aiohttp import ClientResponseError
 from discord.ext import commands
 from gtts import gTTS
 
@@ -83,6 +84,43 @@ class Tools(commands.Cog):
 
         buff.seek(0)
         return buff
+
+    @staticmethod
+    async def get_image_url(message: discord.Message, user: Union[discord.Member, discord.User] = None):
+        url = None
+
+        if not message.attachments:
+            if user is not None:
+                url = str(user.avatar_url)
+        else:
+            url = message.attachments[0].url
+
+        return url
+
+    @commands.command()
+    @commands.cooldown(1, 10.0, commands.BucketType.user)
+    async def caption(self, ctx: TomodachiContext, user: Union[discord.Member, discord.User] = None):
+        """Caption an image"""
+        await ctx.trigger_typing()
+
+        user = user or ctx.author
+        image_url = await self.get_image_url(ctx.message, user)
+
+        url = "https://captionbot.azurewebsites.net/api/messages"
+        payload = {"Content": image_url, "Type": "CaptionRequest"}
+
+        try:
+            async with self.bot.session.post(url, json=payload) as resp:
+                resp.raise_for_status()
+                data = await resp.text()
+
+            e = discord.Embed(title="CaptionBot", description=str(data))
+            e.set_image(url=image_url)
+
+            await ctx.send(embed=e)
+
+        except ClientResponseError:
+            await ctx.send(":x: API request failed")
 
     @commands.guild_only()
     @commands.group(aliases=("emote", "e"), help="Group of emoji related commands")
