@@ -60,6 +60,8 @@ class AniListMenu(TomodachiMenu):
 
 
 class Tools(commands.Cog):
+    __anilist_notice = "Adult content is hidden from non-NSFW channels"
+
     def __init__(self, bot: Tomodachi):
         self.bot = bot
 
@@ -204,7 +206,7 @@ class Tools(commands.Cog):
         await ctx.send(file=file, embed=embed)
 
     @commands.cooldown(1, 7.0, commands.BucketType.user)
-    @commands.command(help="Searches for information about mangas on AniList")
+    @commands.command(help="Searches for information about mangas on AniList", description=__anilist_notice)
     async def manga(self, ctx: TomodachiContext, *, query: str):
         async with ctx.typing():
             data = await AniList.lookup(query, MediaType.MANGA, hide_adult=not ctx.channel.is_nsfw())
@@ -215,7 +217,7 @@ class Tools(commands.Cog):
             await menu.start(ctx)
 
     @commands.cooldown(1, 7.0, commands.BucketType.user)
-    @commands.command(help="Searches for information about animes on AniList")
+    @commands.command(help="Searches for information about animes on AniList", description=__anilist_notice)
     async def anime(self, ctx: TomodachiContext, *, query: str):
         async with ctx.typing():
             data = await AniList.lookup(query, hide_adult=not ctx.channel.is_nsfw())
