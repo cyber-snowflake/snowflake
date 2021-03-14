@@ -6,11 +6,49 @@
 
 from __future__ import annotations
 
+from datetime import datetime
+
 import discord
 from discord.ext import commands
 
 from tomodachi.core import Tomodachi, TomodachiContext, TomodachiMenu
 from tomodachi.utils.apis import AniList, AniMedia, MediaType
+
+waifu_categories = (
+    "waifu",
+    "neko",
+    "shinobu",
+    "megumin",
+    "bully",
+    "cuddle",
+    "cry",
+    "hug",
+    "awoo",
+    "kiss",
+    "lick",
+    "pat",
+    "smug",
+    "bonk",
+    "yeet",
+    "blush",
+    "smile",
+    "wave",
+    "smile",
+    "wave",
+    "highfive",
+    "handhold",
+    "nom",
+    "bite",
+    "glomp",
+    "kill",
+    "slap",
+    "happy",
+    "wink",
+    "poke",
+    "dance",
+    "cringe",
+    "blush",
+)
 
 
 class AniListMenu(TomodachiMenu):
@@ -55,6 +93,24 @@ class TwoDimWorld(commands.Cog, name="2D-World"):
 
     def __init__(self, bot: Tomodachi):
         self.bot = bot
+
+    @commands.is_nsfw()
+    @commands.cooldown(1, 7.0, commands.BucketType.user)
+    @commands.command(help="Finds some waifus for you", description="Technically it should be SFW, but sometimes not")
+    async def anipic(self, ctx: TomodachiContext, *, query: str = "waifu"):
+        if query.lower() not in waifu_categories:
+            raise commands.BadArgument(f"`{query}` is invalid waifu category")
+
+        url = f"https://waifu.pics/api/sfw/{query}"
+
+        async with self.bot.session.get(url) as resp:
+            data = await resp.json()
+
+        embed = discord.Embed(timestamp=datetime.utcnow())
+        embed.set_image(url=data["url"])
+        embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested by {ctx.author}")
+
+        await ctx.send(embed=embed)
 
     @commands.cooldown(1, 7.0, commands.BucketType.user)
     @commands.command(help="Searches for information about mangas on AniList", description=__anilist_notice)
