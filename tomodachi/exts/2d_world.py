@@ -9,9 +9,7 @@ from __future__ import annotations
 import discord
 from discord.ext import commands
 
-from tomodachi.core.bot import Tomodachi
-from tomodachi.core.context import TomodachiContext
-from tomodachi.core.menus import TomodachiMenu
+from tomodachi.core import Tomodachi, TomodachiContext, TomodachiMenu
 from tomodachi.utils.apis import AniList, AniMedia, MediaType
 
 

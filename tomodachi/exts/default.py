@@ -7,9 +7,7 @@
 import discord
 from discord.ext import commands
 
-from tomodachi.core.bot import Tomodachi
-from tomodachi.core.checks import is_manager
-from tomodachi.core.context import TomodachiContext
+from tomodachi.core import Tomodachi, is_manager, TomodachiContext
 
 
 class Default(commands.Cog):

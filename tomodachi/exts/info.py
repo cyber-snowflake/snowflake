@@ -12,8 +12,7 @@ import discord
 import humanize
 from discord.ext import commands, flags
 
-from tomodachi.core.bot import Tomodachi
-from tomodachi.core.context import TomodachiContext
+from tomodachi.core import Tomodachi, TomodachiContext
 from tomodachi.utils import make_progress_bar, HUMAN_READABLE_FLAGS, HUMANIZED_ACTIVITY
 
 

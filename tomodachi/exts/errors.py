@@ -10,16 +10,13 @@ import traceback
 import discord
 from discord.ext import commands
 
-from tomodachi.core.bot import Tomodachi
-from tomodachi.core.context import TomodachiContext
+from tomodachi.core import Tomodachi, TomodachiContext
 
 
 class ErrorHandler(commands.Cog):
     def __init__(self, bot: Tomodachi):
         self.bot = bot
-        self.ignored = (
-            commands.CommandNotFound,
-        )
+        self.ignored = (commands.CommandNotFound,)
         # these error types will remain unhandled
         # but also there will be logging with traceback
         self.suppressed_tracebacks = (

@@ -14,9 +14,7 @@ from aiohttp import ClientResponseError
 from discord.ext import commands
 from gtts import gTTS
 
-from tomodachi.core.bot import Tomodachi
-from tomodachi.core.context import TomodachiContext
-from tomodachi.core.menus import TomodachiMenu
+from tomodachi.core import Tomodachi, TomodachiContext, TomodachiMenu
 from tomodachi.utils import run_in_executor
 
 EmojiProxy = Union[discord.Emoji, discord.PartialEmoji]

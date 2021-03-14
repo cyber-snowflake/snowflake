@@ -7,7 +7,7 @@
 import discord
 from discord.ext import commands
 
-from tomodachi.core.bot import Tomodachi
+from tomodachi.core import Tomodachi
 
 
 class Events(commands.Cog):

@@ -12,8 +12,7 @@ import discord
 from asyncpg.exceptions import UniqueViolationError
 from discord.ext import commands
 
-from tomodachi.core.bot import Tomodachi
-from tomodachi.core.context import TomodachiContext
+from tomodachi.core import Tomodachi, TomodachiContext
 
 
 class Owner(commands.Cog):

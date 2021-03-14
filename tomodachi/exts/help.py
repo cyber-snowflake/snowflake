@@ -13,8 +13,7 @@ from typing import Union, List, NewType
 import discord
 from discord.ext import commands
 
-from tomodachi.core.bot import Tomodachi
-from tomodachi.core.context import TomodachiContext
+from tomodachi.core import Tomodachi, TomodachiContext
 
 # Type alias for a commands mapping, quite helpful
 Commands = List[Union[commands.Command, commands.Group]]
