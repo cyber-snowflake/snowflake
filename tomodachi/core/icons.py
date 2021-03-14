@@ -10,6 +10,8 @@ import discord
 
 from tomodachi.utils.singleton import MetaSingleton
 
+__all__ = ["Icons"]
+
 DEFAULT_EMOJI_FALLBACK = discord.PartialEmoji(name="U00002139")
 
 
