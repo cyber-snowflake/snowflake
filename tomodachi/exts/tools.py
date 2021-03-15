@@ -15,7 +15,7 @@ from discord.ext import commands
 from gtts import gTTS
 
 from tomodachi.core import Tomodachi, TomodachiContext, TomodachiMenu
-from tomodachi.utils import run_in_executor
+from tomodachi.utils import to_thread
 
 EmojiProxy = Union[discord.Emoji, discord.PartialEmoji]
 
@@ -25,7 +25,7 @@ class Tools(commands.Cog):
         self.bot = bot
 
     @staticmethod
-    @run_in_executor
+    @to_thread
     def make_color_circle(color):
         buff = io.BytesIO()
 
@@ -36,7 +36,7 @@ class Tools(commands.Cog):
         return buff
 
     @staticmethod
-    @run_in_executor
+    @to_thread
     def make_text_to_speech(lang, text):
         buff = io.BytesIO()
 
