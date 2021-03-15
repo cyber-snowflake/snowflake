@@ -10,17 +10,16 @@ import asyncio
 import functools
 from typing import Callable
 
-__all__ = ["run_in_executor"]
+__all__ = ["to_thread"]
 
 
-def run_in_executor(func: Callable):
-    """Decorator that runs sync functions in executor"""
+def to_thread(func: Callable):
+    """Asynchronously run function in a separate thread."""
 
     @functools.wraps(func)
     async def wrapper(*args, **kwargs):
         partial = functools.partial(func, *args, **kwargs)
-        future = await asyncio.get_event_loop().run_in_executor(None, partial)
-
-        return future
+        coro = asyncio.to_thread(partial)
+        return await coro
 
     return wrapper
